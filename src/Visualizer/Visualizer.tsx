@@ -3,10 +3,11 @@ import "./Visualizer.css";
 import { Grid } from "../Grid/Grid";
 import {
   NavBar,
-  NavItem,
+  NavDropDownItem,
   DropDownMenu,
   DropDownAlgo,
   DropDownSlider,
+  NavChangingButtonItem,
 } from "../NavBar/NavBar";
 import { SecondaryHeader } from "../SecondaryHeader/SecondaryHeader";
 import { node } from "../helper_functions/usefulInterfaces";
@@ -20,8 +21,8 @@ import {
 } from "../helper_functions/mazeGenerators/mazeGraph";
 import { constructGrid } from "../helper_functions/constructGrid";
 
-const NUMBER_OF_ROWS: number = 24;
-const NUMBER_OF_COLUMN: number = 11;
+const NUMBER_OF_ROWS: number = 28;
+const NUMBER_OF_COLUMN: number = 13;
 
 // We define these constants out of the functional component
 // that the App uses to avoid re-running the functions to create
@@ -29,8 +30,8 @@ const NUMBER_OF_COLUMN: number = 11;
 const [firstGrid, firstStartNode, firstEndNode] = constructGrid(
   NUMBER_OF_ROWS,
   NUMBER_OF_COLUMN,
-  [5, 3],
-  [5, 20]
+  [6, 3],
+  [6, 24]
 );
 
 const [firstpairGrid, mazeGraph] = createEmptyMazeGraph(
@@ -45,8 +46,8 @@ const Visualizer: React.FC = () => {
   const [grid, setGrid] = useState(firstGrid);
   const [maze, setMaze] = useState(mazeGraph);
   const [pairGrid, setPairGrid] = useState(firstpairGrid);
-  const [algorithm, setAlgorithm] = useState("dijkstra");
-  const [wallsDensity, setWallsDensity] = useState(0.1);
+  const [algorithm, setAlgorithm] = useState("dijkstraWithWalls");
+  const [wallsDensity, setWallsDensity] = useState(0.7);
   const [isVisualized, setIsVisualized] = useState(false);
   // const [mouseIsPressed, setMouseIsPressed] = useState(false);
 
@@ -75,7 +76,7 @@ const Visualizer: React.FC = () => {
         };
         newGrid[x][y] = newNode;
         setGrid(newGrid);
-      }, 50 * i);
+      }, 30 * i);
     }
 
     const m = path.length;
@@ -94,7 +95,7 @@ const Visualizer: React.FC = () => {
         };
         newGrid[x][y] = newNode;
         setGrid(newGrid);
-      }, 50 * n + 40 * i);
+      }, 30 * n + 150 * i);
     }
   };
 
@@ -201,29 +202,33 @@ const Visualizer: React.FC = () => {
   return (
     <div className="App">
       <NavBar>
-        {
-          <li
-            className={"reinitialize" + (isVisualized ? " highlight" : "")}
-            onClick={(e) => {
-              reinitialize();
-            }}
-          >
-            <p>Reinitialize</p>
-          </li>
-        }
-        {
-          <li
-            className="generate-maze"
-            onClick={(e) => {
-              generateMaze();
-            }}
-          >
-            <p>Generate Maze</p>
-          </li>
-        }
-        <NavItem icon="" text="Maze options">
+        <NavChangingButtonItem
+          isVisualized={isVisualized}
+          className="reinitialize"
+          visualizedClassName="highlight"
+          handleClick={reinitialize}
+        >
+          Reinitialize
+        </NavChangingButtonItem>
+        <NavChangingButtonItem
+          isVisualized={isVisualized}
+          className="generate-maze"
+          visualizedClassName="greyed-out"
+          handleClick={generateMaze}
+        >
+          Generate maze
+        </NavChangingButtonItem>
+        <NavDropDownItem
+          tabIndex={1}
+          icon=""
+          text="Maze options"
+          id="maze-options"
+          isVisualized={isVisualized}
+          shouldGreyOut={true}
+        >
           <DropDownMenu left={false}>
             <DropDownSlider
+              isVisualized={isVisualized}
               minValue={0.1}
               maxValue={1}
               defaultValue={wallsDensity}
@@ -231,34 +236,43 @@ const Visualizer: React.FC = () => {
               handleChangeWallsDensity={setWallsDensity}
             ></DropDownSlider>
           </DropDownMenu>
-        </NavItem>
-        {
-          <li
-            className={"visualize-button" + (isVisualized ? " grayed-out" : "")}
-            onClick={(e) => {
-              if (!isVisualized)
-                visualizeAlgorithm(
-                  ...chooseAlgorithm(algorithm)(
-                    grid,
-                    pairGrid,
-                    maze,
-                    startNode,
-                    endNode
-                  )
-                );
+        </NavDropDownItem>
+        <NavChangingButtonItem
+          isVisualized={isVisualized}
+          className="visualize-button"
+          visualizedClassName="greyed-out"
+          handleClick={() => {
+            if (!isVisualized) {
+              visualizeAlgorithm(
+                ...chooseAlgorithm(algorithm)(
+                  grid,
+                  pairGrid,
+                  maze,
+                  startNode,
+                  endNode
+                )
+              );
               setIsVisualized(true);
-            }}
-          >
-            <p>Visualize!</p>
-          </li>
-        }
-        <NavItem icon="&#12851;" text="Algorithm">
+            }
+          }}
+        >
+          Visualize!
+        </NavChangingButtonItem>
+        <NavDropDownItem
+          tabIndex={2}
+          icon="&#12851;"
+          text="Algorithm"
+          id="algorithms"
+          isVisualized={isVisualized}
+          shouldGreyOut={false}
+        >
           <DropDownMenu left={true}>
             <DropDownAlgo
               changeAlgorithm={handleAlgorithmChange}
               algorithmName="dijkstraWithWalls"
             >
-              Dijkstra's Algorithm
+              <p>Dijkstra's Algorithm</p>
+              {algorithm === "dijkstraWithWalls" ? <p>✓</p> : ""}
             </DropDownAlgo>
             {/* <DropDownAlgo
               changeAlgorithm={handleAlgorithmChange}
@@ -267,7 +281,7 @@ const Visualizer: React.FC = () => {
               A* Algorithm
             </DropDownAlgo> */}
           </DropDownMenu>
-        </NavItem>
+        </NavDropDownItem>
       </NavBar>
       {/* <SecondaryHeader>
         <button

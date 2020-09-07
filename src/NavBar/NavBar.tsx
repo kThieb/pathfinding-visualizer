@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { CSSTransition } from "react-transition-group";
 import "./NavBar.css";
 
 export const NavBar: React.FC = (props) => {
@@ -9,17 +10,72 @@ export const NavBar: React.FC = (props) => {
   );
 };
 
-interface NavItemProps {
-  icon: string;
-  text: string;
+interface NavChangingButtonItemProps {
+  isVisualized: boolean;
+  className: string;
+  visualizedClassName: string;
+  handleClick: () => void;
 }
 
-export const NavItem: React.FC<NavItemProps> = (props) => {
+export const NavChangingButtonItem: React.FC<NavChangingButtonItemProps> = (
+  props
+) => {
+  return (
+    <li
+      className={
+        "nav-item " +
+        props.className +
+        (props.isVisualized ? " " + props.visualizedClassName : "")
+      }
+      onClick={(e) => {
+        props.handleClick();
+      }}
+    >
+      <p>{props.children}</p>
+    </li>
+  );
+};
+
+interface NavDropDownItemProps {
+  tabIndex: number;
+  icon: string;
+  text: string;
+  id: string;
+  isVisualized: boolean;
+  shouldGreyOut: boolean;
+}
+
+export const NavDropDownItem: React.FC<NavDropDownItemProps> = (props) => {
   const [open, setOpen] = useState(false);
+  const handleBlur: (e: any) => void = (e) => {
+    setOpen(false);
+  };
+
+  const handleClick: (e: any) => void = (event) => {
+    if (!props.shouldGreyOut || !props.isVisualized) setOpen(!open);
+    document.addEventListener("click", (e) => {
+      const dropDownMenu = document.getElementById(props.id);
+      let targetElement = e.target as Element;
+
+      do {
+        if (targetElement === dropDownMenu) return;
+        targetElement = targetElement.parentNode as Element;
+      } while (targetElement);
+      setOpen(false);
+    });
+  };
 
   return (
-    <li className={"nav-item " + props.text}>
-      <p className="icon-button" onClick={() => setOpen(!open)}>
+    <li
+      id={props.id}
+      className={
+        "nav-item " +
+        " " +
+        (props.shouldGreyOut && props.isVisualized ? " greyed-out" : "")
+      }
+      tabIndex={props.tabIndex}
+    >
+      <p className="icon-button" onClick={handleClick}>
         {props.text}
       </p>
       {open && props.children}
@@ -32,9 +88,17 @@ interface DropDownMenu {
 }
 
 export const DropDownMenu: React.FC<DropDownMenu> = (props) => {
+  const [activeMenu, setActiveMenu] = useState("main");
   return (
-    <div className={"dropdown " + (props.left ? "left" : "right")}>
-      {props.children}
+    <div className={"dropdown" + (props.left ? " left" : " right")}>
+      <CSSTransition
+        in={activeMenu === "main"}
+        unmountOnExit
+        timeout={100}
+        classNames="menu-primary"
+      >
+        {props.children}
+      </CSSTransition>
     </div>
   );
 };
@@ -60,6 +124,7 @@ export const DropDownAlgo: React.FC<DropDownAlgoProps> = (props) => {
 };
 
 interface DropDownSliderProps {
+  isVisualized: boolean;
   minValue: number;
   maxValue: number;
   defaultValue: number;
