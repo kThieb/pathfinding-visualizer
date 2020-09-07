@@ -7,7 +7,9 @@
   flex: 1 0;
   height: auto;
   border: 1px solid black;
+  transition: border 400ms ease-out;
   background-color: #ecf8f8;
+  transition: background-color ease-in 400ms;
 }
 
 .grid-node:after {

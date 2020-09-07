@@ -136,7 +136,12 @@ const Visualizer: React.FC = () => {
 
   // Reinitialize the the board
   const reinitialize: () => void = () => {
-    const newGrid = grid.slice();
+    const [newGrid, newStartNode, newEndNode] = constructGrid(
+      NUMBER_OF_ROWS,
+      NUMBER_OF_COLUMN,
+      [startNode.x, startNode.y],
+      [endNode.x, endNode.y]
+    );
     const [newPairGrid, newMaze] = createEmptyMazeGraph(
       NUMBER_OF_ROWS,
       NUMBER_OF_COLUMN,
@@ -145,6 +150,8 @@ const Visualizer: React.FC = () => {
     setGrid(newGrid);
     setPairGrid(newPairGrid);
     setMaze(newMaze);
+    setStartNode(newStartNode);
+    setEndNode(newEndNode);
   };
 
   // The following block of functions handles the making of walls in the grid

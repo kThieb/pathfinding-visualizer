@@ -1,6 +1,6 @@
 {
-  "homepage": "https://kthieb.github.io/pathfinding-visualizer/",
-  "name": "react-rat",
+  "homepage": "https://kthieb.github.io/pathfinding-visualizer",
+  "name": "pathfinding-visualizer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
