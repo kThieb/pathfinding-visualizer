@@ -249,12 +249,12 @@ const Visualizer: React.FC = () => {
             >
               Dijkstra's Algorithm
             </DropDownAlgo>
-            <DropDownAlgo
+            {/* <DropDownAlgo
               changeAlgorithm={handleAlgorithmChange}
               algorithmName="A*"
             >
               A* Algorithm
-            </DropDownAlgo>
+            </DropDownAlgo> */}
           </DropDownMenu>
         </NavItem>
       </NavBar>
