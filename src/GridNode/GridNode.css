@@ -7,9 +7,8 @@
   flex: 1 0;
   height: auto;
   border: 1px solid black;
-  transition: border 400ms ease-out;
+  transition: border 400ms ease-out, background-color ease-out 400ms;
   background-color: #ecf8f8;
-  transition: background-color ease-in 400ms;
 }
 
 .grid-node:after {
@@ -51,16 +50,11 @@
 /* visited nodes styles */
 .visited-node {
   background-color: #0077b6;
-  transition: background-color 1500ms ease-out;
+  transition: background-color 1250ms ease-out;
 }
 
 /* shortest path nodes */
 .shortest-path-node {
   background-color: #48cae4;
-  transition: background-color 1500ms ease-in;
-}
-
-/* Node with a cheese */
-.cheese {
-  background-color: yellow;
+  transition: background-color 1250ms ease-in;
 }
