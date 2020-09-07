@@ -83,14 +83,12 @@ export const NavDropDownItem: React.FC<NavDropDownItemProps> = (props) => {
   );
 };
 
-interface DropDownMenu {
-  left: boolean;
-}
+interface DropDownMenu {}
 
 export const DropDownMenu: React.FC<DropDownMenu> = (props) => {
   const [activeMenu, setActiveMenu] = useState("main");
   return (
-    <div className={"dropdown" + (props.left ? " left" : " right")}>
+    <div className={"dropdown"}>
       <CSSTransition
         in={activeMenu === "main"}
         unmountOnExit
