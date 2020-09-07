@@ -47,6 +47,7 @@ const Visualizer: React.FC = () => {
   const [pairGrid, setPairGrid] = useState(firstpairGrid);
   const [algorithm, setAlgorithm] = useState("dijkstra");
   const [wallsDensity, setWallsDensity] = useState(0.1);
+  const [isVisualized, setIsVisualized] = useState(false);
   // const [mouseIsPressed, setMouseIsPressed] = useState(false);
 
   // States of the start and end node
@@ -152,6 +153,7 @@ const Visualizer: React.FC = () => {
     setMaze(newMaze);
     setStartNode(newStartNode);
     setEndNode(newEndNode);
+    setIsVisualized(false);
   };
 
   // The following block of functions handles the making of walls in the grid
@@ -201,7 +203,7 @@ const Visualizer: React.FC = () => {
       <NavBar>
         {
           <li
-            className="reinitialize"
+            className={"reinitialize" + (isVisualized ? " highlight" : "")}
             onClick={(e) => {
               reinitialize();
             }}
@@ -232,17 +234,19 @@ const Visualizer: React.FC = () => {
         </NavItem>
         {
           <li
-            className="visualize-button"
+            className={"visualize-button" + (isVisualized ? " grayed-out" : "")}
             onClick={(e) => {
-              visualizeAlgorithm(
-                ...chooseAlgorithm(algorithm)(
-                  grid,
-                  pairGrid,
-                  maze,
-                  startNode,
-                  endNode
-                )
-              );
+              if (!isVisualized)
+                visualizeAlgorithm(
+                  ...chooseAlgorithm(algorithm)(
+                    grid,
+                    pairGrid,
+                    maze,
+                    startNode,
+                    endNode
+                  )
+                );
+              setIsVisualized(true);
             }}
           >
             <p>Visualize!</p>

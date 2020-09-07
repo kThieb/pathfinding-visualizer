@@ -44,3 +44,14 @@
   justify-content: center;
   align-items: center;
 }
+
+.grayed-out {
+  opacity: 0.3;
+  transition: opacity 400ms ease-out;
+  cursor: default;
+}
+
+.highlight {
+  background-color: #f48c06;
+  transition: background-color 400ms ease-out;
+}
