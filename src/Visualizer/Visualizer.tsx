@@ -226,7 +226,7 @@ const Visualizer: React.FC = () => {
           isVisualized={isVisualized}
           shouldGreyOut={true}
         >
-          <DropDownMenu left={false}>
+          <DropDownMenu>
             <DropDownSlider
               isVisualized={isVisualized}
               minValue={0.1}
@@ -266,7 +266,7 @@ const Visualizer: React.FC = () => {
           isVisualized={isVisualized}
           shouldGreyOut={false}
         >
-          <DropDownMenu left={true}>
+          <DropDownMenu>
             <DropDownAlgo
               changeAlgorithm={handleAlgorithmChange}
               algorithmName="dijkstraWithWalls"
