@@ -95,7 +95,7 @@ const Visualizer: React.FC = () => {
         };
         newGrid[x][y] = newNode;
         setGrid(newGrid);
-      }, 30 * n + 150 * i);
+      }, 30 * n + 75 * i);
     }
   };
 
@@ -124,16 +124,18 @@ const Visualizer: React.FC = () => {
 
   // This function calls the generate maze function
   const generateMaze: () => void = () => {
-    const newGrid = grid.slice();
-    const [newPairGrid, newMaze] = generateMazeGraph(
-      NUMBER_OF_ROWS,
-      NUMBER_OF_COLUMN,
-      newGrid,
-      wallsDensity
-    );
-    setGrid(newGrid);
-    setPairGrid(newPairGrid);
-    setMaze(newMaze);
+    if (!isVisualized) {
+      const newGrid = grid.slice();
+      const [newPairGrid, newMaze] = generateMazeGraph(
+        NUMBER_OF_ROWS,
+        NUMBER_OF_COLUMN,
+        newGrid,
+        wallsDensity
+      );
+      setGrid(newGrid);
+      setPairGrid(newPairGrid);
+      setMaze(newMaze);
+    }
   };
 
   // Reinitialize the the board
@@ -219,8 +221,6 @@ const Visualizer: React.FC = () => {
           Generate maze
         </NavChangingButtonItem>
         <NavDropDownItem
-          tabIndex={1}
-          icon=""
           text="Maze options"
           id="maze-options"
           isVisualized={isVisualized}
@@ -259,8 +259,6 @@ const Visualizer: React.FC = () => {
           Visualize!
         </NavChangingButtonItem>
         <NavDropDownItem
-          tabIndex={2}
-          icon="&#12851;"
           text="Algorithm"
           id="algorithms"
           isVisualized={isVisualized}

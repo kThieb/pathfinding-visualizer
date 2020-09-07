@@ -37,8 +37,6 @@ export const NavChangingButtonItem: React.FC<NavChangingButtonItemProps> = (
 };
 
 interface NavDropDownItemProps {
-  tabIndex: number;
-  icon: string;
   text: string;
   id: string;
   isVisualized: boolean;
@@ -73,7 +71,6 @@ export const NavDropDownItem: React.FC<NavDropDownItemProps> = (props) => {
         " " +
         (props.shouldGreyOut && props.isVisualized ? " greyed-out" : "")
       }
-      tabIndex={props.tabIndex}
     >
       <p className="icon-button" onClick={handleClick}>
         {props.text}
