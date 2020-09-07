@@ -6,7 +6,8 @@
 
   flex: 1 0;
   height: auto;
-  border: 1px solid black;
+  border: 1.5px solid black;
+  /* border: 1.5px solid #deab90; */
   transition: border 400ms ease-out, background-color ease-out 400ms;
   background-color: #ecf8f8;
 }
@@ -32,19 +33,19 @@
 
 /* handle the walls */
 .no-wall-left {
-  border-left: 1px solid rgb(96, 122, 133, 0.1);
+  border-left: 1.5px solid rgb(96, 122, 133, 0.05);
 }
 
 .no-wall-right {
-  border-right: 1px solid rgb(96, 122, 133, 0.1);
+  border-right: 1.5px solid rgb(96, 122, 133, 0.05);
 }
 
 .no-wall-top {
-  border-top: 1px solid rgb(96, 122, 133, 0.1);
+  border-top: 1.5px solid rgb(96, 122, 133, 0.05);
 }
 
 .no-wall-bottom {
-  border-bottom: 1px solid rgb(96, 122, 133, 0.1);
+  border-bottom: 1.5px solid rgb(96, 122, 133, 0.05);
 }
 
 /* visited nodes styles */
