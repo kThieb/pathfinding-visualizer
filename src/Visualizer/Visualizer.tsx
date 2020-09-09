@@ -9,32 +9,32 @@ import {
   DropDownSlider,
   NavButton,
 } from "../NavBar/NavBar";
-import { node } from "../helper_functions/usefulInterfaces";
-import { algorithms } from "../helper_functions/shortestPathAlgorithms/allAlgorithms";
+import { node } from "../helperFunctions/usefulInterfaces";
+import { algorithms } from "../helperFunctions/shortestPathAlgorithms/allAlgorithms";
 import {
   generateMazeGraph,
   createEmptyMazeGraph,
-} from "../helper_functions/mazeGenerators/mazeGraph";
-import { constructGrid } from "../helper_functions/constructGrid";
+} from "../helperFunctions/mazeGenerators/mazeGraph";
+import { constructGrid } from "../helperFunctions/constructGrid";
 
-const NUMBER_OF_ROWS: number = 28;
-const NUMBER_OF_COLUMN: number = 13;
+const NUMBER_OF_COLUMNS: number = 28;
+const NUMBER_OF_ROWS: number = 13;
 const VISITED_ANIMATION_TIMEOUT: number = 35;
-const PATH_ANIMATION_TIMEOUT: number = 75;
+const PATH_ANIMATION_TIMEOUT: number = 60;
 
 // We define these constants out of the functional component
 // that the App uses to avoid re-running the functions to create
 // these each time there is a re-render
 const [firstGrid, firstStartNode, firstEndNode] = constructGrid(
+  NUMBER_OF_COLUMNS,
   NUMBER_OF_ROWS,
-  NUMBER_OF_COLUMN,
   [6, 3],
   [6, 24]
 );
 
 const [firstpairGrid, mazeGraph] = createEmptyMazeGraph(
+  NUMBER_OF_COLUMNS,
   NUMBER_OF_ROWS,
-  NUMBER_OF_COLUMN,
   firstGrid
 );
 
@@ -136,8 +136,8 @@ const Visualizer: React.FC = () => {
     if (isVisualized === 0) {
       const newGrid = grid.slice();
       const [newPairGrid, newMaze] = generateMazeGraph(
+        NUMBER_OF_COLUMNS,
         NUMBER_OF_ROWS,
-        NUMBER_OF_COLUMN,
         newGrid,
         wallsDensity
       );
@@ -151,14 +151,14 @@ const Visualizer: React.FC = () => {
   const reinitialize: () => void = () => {
     if (isVisualized === 2) {
       const [newGrid, newStartNode, newEndNode] = constructGrid(
+        NUMBER_OF_COLUMNS,
         NUMBER_OF_ROWS,
-        NUMBER_OF_COLUMN,
         [startNode.x, startNode.y],
         [endNode.x, endNode.y]
       );
       const [newPairGrid, newMaze] = createEmptyMazeGraph(
+        NUMBER_OF_COLUMNS,
         NUMBER_OF_ROWS,
-        NUMBER_OF_COLUMN,
         newGrid
       );
       setGrid(newGrid);
@@ -283,6 +283,13 @@ const Visualizer: React.FC = () => {
             >
               <p>Dijkstra's Algorithm</p>
               {algorithm === "Dijkstra's algorithm" ? <p>✓</p> : ""}
+            </DropDownAlgo>
+            <DropDownAlgo
+              changeAlgorithm={handleAlgorithmChange}
+              algorithmName="A* algorithm"
+            >
+              <p>A* Algorithm</p>
+              {algorithm === "A* algorithm" ? <p>✓</p> : ""}
             </DropDownAlgo>
           </DropDownMenu>
         </NavItem>

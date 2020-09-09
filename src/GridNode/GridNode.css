@@ -58,11 +58,26 @@
 /* visited nodes styles */
 .visited-node {
   background-color: #0077b6;
-  transition: background-color 1250ms ease-out;
+  /* transition: background-color 1250ms ease-out; */
+  animation: visitedAnim 1000ms ease-in;
+}
+
+@keyframes visitedAnim {
+  0% {
+    background-color: #ecf8f8;
+  }
+
+  30% {
+    background-color: #0096c7;
+  }
+
+  100% {
+    background-color: #0077b6;
+  }
 }
 
 /* shortest path nodes */
 .shortest-path-node {
   background-color: #48cae4;
-  transition: background-color 1250ms ease-in;
+  transition: background-color 500ms ease-in;
 }

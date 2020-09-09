@@ -1,7 +1,7 @@
 import React from "react";
 import { GridNode } from "../GridNode/GridNode";
 import "./Grid.css";
-import { node } from "../helper_functions/usefulInterfaces";
+import { node } from "../helperFunctions/usefulInterfaces";
 
 interface Props {
   grid: node[][];

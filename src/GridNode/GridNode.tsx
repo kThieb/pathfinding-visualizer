@@ -1,6 +1,6 @@
 import React from "react";
 import "./GridNode.css";
-import { node } from "../helper_functions/usefulInterfaces";
+import { node } from "../helperFunctions/usefulInterfaces";
 
 interface Props {
   numberOfElementsPerRow: number;
