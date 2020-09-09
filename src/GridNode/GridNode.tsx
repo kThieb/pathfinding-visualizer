@@ -8,27 +8,32 @@ interface Props {
   neighbors: [number, number][];
 }
 
+const getAddedClassName: (
+  neighbors: [number, number][],
+  node: node
+) => string = (neighbors, node) => {
+  let addedClassName: string = "";
+  for (let i = 0; i < neighbors.length; i++) {
+    let neighbor: [number, number] = neighbors[i];
+    let neighborX = neighbor[0];
+    let neighborY = neighbor[1];
+    if (neighborX === node.x + 1) addedClassName += " no-wall-bottom";
+    if (neighborX === node.x - 1) addedClassName += " no-wall-top";
+    if (neighborY === node.y + 1) addedClassName += " no-wall-right";
+    if (neighborY === node.y - 1) addedClassName += " no-wall-left";
+  }
+  if (node.hasCheese) addedClassName += " cheese";
+  if (node.isShortestPath) addedClassName += " shortest-path-node";
+  if (node.isVisited) addedClassName += " visited-node";
+  return addedClassName;
+};
+
 // This component represents a single Node in the grid rendered in the DOM
-export const GridNode: React.FC<Props> = ({
+export const _GridNode: React.FC<Props> = ({
   numberOfElementsPerRow,
   node,
   neighbors,
 }) => {
-  const getAddedClassName: () => string = () => {
-    let addedClassName: string = "";
-    for (let i = 0; i < neighbors.length; i++) {
-      let neighbor: [number, number] = neighbors[i];
-      let neighborX = neighbor[0];
-      let neighborY = neighbor[1];
-      if (neighborX === node.x + 1) addedClassName += " no-wall-bottom";
-      if (neighborX === node.x - 1) addedClassName += " no-wall-top";
-      if (neighborY === node.y + 1) addedClassName += " no-wall-right";
-      if (neighborY === node.y - 1) addedClassName += " no-wall-left";
-    }
-    if (node.hasCheese) addedClassName += " cheese";
-    return addedClassName;
-  };
-
   const addEmoji: (node: node) => any = (node) => {
     if (node.isStart) {
       return (
@@ -48,15 +53,22 @@ export const GridNode: React.FC<Props> = ({
   };
 
   return (
-    <div className={node.className + getAddedClassName()}>{addEmoji(node)}</div>
+    <div className={"grid-node" + getAddedClassName(neighbors, node)}>
+      {addEmoji(node)}
+    </div>
   );
 };
 
-// const areEqual: (prevProps: Props, nextProps: Props) => boolean = (
-//   prevProps,
-//   nextProps
-// ) => {
-//   return prevProps.node.className === nextProps.node.className;
-// };
+const areEqual: (prevProps: Props, nextProps: Props) => boolean = (
+  prevProps,
+  nextProps
+) => {
+  return (
+    prevProps.node.isVisited === nextProps.node.isVisited &&
+    prevProps.node.isShortestPath === nextProps.node.isShortestPath &&
+    getAddedClassName(prevProps.neighbors, prevProps.node) ===
+      getAddedClassName(nextProps.neighbors, nextProps.node)
+  );
+};
 
-// export const GridNode = React.memo(_GridNode, areEqual);
+export const GridNode = React.memo(_GridNode, areEqual);
