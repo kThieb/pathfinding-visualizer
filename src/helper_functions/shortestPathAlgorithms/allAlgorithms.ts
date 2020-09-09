@@ -1,4 +1,5 @@
 import { node } from "../usefulInterfaces";
+import { dfs } from "./dfs";
 import { bfs } from "./bfs";
 import { dijkstraWithWalls } from "./dijkstra";
 
@@ -11,6 +12,7 @@ export const algorithms: {
     targetNode: node
   ) => [node[], node[]];
 } = {
-  bfs: bfs,
-  dijkstraWithWalls: dijkstraWithWalls,
+  "Depth First Search": dfs,
+  "Breadth First Search": bfs,
+  "Dijkstra's algorithm": dijkstraWithWalls,
 };

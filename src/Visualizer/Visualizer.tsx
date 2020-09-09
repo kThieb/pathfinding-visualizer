@@ -3,7 +3,7 @@ import "./Visualizer.css";
 import { Grid } from "../Grid/Grid";
 import {
   NavBar,
-  NavDropDownItem,
+  NavItem,
   DropDownMenu,
   DropDownAlgo,
   DropDownSlider,
@@ -12,8 +12,8 @@ import {
 import { node } from "../helper_functions/usefulInterfaces";
 import { algorithms } from "../helper_functions/shortestPathAlgorithms/allAlgorithms";
 import {
-  createEmptyMazeGraph,
   generateMazeGraph,
+  createEmptyMazeGraph,
 } from "../helper_functions/mazeGenerators/mazeGraph";
 import { constructGrid } from "../helper_functions/constructGrid";
 
@@ -44,8 +44,8 @@ const Visualizer: React.FC = () => {
   const [grid, setGrid] = useState(firstGrid);
   const [maze, setMaze] = useState(mazeGraph);
   const [pairGrid, setPairGrid] = useState(firstpairGrid);
-  const [algorithm, setAlgorithm] = useState("dijkstraWithWalls");
-  const [wallsDensity, setWallsDensity] = useState(0.7);
+  const [algorithm, setAlgorithm] = useState("Dijkstra's algorithm");
+  const [wallsDensity, setWallsDensity] = useState(0.5);
   const [isVisualized, setIsVisualized] = useState(0);
   // const [mouseIsPressed, setMouseIsPressed] = useState(false);
 
@@ -149,7 +149,7 @@ const Visualizer: React.FC = () => {
 
   // Reinitialize the the board
   const reinitialize: () => void = () => {
-    if (isVisualized !== 1) {
+    if (isVisualized === 2) {
       const [newGrid, newStartNode, newEndNode] = constructGrid(
         NUMBER_OF_ROWS,
         NUMBER_OF_COLUMN,
@@ -219,6 +219,7 @@ const Visualizer: React.FC = () => {
           text="Reinitialize"
           isVisualized={isVisualized}
           className="reinitialize"
+          startClassName="greyed-out"
           visualizingClassName="greyed-out"
           visualizedClassName="highlight"
           handleClick={reinitialize}
@@ -231,7 +232,7 @@ const Visualizer: React.FC = () => {
           visualizedClassName="greyed-out"
           handleClick={generateMaze}
         />
-        <NavDropDownItem
+        <NavItem
           text="Maze options"
           id="maze-options"
           isVisualized={isVisualized}
@@ -246,17 +247,17 @@ const Visualizer: React.FC = () => {
               handleChange={setWallsDensity}
             ></DropDownSlider>
           </DropDownMenu>
-        </NavDropDownItem>
+        </NavItem>
         <NavButton
-          text="Visualize!"
+          text={"Visualize " + algorithm + "!"}
           isVisualized={isVisualized}
           className="visualize-button"
           visualizingClassName="greyed-out"
           visualizedClassName="greyed-out"
           handleClick={handleVisualization}
         />
-        <NavDropDownItem
-          text="Algorithm"
+        <NavItem
+          text="Algorithms"
           id="algorithms"
           isVisualized={isVisualized}
           shouldGreyOut={false}
@@ -264,19 +265,27 @@ const Visualizer: React.FC = () => {
           <DropDownMenu>
             <DropDownAlgo
               changeAlgorithm={handleAlgorithmChange}
-              algorithmName="dijkstraWithWalls"
+              algorithmName="Depth First Search"
+            >
+              <p>Depth First Search</p>
+              {algorithm === "Depth First Search" ? <p>✓</p> : ""}
+            </DropDownAlgo>
+            <DropDownAlgo
+              changeAlgorithm={handleAlgorithmChange}
+              algorithmName="Breadth First Search"
+            >
+              <p>Breadth First Search</p>
+              {algorithm === "Breadth First Search" ? <p>✓</p> : ""}
+            </DropDownAlgo>
+            <DropDownAlgo
+              changeAlgorithm={handleAlgorithmChange}
+              algorithmName="Dijkstra's algorithm"
             >
               <p>Dijkstra's Algorithm</p>
-              {algorithm === "dijkstraWithWalls" ? <p>✓</p> : ""}
+              {algorithm === "Dijkstra's algorithm" ? <p>✓</p> : ""}
             </DropDownAlgo>
-            {/* <DropDownAlgo
-              changeAlgorithm={handleAlgorithmChange}
-              algorithmName="A*"
-            >
-              A* Algorithm
-            </DropDownAlgo> */}
           </DropDownMenu>
-        </NavDropDownItem>
+        </NavItem>
       </NavBar>
       {/* <SecondaryHeader>
         <button

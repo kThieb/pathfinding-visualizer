@@ -6,11 +6,20 @@
 
   flex: 1 0;
   height: auto;
-  border: 1.5px solid black;
+  font-size: clamp(6px, 1vw, 32px);
+
+  border: 1px solid black;
   border-color: black;
+
   /* border: 1.5px solid #deab90; */
-  transition: border-color 750ms ease-out, background-color ease-out 750ms;
+  transition: border-color 1000ms ease-out, background-color ease-out 1000ms;
   background-color: #ecf8f8;
+}
+
+@media only screen and (min-width: 992px) {
+  .grid-node {
+    border: 1.5px solid black;
+  }
 }
 
 .grid-node:after {
@@ -20,13 +29,10 @@
   opacity: 0;
 }
 
-/* Style les emojis */
+/* Style the emojis */
 .content {
-  width: 100%;
-  height: 100%;
-  font-size: 2.3em;
-  /* line-height: 40px; */
-
+  position: absolute;
+  font-size: 2em;
   display: flex;
   justify-content: center;
   align-items: center;
