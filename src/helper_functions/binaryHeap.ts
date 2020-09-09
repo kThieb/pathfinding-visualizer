@@ -1,36 +1,45 @@
 export class BinaryHeap<T> {
-  content: (T | undefined)[];
+  content: ([T, number] | undefined)[];
   scoreFunction: (x: T) => number;
+  index: number;
 
   constructor(scoreFunction: (x: T) => number) {
     this.content = [];
     this.scoreFunction = scoreFunction;
+    this.index = 1;
   }
 
+  compare: (a: [T, number], b: [T, number]) => boolean = (a, b) => {
+    if (this.scoreFunction(a[0]) !== this.scoreFunction(b[0])) {
+      return this.scoreFunction(a[0]) < this.scoreFunction(b[0]);
+    }
+    return a[1] < b[1];
+  };
+
   push(element: T) {
-    this.content.push(element);
+    this.content.push([element, this.index++]);
     this.bubbleUp(this.content.length - 1);
   }
 
   pop(): T | undefined {
-    let result = this.content[0];
-    let end = this.content.pop();
+    let result: [T, number] = ensure(this.content[0]);
+    let end: [T, number] | undefined = this.content.pop();
     if (this.content.length > 0) {
       this.content[0] = end;
       this.sinkDown(0);
     }
-    return result;
+    return ensure(result)[0];
   }
 
   remove(node: T) {
-    let length = this.content.length;
+    let length: number = this.content.length;
     // To remove a value, we must search through the array to find
     // it.
-    for (var i = 0; i < length; i++) {
-      if (this.content[i] !== node) continue;
+    for (let i: number = 0; i < length; i++) {
+      if (ensure(this.content[i])[0] !== node) continue;
       // When it is found, the process seen in 'pop' is repeated
       // to fill up the hole.
-      let end = this.content.pop();
+      let end: [T, number] | undefined = this.content.pop();
       // If the element we popped was the one we needed to remove,
       // we're done.
       if (i === length - 1) break;
@@ -49,16 +58,21 @@ export class BinaryHeap<T> {
 
   private bubbleUp(n: number) {
     // Fetch the element that has to be moved.
-    let element = this.content[n],
-      score = this.scoreFunction(ensure(element));
+    let element: [T, number] = ensure(this.content[n]);
     // When at 0, an element can not go up any further.
     while (n > 0) {
       // Compute the parent element's index, and fetch it.
-      let parentN = Math.floor((n + 1) / 2) - 1,
-        parent = this.content[parentN];
+      let parentN: number = Math.floor((n + 1) / 2) - 1,
+        parent: [T, number] = ensure(this.content[parentN]);
       // If the parent has a lesser score, things are in order and we
       // are done.
-      if (score >= this.scoreFunction(ensure(parent))) break;
+      // if (
+      //   score > this.scoreFunction(ensure(parent)[0]) ||
+      //   (score === this.scoreFunction(ensure(parent)[0]) &&
+      //     ensure(element)[1] > ensure(parent)[1])
+      // )
+      //   break;
+      if (this.compare(parent, element)) break;
 
       // Otherwise, swap the parent with the current element and
       // continue.
@@ -70,35 +84,29 @@ export class BinaryHeap<T> {
 
   private sinkDown(n: number) {
     // Look up the target element and its score.
-    var length = this.content.length,
-      element = this.content[n],
-      elemScore = this.scoreFunction(ensure(element));
+    let length: number = this.content.length,
+      element: [T, number] = ensure(this.content[n]);
 
     while (true) {
       // Compute the indices of the child elements.
-      var child2N = (n + 1) * 2,
-        child1N = child2N - 1;
-      // This is used to store the new position of the element,
-      // if any.
-      var swap = null;
+      let child2N: number = (n + 1) * 2,
+        child1N: number = child2N - 1;
+      let swap: number = n;
+      // This is used to store the new position of the element, if any.
       // If the first child exists (is inside the array)...
-      if (child1N < length) {
-        // Look it up and compute its score.
-        var child1 = this.content[child1N],
-          child1Score = this.scoreFunction(ensure(child1));
-        // If the score is less than our element's, we need to swap.
-        if (child1Score < elemScore) swap = child1N;
-      }
-      // Do the same checks for the other child.
-      if (child2N < length) {
-        var child2 = this.content[child2N],
-          child2Score = this.scoreFunction(ensure(child2));
-        if (child2Score < (swap == null ? elemScore : child2Score))
-          swap = child2N;
-      }
+      if (
+        child1N < length &&
+        this.compare(ensure(this.content[child1N]), element)
+      )
+        swap = child1N;
+      if (
+        child2N < length &&
+        this.compare(ensure(this.content[child2N]), ensure(this.content[swap]))
+      )
+        swap = child2N;
 
-      // No need to swap further, we are done.
-      if (swap == null) break;
+      // If the order is good, we exit the loop
+      if (swap === n) break;
 
       // Otherwise, swap and continue.
       this.content[n] = this.content[swap];
@@ -108,6 +116,7 @@ export class BinaryHeap<T> {
   }
 }
 
+// This function ensures the value we will use is not undefined
 function ensure<T>(
   argument: T | undefined | null,
   message: string = "This value was promised to be there."
