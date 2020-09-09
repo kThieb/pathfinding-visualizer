@@ -50,7 +50,7 @@
 
 .dropdown {
   position: absolute;
-  top: 58px;
+  top: 7.2vh;
   width: 300px;
   transform: translateX(-45%);
   background-color: var(--bg);
@@ -60,10 +60,6 @@
   overflow: hidden;
   z-index: 10;
 }
-
-/* .right {
-  left: 150px;
-} */
 
 .menu-item {
   height: 50px;

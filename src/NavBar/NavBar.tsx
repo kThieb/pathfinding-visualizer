@@ -14,19 +14,27 @@ interface NavButtonProps {
   text: string;
   isVisualized: number;
   className: string;
+  startClassName?: string;
   visualizingClassName: string;
   visualizedClassName: string;
-  greyTimeOut?: number;
   handleClick: () => void;
 }
 
 export const NavButton: React.FC<NavButtonProps> = (props) => {
-  let addedClass: string = " ";
-  if (props.isVisualized === 1) addedClass += props.visualizingClassName;
-  if (props.isVisualized === 2) addedClass += props.visualizedClassName;
+  const addedClassNames: string[] = [
+    props.startClassName ? props.startClassName : "",
+    props.visualizingClassName,
+    props.visualizedClassName,
+  ];
+
   return (
     <li
-      className={"nav-item" + addedClass + " " + props.className}
+      className={
+        "nav-item " +
+        addedClassNames[props.isVisualized] +
+        " " +
+        props.className
+      }
       onClick={(e) => {
         props.handleClick();
       }}
@@ -36,14 +44,14 @@ export const NavButton: React.FC<NavButtonProps> = (props) => {
   );
 };
 
-interface NavDropDownItemProps {
+interface NavItemProps {
   text: string;
   id: string;
   isVisualized: number;
   shouldGreyOut: boolean;
 }
 
-export const NavDropDownItem: React.FC<NavDropDownItemProps> = (props) => {
+export const NavItem: React.FC<NavItemProps> = (props) => {
   const [open, setOpen] = useState(false);
 
   const handleClick: (e: any) => void = (event) => {
@@ -80,18 +88,8 @@ interface DropDownMenu {}
 
 export const DropDownMenu: React.FC<DropDownMenu> = (props) => {
   const [activeMenu, setActiveMenu] = useState("main");
-  return (
-    <div className={"dropdown"}>
-      <CSSTransition
-        in={activeMenu === "main"}
-        unmountOnExit
-        timeout={100}
-        classNames="menu-primary"
-      >
-        {props.children}
-      </CSSTransition>
-    </div>
-  );
+  console.log(props.children);
+  return <div className="dropdown">{props.children}</div>;
 };
 
 interface DropDownAlgoProps {
