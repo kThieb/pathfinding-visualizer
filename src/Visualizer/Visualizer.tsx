@@ -7,7 +7,7 @@ import {
   DropDownMenu,
   DropDownAlgo,
   DropDownSlider,
-  NavChangingButtonItem,
+  NavButton,
 } from "../NavBar/NavBar";
 import { node } from "../helper_functions/usefulInterfaces";
 import { algorithms } from "../helper_functions/shortestPathAlgorithms/allAlgorithms";
@@ -19,6 +19,8 @@ import { constructGrid } from "../helper_functions/constructGrid";
 
 const NUMBER_OF_ROWS: number = 28;
 const NUMBER_OF_COLUMN: number = 13;
+const VISITED_ANIMATION_TIMEOUT: number = 35;
+const PATH_ANIMATION_TIMEOUT: number = 75;
 
 // We define these constants out of the functional component
 // that the App uses to avoid re-running the functions to create
@@ -44,7 +46,7 @@ const Visualizer: React.FC = () => {
   const [pairGrid, setPairGrid] = useState(firstpairGrid);
   const [algorithm, setAlgorithm] = useState("dijkstraWithWalls");
   const [wallsDensity, setWallsDensity] = useState(0.7);
-  const [isVisualized, setIsVisualized] = useState(false);
+  const [isVisualized, setIsVisualized] = useState(0);
   // const [mouseIsPressed, setMouseIsPressed] = useState(false);
 
   // States of the start and end node
@@ -70,7 +72,7 @@ const Visualizer: React.FC = () => {
         };
         newGrid[x][y] = newNode;
         setGrid(newGrid);
-      }, 35 * i);
+      }, VISITED_ANIMATION_TIMEOUT * i);
     }
 
     const m = path.length;
@@ -88,7 +90,7 @@ const Visualizer: React.FC = () => {
         };
         newGrid[x][y] = newNode;
         setGrid(newGrid);
-      }, 35 * n + 75 * i);
+      }, VISITED_ANIMATION_TIMEOUT * n + PATH_ANIMATION_TIMEOUT * i);
     }
   };
 
@@ -110,9 +112,28 @@ const Visualizer: React.FC = () => {
     return algorithms[algorithm];
   };
 
+  const handleVisualization: () => void = () => {
+    if (isVisualized === 0) {
+      setIsVisualized(1);
+      const [visited, path]: [node[], node[]] = chooseAlgorithm()(
+        grid,
+        pairGrid,
+        maze,
+        startNode,
+        endNode
+      );
+      const n: number = visited.length,
+        m: number = path.length;
+      visualizeAlgorithm(visited, path);
+      setTimeout(() => {
+        setIsVisualized(2);
+      }, VISITED_ANIMATION_TIMEOUT * n + PATH_ANIMATION_TIMEOUT * m);
+    }
+  };
+
   // This function calls the generate maze function
   const generateMaze: () => void = () => {
-    if (!isVisualized) {
+    if (isVisualized === 0) {
       const newGrid = grid.slice();
       const [newPairGrid, newMaze] = generateMazeGraph(
         NUMBER_OF_ROWS,
@@ -128,23 +149,25 @@ const Visualizer: React.FC = () => {
 
   // Reinitialize the the board
   const reinitialize: () => void = () => {
-    const [newGrid, newStartNode, newEndNode] = constructGrid(
-      NUMBER_OF_ROWS,
-      NUMBER_OF_COLUMN,
-      [startNode.x, startNode.y],
-      [endNode.x, endNode.y]
-    );
-    const [newPairGrid, newMaze] = createEmptyMazeGraph(
-      NUMBER_OF_ROWS,
-      NUMBER_OF_COLUMN,
-      newGrid
-    );
-    setGrid(newGrid);
-    setPairGrid(newPairGrid);
-    setMaze(newMaze);
-    setStartNode(newStartNode);
-    setEndNode(newEndNode);
-    setIsVisualized(false);
+    if (isVisualized !== 1) {
+      const [newGrid, newStartNode, newEndNode] = constructGrid(
+        NUMBER_OF_ROWS,
+        NUMBER_OF_COLUMN,
+        [startNode.x, startNode.y],
+        [endNode.x, endNode.y]
+      );
+      const [newPairGrid, newMaze] = createEmptyMazeGraph(
+        NUMBER_OF_ROWS,
+        NUMBER_OF_COLUMN,
+        newGrid
+      );
+      setGrid(newGrid);
+      setPairGrid(newPairGrid);
+      setMaze(newMaze);
+      setStartNode(newStartNode);
+      setEndNode(newEndNode);
+      setIsVisualized(0);
+    }
   };
 
   // The following block of functions handles the making of walls in the grid
@@ -192,22 +215,22 @@ const Visualizer: React.FC = () => {
   return (
     <div className="App">
       <NavBar>
-        <NavChangingButtonItem
+        <NavButton
+          text="Reinitialize"
           isVisualized={isVisualized}
           className="reinitialize"
+          visualizingClassName="greyed-out"
           visualizedClassName="highlight"
           handleClick={reinitialize}
-        >
-          Reinitialize
-        </NavChangingButtonItem>
-        <NavChangingButtonItem
+        />
+        <NavButton
+          text="Generate Maze"
           isVisualized={isVisualized}
           className="generate-maze"
+          visualizingClassName="greyed-out"
           visualizedClassName="greyed-out"
           handleClick={generateMaze}
-        >
-          Generate maze
-        </NavChangingButtonItem>
+        />
         <NavDropDownItem
           text="Maze options"
           id="maze-options"
@@ -216,30 +239,22 @@ const Visualizer: React.FC = () => {
         >
           <DropDownMenu>
             <DropDownSlider
-              isVisualized={isVisualized}
+              text="Density of walls"
               minValue={0.1}
               maxValue={1}
               defaultValue={wallsDensity}
-              text="Density of walls"
-              handleChangeWallsDensity={setWallsDensity}
+              handleChange={setWallsDensity}
             ></DropDownSlider>
           </DropDownMenu>
         </NavDropDownItem>
-        <NavChangingButtonItem
+        <NavButton
+          text="Visualize!"
           isVisualized={isVisualized}
           className="visualize-button"
+          visualizingClassName="greyed-out"
           visualizedClassName="greyed-out"
-          handleClick={() => {
-            if (!isVisualized) {
-              visualizeAlgorithm(
-                ...chooseAlgorithm()(grid, pairGrid, maze, startNode, endNode)
-              );
-              setIsVisualized(true);
-            }
-          }}
-        >
-          Visualize!
-        </NavChangingButtonItem>
+          handleClick={handleVisualization}
+        />
         <NavDropDownItem
           text="Algorithm"
           id="algorithms"

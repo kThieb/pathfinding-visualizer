@@ -10,28 +10,28 @@ export const NavBar: React.FC = (props) => {
   );
 };
 
-interface NavChangingButtonItemProps {
-  isVisualized: boolean;
+interface NavButtonProps {
+  text: string;
+  isVisualized: number;
   className: string;
+  visualizingClassName: string;
   visualizedClassName: string;
+  greyTimeOut?: number;
   handleClick: () => void;
 }
 
-export const NavChangingButtonItem: React.FC<NavChangingButtonItemProps> = (
-  props
-) => {
+export const NavButton: React.FC<NavButtonProps> = (props) => {
+  let addedClass: string = " ";
+  if (props.isVisualized === 1) addedClass += props.visualizingClassName;
+  if (props.isVisualized === 2) addedClass += props.visualizedClassName;
   return (
     <li
-      className={
-        "nav-item " +
-        props.className +
-        (props.isVisualized ? " " + props.visualizedClassName : "")
-      }
+      className={"nav-item" + addedClass + " " + props.className}
       onClick={(e) => {
         props.handleClick();
       }}
     >
-      <p>{props.children}</p>
+      <p>{props.text}</p>
     </li>
   );
 };
@@ -39,7 +39,7 @@ export const NavChangingButtonItem: React.FC<NavChangingButtonItemProps> = (
 interface NavDropDownItemProps {
   text: string;
   id: string;
-  isVisualized: boolean;
+  isVisualized: number;
   shouldGreyOut: boolean;
 }
 
@@ -64,8 +64,7 @@ export const NavDropDownItem: React.FC<NavDropDownItemProps> = (props) => {
     <li
       id={props.id}
       className={
-        "nav-item " +
-        " " +
+        "nav-item" +
         (props.shouldGreyOut && props.isVisualized ? " greyed-out" : "")
       }
     >
@@ -116,12 +115,11 @@ export const DropDownAlgo: React.FC<DropDownAlgoProps> = (props) => {
 };
 
 interface DropDownSliderProps {
-  isVisualized: boolean;
   minValue: number;
   maxValue: number;
   defaultValue: number;
   text: string;
-  handleChangeWallsDensity: (event: any) => void;
+  handleChange: (event: any) => void;
 }
 
 export const DropDownSlider: React.FC<DropDownSliderProps> = (props) => {
@@ -137,7 +135,7 @@ export const DropDownSlider: React.FC<DropDownSliderProps> = (props) => {
         min={props.minValue.toString()}
         max={props.maxValue.toString()}
         step={0.01}
-        onChange={(e) => props.handleChangeWallsDensity(e.target.value)}
+        onChange={(e) => props.handleChange(e.target.value)}
       ></input>
     </div>
   );
