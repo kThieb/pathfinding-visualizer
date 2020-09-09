@@ -1,5 +1,6 @@
 import { node } from "../usefulInterfaces";
 import { BinaryHeap } from "../binaryHeap";
+import { retrievePath } from "./retrievePath";
 
 export const dijkstra: (
   grid: node[][],
@@ -37,9 +38,9 @@ export const dijkstra: (
   ];
 
   //   Initialize the Binary Heap
-  let pq: BinaryHeap<node> = new BinaryHeap<node>(
-    (n: node) => distances[n.x][n.y]
-  );
+  let pq: BinaryHeap<node> = new BinaryHeap<node>((a: node) => {
+    return distances[a.x][a.y];
+  });
   pq.push(startNode);
 
   while (pq.size() > 0) {
@@ -84,11 +85,7 @@ export const dijkstra: (
         // If we found the target node then we return what we need
         if (nextNode === endNode) {
           // Retrieve the shortest path
-          const shortestPath = retrieveShortestPath(
-            predecessor,
-            startNode,
-            endNode
-          );
+          const shortestPath = retrievePath(predecessor, startNode, endNode);
           visited.shift();
           // return the correct value
           return [visited, shortestPath];
@@ -130,13 +127,21 @@ export const dijkstraWithWalls: (
   let visited: node[] = [];
 
   //   Initialize the Binary Heap
-  let pq: BinaryHeap<node> = new BinaryHeap<node>(
-    (n: node) => distances[n.x][n.y]
-  );
+  let pq: BinaryHeap<node> = new BinaryHeap<node>((a: node) => {
+    return distances[a.x][a.y];
+  });
   pq.push(startNode);
 
   while (pq.size() > 0) {
     let currentNode: node = ensure(pq.pop());
+
+    // If we found the endNode, return the shortest path to it
+    if (currentNode === endNode) {
+      // Retrieve the shortest path
+      const shortestPath = retrievePath(predecessor, startNode, endNode);
+      visited.push(endNode);
+      return [visited, shortestPath];
+    }
 
     // add the current node to the visited nodes
     // currentNode.isVisited = true;
@@ -159,13 +164,6 @@ export const dijkstraWithWalls: (
       ) {
         let nextNode: node = grid[neighbor[0]][neighbor[1]];
 
-        // If the node is not yet visited, remove it from the heap and
-        // put it back in with its new distance as the score function
-        if (!visited.find((currentNode) => currentNode === nextNode)) {
-          pq.remove(nextNode);
-          pq.push(nextNode);
-        }
-
         // Calculate the distance between the current node and the next node
         // To Do: take into account the weight of the path
         let currentDistance: number = distances[currentX][currentY] + 1;
@@ -177,38 +175,17 @@ export const dijkstraWithWalls: (
           distances[neighbor[0]][neighbor[1]] = currentDistance;
         }
 
-        // If we found the target node then we return what we need
-        if (nextNode === endNode) {
-          // Retrieve the shortest path
-          const shortestPath = retrieveShortestPath(
-            predecessor,
-            startNode,
-            endNode
-          );
-          visited.push(endNode);
-          return [visited, shortestPath];
+        // If the node is not yet visited, remove it from the heap and
+        // put it back in with its new distance as the score function
+        if (!visited.find((currentNode) => currentNode === nextNode)) {
+          pq.remove(nextNode);
+          pq.push(nextNode);
         }
       }
     }
   }
 
   return [visited, []];
-};
-
-// This function retrieves the shortest path from the predecessor array from Dijkstra's algorithm
-const retrieveShortestPath: (
-  predecessor: node[],
-  startNode: node,
-  endNode: node
-) => node[] = (predecessor, startNode, endNode) => {
-  let shortestPath = [endNode];
-  let current = endNode;
-  while (current !== startNode) {
-    current = predecessor[current.id];
-    shortestPath.unshift(current);
-  }
-
-  return shortestPath;
 };
 
 // This function is here to ensure that a value is not undefined (especially when using arrays).
