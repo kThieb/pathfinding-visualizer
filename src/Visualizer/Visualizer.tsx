@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Visualizer.css";
 import { Grid } from "../Grid/Grid";
 import {
@@ -9,12 +9,8 @@ import {
   DropDownSlider,
   NavChangingButtonItem,
 } from "../NavBar/NavBar";
-import { SecondaryHeader } from "../SecondaryHeader/SecondaryHeader";
 import { node } from "../helper_functions/usefulInterfaces";
-import {
-  dijkstra,
-  dijkstraWithWalls,
-} from "../helper_functions/shortestPathAlgorithms/dijkstra";
+import { algorithms } from "../helper_functions/shortestPathAlgorithms/allAlgorithms";
 import {
   createEmptyMazeGraph,
   generateMazeGraph,
@@ -68,15 +64,13 @@ const Visualizer: React.FC = () => {
         // define the x and y of the current node
         const x: number = node.x;
         const y: number = node.y;
-        const newNode = {
+        const newNode: node = {
           ...node,
           isVisited: true,
-          className: "grid-node visited-node",
-          waitClassChange: 0,
         };
         newGrid[x][y] = newNode;
         setGrid(newGrid);
-      }, 30 * i);
+      }, 35 * i);
     }
 
     const m = path.length;
@@ -87,15 +81,14 @@ const Visualizer: React.FC = () => {
         // define the x and y of the current node
         const x: number = node.x;
         const y: number = node.y;
-        const newNode = {
+        const newNode: node = {
           ...node,
+          isVisited: false,
           isShortestPath: true,
-          className: "grid-node shortest-path-node",
-          waitClassChange: 0,
         };
         newGrid[x][y] = newNode;
         setGrid(newGrid);
-      }, 30 * n + 75 * i);
+      }, 35 * n + 75 * i);
     }
   };
 
@@ -107,19 +100,14 @@ const Visualizer: React.FC = () => {
   };
 
   // This function changes the algorithm that will be run, at the moment only dijkstra is implemented
-  const chooseAlgorithm: (
-    algorithmName: string
-  ) => (
+  const chooseAlgorithm: () => (
     grid: node[][],
     pairGrid: [number, number][][],
     mazeGraph: Map<[number, number], [number, number][]>,
     startNode: node,
     endNode: node
-  ) => [node[], node[]] = (algorithmName) => {
-    if (algorithmName === "dijkstraWithWalls") {
-      return dijkstraWithWalls;
-    }
-    return dijkstraWithWalls;
+  ) => [node[], node[]] = () => {
+    return algorithms[algorithm];
   };
 
   // This function calls the generate maze function
@@ -244,13 +232,7 @@ const Visualizer: React.FC = () => {
           handleClick={() => {
             if (!isVisualized) {
               visualizeAlgorithm(
-                ...chooseAlgorithm(algorithm)(
-                  grid,
-                  pairGrid,
-                  maze,
-                  startNode,
-                  endNode
-                )
+                ...chooseAlgorithm()(grid, pairGrid, maze, startNode, endNode)
               );
               setIsVisualized(true);
             }

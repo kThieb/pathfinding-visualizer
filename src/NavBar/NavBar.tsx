@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import "./NavBar.css";
 
@@ -45,9 +45,6 @@ interface NavDropDownItemProps {
 
 export const NavDropDownItem: React.FC<NavDropDownItemProps> = (props) => {
   const [open, setOpen] = useState(false);
-  const handleBlur: (e: any) => void = (e) => {
-    setOpen(false);
-  };
 
   const handleClick: (e: any) => void = (event) => {
     if (!props.shouldGreyOut || !props.isVisualized) setOpen(!open);
