@@ -6,8 +6,6 @@ export interface node {
   isEnd: boolean;
   isVisited: boolean;
   isShortestPath: boolean;
-  className: string;
-  waitClassChange: number;
   hasCheese: boolean;
 }
 

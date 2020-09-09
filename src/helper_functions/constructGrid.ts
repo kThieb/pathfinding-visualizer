@@ -16,7 +16,7 @@ export const constructGrid: (
   for (let i: number = 0; i < numberOfColumn; i++) {
     let currentRow: node[] = [];
     for (let j: number = 0; j < numberOfRow; j++) {
-      let currentNode = {
+      let currentNode: node = {
         id: i + j * numberOfColumn,
         x: i,
         y: j,
@@ -24,24 +24,14 @@ export const constructGrid: (
         isEnd: false,
         isVisited: false,
         isShortestPath: false,
-        waitClassChange: 0,
-        className: "grid-node",
         hasCheese: false,
       };
       currentRow.push(currentNode);
     }
     result.push(currentRow);
   }
-  result[startNode[0]][startNode[1]] = {
-    ...result[startNode[0]][startNode[1]],
-    isStart: true,
-    className: "grid-node start-node",
-  };
-  result[endNode[0]][endNode[1]] = {
-    ...result[endNode[0]][endNode[1]],
-    isEnd: true,
-    className: "grid-node end-node",
-  };
+  result[startNode[0]][startNode[1]].isStart = true;
+  result[endNode[0]][endNode[1]].isEnd = true;
   // result = piecesOfCheese(result, numberOfColumn, numberOfRow, 21);
   return [
     result,
