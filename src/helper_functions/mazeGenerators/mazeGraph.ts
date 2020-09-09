@@ -59,6 +59,7 @@ export const createEmptyMazeGraph: (
         columnLength,
         rowLength
       );
+
       mazeGraph.set(pairGrid[i][j], neighbors);
     }
   }
@@ -115,13 +116,11 @@ export const generateMazeGraph: (
         mazeGraph.get(currentNode)
       );
       currentNodeNeighbors.push(neighborNode);
-      // mazeGraph.set(currentNode, currentNodeNeighbors);
 
       let neighborNodeNeighbors: [number, number][] = ensure(
         mazeGraph.get(neighborNode)
       );
       neighborNodeNeighbors.push(currentNode);
-      // mazeGraph.set(neighborNode, neighborNodeNeighbors);
 
       // 4. Mark the chosen cell as visited and push it to the stack
       visited.push(neighborNode);
@@ -135,7 +134,7 @@ export const generateMazeGraph: (
   let maxWallsCount: number = currentWallsCount;
   // II. Remove walls until the desired density is achieved
   while (currentWallsCount * (1 / maxWallsCount) > wallsDensity) {
-    // 1. Choosse a node randomly
+    // 1. Choose a node randomly
     let randRow: number = Math.floor(Math.random() * rowLength);
     let randCol: number = Math.floor(Math.random() * columnLength);
     let currentNode: [number, number] = pairGrid[randCol][randRow];
@@ -189,9 +188,9 @@ const getNeighbors: (
 ) => {
   const directions = [
     [1, 0],
-    [0, 1],
-    [-1, 0],
     [0, -1],
+    [-1, 0],
+    [0, 1],
   ];
 
   let neighbors: [number, number][] = [];
@@ -222,9 +221,9 @@ export const getNeighborsEmpty: (
 ) => [number, number][] = (pairGrid, currentNode, columnLength, rowLength) => {
   const directions = [
     [1, 0],
-    [0, 1],
-    [-1, 0],
     [0, -1],
+    [-1, 0],
+    [0, 1],
   ];
 
   let neighbors: [number, number][] = [];
@@ -261,9 +260,9 @@ const getNeighborsII: (
 ) => {
   const directions = [
     [1, 0],
-    [0, 1],
-    [-1, 0],
     [0, -1],
+    [-1, 0],
+    [0, 1],
   ];
 
   let neighbors: [number, number][] = [];
