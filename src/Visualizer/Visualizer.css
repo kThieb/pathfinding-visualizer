@@ -3,3 +3,64 @@
   display: flex;
   flex-direction: column;
 }
+
+.menu {
+  width: 100%;
+}
+
+.menu-primary-enter {
+  position: absolute;
+  transform: translateX(-200%);
+}
+
+.menu-primary-enter-active {
+  transform: translateX(0%);
+  transition: all 500ms ease;
+}
+
+.menu-primary-exit {
+  position: absolute;
+}
+
+.menu-primary-exit-active {
+  transform: translateX(-200%);
+  transition: all 500ms ease;
+}
+
+.menu-unweighted-enter {
+  position: absolute;
+  transform: translateX(200%);
+}
+
+.menu-unweighted-enter-active {
+  transform: translateX(0%);
+  transition: all 500ms ease;
+}
+
+.menu-unweighted-exit {
+  position: absolute;
+}
+
+.menu-unweighted-exit-active {
+  transform: translateX(200%);
+  transition: all 500ms ease;
+}
+
+.menu-weighted-enter {
+  position: absolute;
+  transform: translateX(200%);
+}
+
+.menu-weighted-enter-active {
+  transform: translateX(0%);
+  transition: all 500ms ease;
+}
+
+.menu-weighted-exit {
+  position: absolute;
+}
+
+.menu-weighted-exit-active {
+  transform: translateX(200%);
+  transition: all 500ms ease;
+}

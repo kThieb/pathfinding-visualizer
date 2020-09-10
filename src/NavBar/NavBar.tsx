@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { CSSTransition } from "react-transition-group";
 import "./NavBar.css";
 
 export const NavBar: React.FC = (props) => {
@@ -84,30 +83,35 @@ export const NavItem: React.FC<NavItemProps> = (props) => {
   );
 };
 
-interface DropDownMenu {}
+interface DropDownMenu {
+  height?: number;
+}
 
 export const DropDownMenu: React.FC<DropDownMenu> = (props) => {
-  const [activeMenu, setActiveMenu] = useState("main");
-  console.log(props.children);
-  return <div className="dropdown">{props.children}</div>;
+  return (
+    <div className="dropdown" style={{ height: props.height }}>
+      {props.children}
+    </div>
+  );
 };
 
 interface DropDownAlgoProps {
   leftIcon?: string;
   rightIcon?: string;
-  algorithmName: string;
-  changeAlgorithm: (algorithmName: string) => void;
+  handleClick: () => void;
 }
 
-export const DropDownAlgo: React.FC<DropDownAlgoProps> = (props) => {
+export const DropDownItem: React.FC<DropDownAlgoProps> = (props) => {
   return (
     <div
       className="menu-item"
       onClick={(e) => {
-        props.changeAlgorithm(props.algorithmName);
+        props.handleClick();
       }}
     >
+      <span>{props.leftIcon ? props.leftIcon : ""}</span>
       {props.children}
+      <span>{props.rightIcon ? props.rightIcon : ""}</span>
     </div>
   );
 };

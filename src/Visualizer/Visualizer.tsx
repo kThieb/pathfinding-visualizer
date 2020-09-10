@@ -5,17 +5,15 @@ import {
   NavBar,
   NavItem,
   DropDownMenu,
-  DropDownAlgo,
+  DropDownItem,
   DropDownSlider,
   NavButton,
 } from "../NavBar/NavBar";
 import { node } from "../helperFunctions/usefulInterfaces";
 import { algorithms } from "../helperFunctions/shortestPathAlgorithms/allAlgorithms";
-import {
-  generateMazeGraph,
-  createEmptyMazeGraph,
-} from "../helperFunctions/mazeGenerators/mazeGraph";
+import { generateMazeGraph } from "../helperFunctions/mazeGenerators/mazeGraph";
 import { constructGrid } from "../helperFunctions/constructGrid";
+import { WrapperCSSTransition } from "../Wrapper/Wrapper";
 
 const NUMBER_OF_COLUMNS: number = 28;
 const NUMBER_OF_ROWS: number = 13;
@@ -32,10 +30,11 @@ const [firstGrid, firstStartNode, firstEndNode] = constructGrid(
   [6, 24]
 );
 
-const [firstpairGrid, mazeGraph] = createEmptyMazeGraph(
+const [firstpairGrid, mazeGraph] = generateMazeGraph(
   NUMBER_OF_COLUMNS,
   NUMBER_OF_ROWS,
-  firstGrid
+  firstGrid,
+  0.6
 );
 
 // Component rendering everything in the webpage.
@@ -45,8 +44,12 @@ const Visualizer: React.FC = () => {
   const [maze, setMaze] = useState(mazeGraph);
   const [pairGrid, setPairGrid] = useState(firstpairGrid);
   const [algorithm, setAlgorithm] = useState("Dijkstra's algorithm");
-  const [wallsDensity, setWallsDensity] = useState(0.5);
+  const [wallsDensity, setWallsDensity] = useState(0.6);
   const [isVisualized, setIsVisualized] = useState(0);
+
+  // States managing the dropdown menu
+  const [algoActiveMenu, setAlgoActiveMenu] = useState("main");
+  const [height, setHeight] = useState(undefined);
   // const [mouseIsPressed, setMouseIsPressed] = useState(false);
 
   // States of the start and end node
@@ -95,10 +98,17 @@ const Visualizer: React.FC = () => {
   };
 
   // This function is passed to the drop down menu to handle the change of algorithm
-  const handleAlgorithmChange: (algorithmName: string) => void = (
+  const handleAlgorithmChange: (algorithmName: string) => () => void = (
     algorithmName
   ) => {
-    setAlgorithm(algorithmName);
+    return () => {
+      setAlgorithm(algorithmName);
+    };
+  };
+
+  // This function handles the click on the menu buttons
+  const handleMenuChange: (menuName: string) => () => void = (menuName) => {
+    return () => setAlgoActiveMenu(menuName);
   };
 
   // This function changes the algorithm that will be run, at the moment only dijkstra is implemented
@@ -112,6 +122,7 @@ const Visualizer: React.FC = () => {
     return algorithms[algorithm];
   };
 
+  // This function handles the logic of the visualization of the algorithms
   const handleVisualization: () => void = () => {
     if (isVisualized === 0) {
       setIsVisualized(1);
@@ -156,16 +167,18 @@ const Visualizer: React.FC = () => {
         [startNode.x, startNode.y],
         [endNode.x, endNode.y]
       );
-      const [newPairGrid, newMaze] = createEmptyMazeGraph(
+      const [newPairGrid, newMaze] = generateMazeGraph(
         NUMBER_OF_COLUMNS,
         NUMBER_OF_ROWS,
-        newGrid
+        newGrid,
+        0.6
       );
       setGrid(newGrid);
       setPairGrid(newPairGrid);
       setMaze(newMaze);
       setStartNode(newStartNode);
       setEndNode(newEndNode);
+      setWallsDensity(0.6);
       setIsVisualized(0);
     }
   };
@@ -262,35 +275,66 @@ const Visualizer: React.FC = () => {
           isVisualized={isVisualized}
           shouldGreyOut={false}
         >
-          <DropDownMenu>
-            <DropDownAlgo
-              changeAlgorithm={handleAlgorithmChange}
-              algorithmName="Depth First Search"
+          <DropDownMenu height={height}>
+            <WrapperCSSTransition
+              in={algoActiveMenu === "main"}
+              unmountOnExit
+              timeout={500}
+              classNames="menu-primary"
+              handleEnter={setHeight}
+              appear
             >
-              <p>Depth First Search</p>
-              {algorithm === "Depth First Search" ? <p>✓</p> : ""}
-            </DropDownAlgo>
-            <DropDownAlgo
-              changeAlgorithm={handleAlgorithmChange}
-              algorithmName="Breadth First Search"
+              <DropDownItem handleClick={handleMenuChange("unweighted")}>
+                Algorithms for unweighted graphs
+              </DropDownItem>
+              <DropDownItem handleClick={handleMenuChange("weighted")}>
+                Algorithms for weighted graphs
+              </DropDownItem>
+            </WrapperCSSTransition>
+            <WrapperCSSTransition
+              in={algoActiveMenu === "unweighted"}
+              unmountOnExit
+              timeout={500}
+              classNames="menu-unweighted"
+              handleEnter={setHeight}
             >
-              <p>Breadth First Search</p>
-              {algorithm === "Breadth First Search" ? <p>✓</p> : ""}
-            </DropDownAlgo>
-            <DropDownAlgo
-              changeAlgorithm={handleAlgorithmChange}
-              algorithmName="Dijkstra's algorithm"
+              <DropDownItem handleClick={handleMenuChange("main")}>
+                {"<<<"}
+              </DropDownItem>
+              <DropDownItem
+                handleClick={handleAlgorithmChange("Depth First Search")}
+              >
+                <p>Depth First Search</p>
+                {algorithm === "Depth First Search" ? <p>✓</p> : ""}
+              </DropDownItem>
+              <DropDownItem
+                handleClick={handleAlgorithmChange("Breadth First Search")}
+              >
+                <p>Breadth First Search</p>
+                {algorithm === "Breadth First Search" ? <p>✓</p> : ""}
+              </DropDownItem>
+            </WrapperCSSTransition>
+            <WrapperCSSTransition
+              in={algoActiveMenu === "weighted"}
+              unmountOnExit
+              timeout={500}
+              classNames="menu-weighted"
+              handleEnter={setHeight}
             >
-              <p>Dijkstra's Algorithm</p>
-              {algorithm === "Dijkstra's algorithm" ? <p>✓</p> : ""}
-            </DropDownAlgo>
-            <DropDownAlgo
-              changeAlgorithm={handleAlgorithmChange}
-              algorithmName="A* algorithm"
-            >
-              <p>A* Algorithm</p>
-              {algorithm === "A* algorithm" ? <p>✓</p> : ""}
-            </DropDownAlgo>
+              <DropDownItem handleClick={handleMenuChange("main")}>
+                {"<<<"}
+              </DropDownItem>
+              <DropDownItem
+                handleClick={handleAlgorithmChange("Dijkstra's algorithm")}
+              >
+                <p>Dijkstra's Algorithm</p>
+                {algorithm === "Dijkstra's algorithm" ? <p>✓</p> : ""}
+              </DropDownItem>
+              <DropDownItem handleClick={handleAlgorithmChange("A* algorithm")}>
+                <p>A* Algorithm</p>
+                {algorithm === "A* algorithm" ? <p>✓</p> : ""}
+              </DropDownItem>
+            </WrapperCSSTransition>
           </DropDownMenu>
         </NavItem>
       </NavBar>

@@ -37,10 +37,10 @@ export const aStar: (
     (a: [node, number], b: [node, number]) => {
       let dA: number = manhattanDistance(a[0], endNode),
         dB: number = manhattanDistance(b[0], endNode);
-      if (dA === dB) {
-        return distances[a[0].x][a[0].y] < distances[b[0].x][b[0].y];
+      if (distances[a[0].x][a[0].y] + dA !== distances[b[0].x][b[0].y] + dB) {
+        return distances[a[0].x][a[0].y] + dA < distances[b[0].x][b[0].y] + dB;
       }
-      return dA < dB;
+      return a[1] < b[1];
     }
   );
 
