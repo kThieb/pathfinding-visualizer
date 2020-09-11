@@ -5,7 +5,7 @@ import { node } from "../helperFunctions/usefulInterfaces";
 
 interface Props {
   grid: node[][];
-  maze: Map<[number, number], [number, number][]>;
+  maze: Map<[number, number], [[number, number], number][]>;
   pairGrid: [number, number][][];
 }
 

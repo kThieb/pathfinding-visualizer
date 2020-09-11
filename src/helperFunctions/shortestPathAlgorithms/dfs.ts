@@ -5,7 +5,7 @@ import { ensure } from "../ensureNotUndefined";
 export const dfs: (
   grid: node[][],
   pairGrid: [number, number][][],
-  mazeGraph: Map<[number, number], [number, number][]>,
+  mazeGraph: Map<[number, number], [[number, number], number][]>,
   startNode: node,
   targetNode: node
 ) => [node[], node[]] = (grid, pairGrid, mazeGraph, startNode, endNode) => {
@@ -48,8 +48,8 @@ export const dfs: (
       mazeGraph.get(pairGrid[currentNode.x][currentNode.y])
     )) {
       // Get the coordinates of the neighbor node
-      let neighborX: number = neighbor[0],
-        neighborY: number = neighbor[1];
+      let neighborX: number = neighbor[0][0],
+        neighborY: number = neighbor[0][1];
 
       // Check if the node is on the board
       if (

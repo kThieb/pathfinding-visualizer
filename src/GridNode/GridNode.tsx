@@ -5,22 +5,27 @@ import { node } from "../helperFunctions/usefulInterfaces";
 interface Props {
   numberOfElementsPerRow: number;
   node: node;
-  neighbors: [number, number][];
+  neighbors: [[number, number], number][];
 }
 
 const getAddedClassName: (
-  neighbors: [number, number][],
+  neighbors: [[number, number], number][],
   node: node
 ) => string = (neighbors, node) => {
   let addedClassName: string = "";
   for (let i = 0; i < neighbors.length; i++) {
-    let neighbor: [number, number] = neighbors[i];
-    let neighborX = neighbor[0];
-    let neighborY = neighbor[1];
-    if (neighborX === node.x + 1) addedClassName += " no-wall-bottom";
-    if (neighborX === node.x - 1) addedClassName += " no-wall-top";
-    if (neighborY === node.y + 1) addedClassName += " no-wall-right";
-    if (neighborY === node.y - 1) addedClassName += " no-wall-left";
+    let neighbor: [[number, number], number] = neighbors[i];
+    let neighborX = neighbor[0][0],
+      neighborY = neighbor[0][1],
+      distance: number = neighbor[1];
+    if (neighborX === node.x + 1)
+      addedClassName += distance === 1 ? " no-wall-bottom" : " mud-bottom";
+    if (neighborX === node.x - 1)
+      addedClassName += distance === 1 ? " no-wall-top" : " mud-top";
+    if (neighborY === node.y + 1)
+      addedClassName += distance === 1 ? " no-wall-right" : " mud-right";
+    if (neighborY === node.y - 1)
+      addedClassName += distance === 1 ? " no-wall-left" : " mud-left";
   }
   if (node.hasCheese) addedClassName += " cheese";
   if (node.isShortestPath) addedClassName += " shortest-path-node";

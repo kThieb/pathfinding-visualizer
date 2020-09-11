@@ -34,7 +34,8 @@ const [firstpairGrid, mazeGraph] = generateMazeGraph(
   NUMBER_OF_COLUMNS,
   NUMBER_OF_ROWS,
   firstGrid,
-  0.6
+  0.6,
+  0.3
 );
 
 // Component rendering everything in the webpage.
@@ -45,6 +46,7 @@ const Visualizer: React.FC = () => {
   const [pairGrid, setPairGrid] = useState(firstpairGrid);
   const [algorithm, setAlgorithm] = useState("Dijkstra's algorithm");
   const [wallsDensity, setWallsDensity] = useState(0.6);
+  const [mudDensity, setMudDensity] = useState(0.3);
   const [isVisualized, setIsVisualized] = useState(0);
 
   // States managing the dropdown menu
@@ -115,7 +117,7 @@ const Visualizer: React.FC = () => {
   const chooseAlgorithm: () => (
     grid: node[][],
     pairGrid: [number, number][][],
-    mazeGraph: Map<[number, number], [number, number][]>,
+    mazeGraph: Map<[number, number], [[number, number], number][]>,
     startNode: node,
     endNode: node
   ) => [node[], node[]] = () => {
@@ -150,7 +152,8 @@ const Visualizer: React.FC = () => {
         NUMBER_OF_COLUMNS,
         NUMBER_OF_ROWS,
         newGrid,
-        wallsDensity
+        wallsDensity,
+        mudDensity
       );
       setGrid(newGrid);
       setPairGrid(newPairGrid);
@@ -159,26 +162,37 @@ const Visualizer: React.FC = () => {
   };
 
   // Reinitialize the the board
-  const reinitialize: () => void = () => {
+  const reinitializeGrid: () => void = () => {
     if (isVisualized === 2) {
+      // const [newGrid, newStartNode, newEndNode] = constructGrid(
+      //   NUMBER_OF_COLUMNS,
+      //   NUMBER_OF_ROWS,
+      //   [startNode.x, startNode.y],
+      //   [endNode.x, endNode.y]
+      // );
+      // const [newPairGrid, newMaze] = generateMazeGraph(
+      //   NUMBER_OF_COLUMNS,
+      //   NUMBER_OF_ROWS,
+      //   newGrid,
+      //   0.3,
+      //   0.1
+      // );
+      // setGrid(newGrid);
+      // setPairGrid(newPairGrid);
+      // setMaze(newMaze);
+      // setStartNode(newStartNode);
+      // setEndNode(newEndNode);
+      // setWallsDensity(0.3);
+      // setIsVisualized(0);
       const [newGrid, newStartNode, newEndNode] = constructGrid(
         NUMBER_OF_COLUMNS,
         NUMBER_OF_ROWS,
         [startNode.x, startNode.y],
         [endNode.x, endNode.y]
       );
-      const [newPairGrid, newMaze] = generateMazeGraph(
-        NUMBER_OF_COLUMNS,
-        NUMBER_OF_ROWS,
-        newGrid,
-        0.6
-      );
       setGrid(newGrid);
-      setPairGrid(newPairGrid);
-      setMaze(newMaze);
       setStartNode(newStartNode);
       setEndNode(newEndNode);
-      setWallsDensity(0.6);
       setIsVisualized(0);
     }
   };
@@ -235,7 +249,7 @@ const Visualizer: React.FC = () => {
           startClassName="greyed-out"
           visualizingClassName="greyed-out"
           visualizedClassName="highlight"
-          handleClick={reinitialize}
+          handleClick={reinitializeGrid}
         />
         <NavButton
           text="Generate Maze"
@@ -254,10 +268,17 @@ const Visualizer: React.FC = () => {
           <DropDownMenu>
             <DropDownSlider
               text="Density of walls"
-              minValue={0.1}
+              minValue={0}
               maxValue={1}
               defaultValue={wallsDensity}
               handleChange={setWallsDensity}
+            ></DropDownSlider>
+            <DropDownSlider
+              text="Density of mud"
+              minValue={0}
+              maxValue={1}
+              defaultValue={mudDensity}
+              handleChange={setMudDensity}
             ></DropDownSlider>
           </DropDownMenu>
         </NavItem>

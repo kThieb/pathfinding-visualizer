@@ -8,7 +8,7 @@ export const algorithms: {
   [key: string]: (
     grid: node[][],
     pairGrid: [number, number][][],
-    mazeGraph: Map<[number, number], [number, number][]>,
+    mazeGraph: Map<[number, number], [[number, number], number][]>,
     startNode: node,
     targetNode: node
   ) => [node[], node[]];

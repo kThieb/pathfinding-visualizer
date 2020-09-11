@@ -9,9 +9,7 @@
   font-size: clamp(6px, 1vw, 32px);
 
   border: 1px solid black;
-  border-color: black;
 
-  /* border: 1.5px solid #deab90; */
   transition: border-color 1000ms ease-out, background-color ease-out 1000ms;
   background-color: #ecf8f8;
 }
@@ -53,6 +51,22 @@
 
 .no-wall-bottom {
   border-bottom-color: rgb(96, 122, 133, 0.05);
+}
+
+.mud-left {
+  border-left-color: rgb(195, 142, 112, 0.4);
+}
+
+.mud-right {
+  border-right-color: rgb(195, 142, 112, 0.4);
+}
+
+.mud-top {
+  border-top-color: rgb(195, 142, 112, 0.4);
+}
+
+.mud-bottom {
+  border-bottom-color: rgb(195, 142, 112, 0.4);
 }
 
 /* visited nodes styles */

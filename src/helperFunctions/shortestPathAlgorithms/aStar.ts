@@ -6,7 +6,7 @@ import { ensure } from "../ensureNotUndefined";
 export const aStar: (
   grid: node[][],
   pairGrid: [number, number][][],
-  mazeGraph: Map<[number, number], [number, number][]>,
+  mazeGraph: Map<[number, number], [[number, number], number][]>,
   startNode: node,
   targetNode: node
 ) => [node[], node[]] = (grid, pairGrid, mazeGraph, startNode, endNode) => {
@@ -68,24 +68,23 @@ export const aStar: (
       mazeGraph.get(pairGrid[currentX][currentY])
     )) {
       // Get the coordinates of the neighbor node
-      let neighborX: number = neighbor[0],
-        neighborY: number = neighbor[1];
+      let neighborX: number = neighbor[0][0],
+        neighborY: number = neighbor[0][1];
 
       // Check if the coordinates are valid
       if (neighborX < 0 || neighborX >= m || neighborY < 0 || neighborY >= n)
         continue;
 
-      let nextNode: node = grid[neighbor[0]][neighbor[1]];
+      let nextNode: node = grid[neighborX][neighborY];
 
       // Calculate the distance between the current node and the next node
-      // To Do: take into account the weight of the path
-      let currentDistance: number = distances[currentX][currentY] + 1;
+      let currentDistance: number = distances[currentX][currentY] + neighbor[1];
 
       // If the distance is less than the distance in the array distances,
       // change it and change the predecessor of the next node to be the current one
-      if (currentDistance < distances[neighbor[0]][neighbor[1]]) {
+      if (currentDistance < distances[neighborX][neighborY]) {
         predecessor[nextNode.id] = currentNode;
-        distances[neighbor[0]][neighbor[1]] = currentDistance;
+        distances[neighborX][neighborY] = currentDistance;
       }
 
       // If the node is not yet visited, remove it from the heap and
