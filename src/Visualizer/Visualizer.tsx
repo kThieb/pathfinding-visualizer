@@ -35,7 +35,8 @@ const [firstpairGrid, mazeGraph] = generateMazeGraph(
   NUMBER_OF_ROWS,
   firstGrid,
   0.3,
-  0.3
+  0.3,
+  5
 );
 
 // Component rendering everything in the webpage.
@@ -48,6 +49,7 @@ const Visualizer: React.FC = () => {
   const [wallsDensity, setWallsDensity] = useState(0.3);
   const [mudDensity, setMudDensity] = useState(0.3);
   const [isVisualized, setIsVisualized] = useState(0);
+  const [mudWeight, setMudWeight] = useState(3);
 
   // States of the start and end node
   const [startNode, setStartNode] = useState(firstStartNode);
@@ -170,7 +172,8 @@ const Visualizer: React.FC = () => {
         NUMBER_OF_ROWS,
         newGrid,
         wallsDensity,
-        mudDensity
+        mudDensity,
+        mudWeight
       );
       setGrid(newGrid);
       setPairGrid(newPairGrid);
@@ -294,6 +297,14 @@ const Visualizer: React.FC = () => {
               step={0.01}
               defaultValue={mudDensity}
               handleChange={setMudDensity}
+            ></DropDownSlider>
+            <DropDownSlider
+              text="Mud Weight"
+              minValue={1}
+              maxValue={5}
+              step={1}
+              defaultValue={mudWeight}
+              handleChange={setMudWeight}
             ></DropDownSlider>
           </DropDownMenu>
         </NavItem>

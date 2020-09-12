@@ -72,12 +72,13 @@
   padding: 0.5rem;
 }
 
-/* Style the slider items */
+/* Slider items */
 .slider-item {
   height: 75px;
   display: flex;
   flex-direction: column;
   color: white;
+  justify-content: space-around;
   align-items: center;
   border-radius: var(--border-radius);
   transition: background var(--speed);
@@ -176,7 +177,7 @@
 
 .menu-unweighted-exit-active {
   transform: translateX(200%);
-  transition: all 500ms ease;
+  transition: all 500ms ease-out;
 }
 
 .menu-weighted-enter {
@@ -194,6 +195,6 @@
 }
 
 .menu-weighted-exit-active {
-  transform: translateX(200%);
-  transition: all 500ms ease;
+  transform: translateX(250%);
+  transition: all 500ms ease-out;
 }

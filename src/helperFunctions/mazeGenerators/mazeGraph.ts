@@ -1,8 +1,6 @@
 import { ensure } from "../ensureNotUndefined";
 import { node } from "../usefulInterfaces";
 
-const MUD_WEIGHT = 5;
-
 const createMazeGraph: (
   rowLength: number,
   columnLength: number,
@@ -75,11 +73,14 @@ export const generateMazeGraph: (
   columnLength: number,
   grid: node[][],
   wallsDensity: number,
-  mudDendity: number
+  mudDendity: number,
+  mudWeigth: number
 ) => [
   [number, number][][],
   Map<[number, number], [[number, number], number][]>
-] = (rowLength, columnLength, grid, wallsDensity, mudDensity) => {
+] = (rowLength, columnLength, grid, wallsDensity, mudDensity, mudWeight) => {
+  const MUD_WEIGHT = mudWeight;
+
   let [pairGrid, mazeGraph]: [
     [number, number][][],
     Map<[number, number], [[number, number], number][]>
