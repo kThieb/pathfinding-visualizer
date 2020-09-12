@@ -26,7 +26,9 @@ export const aStar: (
 
   // Initialize the predecessor array
   const predecessor: node[] = [];
-  predecessor.fill(startNode, 0, m * n);
+  for (let i: number = 0; i < m * n; i++) {
+    predecessor.push(startNode);
+  }
   predecessor[startNode.id] = startNode;
 
   // Initialize the visited nodes array

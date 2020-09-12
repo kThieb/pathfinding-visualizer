@@ -2,14 +2,25 @@ import React from "react";
 import { GridNode } from "../GridNode/GridNode";
 import "./Grid.css";
 import { node } from "../helperFunctions/usefulInterfaces";
+import { ensure } from "../helperFunctions/ensureNotUndefined";
 
 interface Props {
   grid: node[][];
   maze: Map<[number, number], [[number, number], number][]>;
   pairGrid: [number, number][][];
+  mouseState: boolean;
+  handleMouseDown: (x: number, y: number) => void;
+  handleMouseEnter: (x: number, y: number) => void;
 }
 
-export const Grid: React.FC<Props> = ({ grid, maze, pairGrid }) => {
+export const Grid: React.FC<Props> = ({
+  grid,
+  maze,
+  pairGrid,
+  mouseState,
+  handleMouseDown,
+  handleMouseEnter,
+}) => {
   // Renders the grid in the DOM thanks to the grid state in the App component
   return (
     <div className="grid">
@@ -23,6 +34,9 @@ export const Grid: React.FC<Props> = ({ grid, maze, pairGrid }) => {
                 key={id + index * rowLength}
                 node={node}
                 neighbors={ensure(maze.get(pairGrid[node.x][node.y]))}
+                mouseState={mouseState}
+                handleMouseDown={handleMouseDown}
+                handleMouseEnter={handleMouseEnter}
               ></GridNode>
             ))}
           </div>
@@ -31,15 +45,3 @@ export const Grid: React.FC<Props> = ({ grid, maze, pairGrid }) => {
     </div>
   );
 };
-
-// This function is there to ensure that a value is not null or undefined
-function ensure<T>(
-  argument: T | undefined | null,
-  message: string = "This value was promised to be there."
-): T {
-  if (argument === undefined || argument === null) {
-    throw new TypeError(message);
-  }
-
-  return argument;
-}

@@ -119,6 +119,7 @@ export const DropDownItem: React.FC<DropDownAlgoProps> = (props) => {
 interface DropDownSliderProps {
   minValue: number;
   maxValue: number;
+  step: number;
   defaultValue: number;
   text: string;
   handleChange: (event: any) => void;
@@ -127,8 +128,13 @@ interface DropDownSliderProps {
 export const DropDownSlider: React.FC<DropDownSliderProps> = (props) => {
   return (
     <div className="slider-item">
-      <div>
-        <p>{props.text}</p>
+      <div className="slider-item-text">
+        <div>
+          <span>{props.text}</span>
+        </div>
+        <div className="slider-value">
+          <span>{props.defaultValue}</span>
+        </div>
       </div>
       <input
         className="slider"
@@ -136,7 +142,7 @@ export const DropDownSlider: React.FC<DropDownSliderProps> = (props) => {
         value={props.defaultValue}
         min={props.minValue.toString()}
         max={props.maxValue.toString()}
-        step={0.01}
+        step={props.step}
         onChange={(e) => props.handleChange(e.target.value)}
       ></input>
     </div>

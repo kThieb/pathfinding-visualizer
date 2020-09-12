@@ -1,11 +1,15 @@
 import React from "react";
 import "./GridNode.css";
 import { node } from "../helperFunctions/usefulInterfaces";
+import { ReactComponent as ChevronRightIcon } from "../icon/right-thin-chevron-svgrepo-com.svg";
 
 interface Props {
   numberOfElementsPerRow: number;
   node: node;
   neighbors: [[number, number], number][];
+  mouseState: boolean;
+  handleMouseDown: (x: number, y: number) => void;
+  handleMouseEnter: (x: number, y: number) => void;
 }
 
 const getAddedClassName: (
@@ -38,28 +42,29 @@ export const _GridNode: React.FC<Props> = ({
   numberOfElementsPerRow,
   node,
   neighbors,
+  mouseState,
+  handleMouseDown,
+  handleMouseEnter,
 }) => {
-  const addEmoji: (node: node) => any = (node) => {
-    if (node.isStart) {
-      return (
-        <span role="img" aria-label="rat" className="content">
-          🐀
-        </span>
-      );
-    }
-    if (node.isEnd) {
-      return (
-        <span role="img" aria-label="rat" className="content">
-          🧀
-        </span>
-      );
-    }
-    return <span></span>;
-  };
-
   return (
-    <div className={"grid-node" + getAddedClassName(neighbors, node)}>
-      {addEmoji(node)}
+    <div
+      className={"grid-node" + getAddedClassName(neighbors, node)}
+      onMouseDown={(e) => handleMouseDown(node.x, node.y)}
+      onMouseEnter={(e) => handleMouseEnter(node.x, node.y)}
+    >
+      <span
+        role="img"
+        className={node.isStart || node.hasCheese ? "content" : ""}
+      >
+        {(node.isStart ? "🐀" : "") + (node.hasCheese ? "🧀" : "")}
+      </span>
+      <div className={"svg-chevron " + node.successorPosition}>
+        {node.isShortestPath && !(node.isStart || node.hasCheese) ? (
+          <ChevronRightIcon />
+        ) : (
+          <span></span>
+        )}
+      </div>
     </div>
   );
 };
@@ -72,7 +77,9 @@ const areEqual: (prevProps: Props, nextProps: Props) => boolean = (
     prevProps.node.isVisited === nextProps.node.isVisited &&
     prevProps.node.isShortestPath === nextProps.node.isShortestPath &&
     getAddedClassName(prevProps.neighbors, prevProps.node) ===
-      getAddedClassName(nextProps.neighbors, nextProps.node)
+      getAddedClassName(nextProps.neighbors, nextProps.node) &&
+    prevProps.node === nextProps.node &&
+    prevProps.mouseState === nextProps.mouseState
   );
 };
 

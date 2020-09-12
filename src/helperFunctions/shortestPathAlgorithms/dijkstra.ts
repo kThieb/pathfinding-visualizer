@@ -18,7 +18,7 @@ export const dijkstraWithWalls: (
   for (let i: number = 0; i < m; i++) {
     distances.push([]);
     for (let j: number = 0; j < n; j++) {
-      distances[i].push(Number.MAX_SAFE_INTEGER);
+      distances[i].push(Number.MAX_SAFE_INTEGER - 1);
     }
   }
 
@@ -26,7 +26,9 @@ export const dijkstraWithWalls: (
 
   // Initialize the predecessor array
   const predecessor: node[] = [];
-  predecessor.fill(startNode, 0, m * n);
+  for (let i: number = 0; i < m * n; i++) {
+    predecessor.push(startNode);
+  }
   predecessor[startNode.id] = startNode;
 
   // Initialize the visited nodes array

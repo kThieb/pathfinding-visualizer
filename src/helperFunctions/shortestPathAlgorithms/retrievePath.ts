@@ -6,8 +6,10 @@ export const retrievePath: (
   endNode: node
 ) => node[] = (predecessor, startNode, endNode) => {
   let shortestPath = [endNode];
-  let current = endNode;
-  while (current !== startNode) {
+  let current: node = endNode;
+  console.log(predecessor);
+  console.log(endNode);
+  while (current.x !== startNode.x || current.y !== startNode.y) {
     current = predecessor[current.id];
     shortestPath.unshift(current);
   }

@@ -1,4 +1,3 @@
-import { constructGrid } from "../constructGrid";
 import { ensure } from "../ensureNotUndefined";
 import { node } from "../usefulInterfaces";
 
@@ -212,9 +211,6 @@ export const generateMazeGraph: (
       currentMud++;
     }
   }
-
-  console.log(mazeGraph);
-
   return [pairGrid, mazeGraph];
 };
 

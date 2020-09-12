@@ -18,7 +18,7 @@ import { WrapperCSSTransition } from "../Wrapper/Wrapper";
 const NUMBER_OF_COLUMNS: number = 28;
 const NUMBER_OF_ROWS: number = 13;
 const VISITED_ANIMATION_TIMEOUT: number = 35;
-const PATH_ANIMATION_TIMEOUT: number = 60;
+const PATH_ANIMATION_TIMEOUT: number = 80;
 
 // We define these constants out of the functional component
 // that the App uses to avoid re-running the functions to create
@@ -34,7 +34,7 @@ const [firstpairGrid, mazeGraph] = generateMazeGraph(
   NUMBER_OF_COLUMNS,
   NUMBER_OF_ROWS,
   firstGrid,
-  0.6,
+  0.3,
   0.3
 );
 
@@ -45,18 +45,20 @@ const Visualizer: React.FC = () => {
   const [maze, setMaze] = useState(mazeGraph);
   const [pairGrid, setPairGrid] = useState(firstpairGrid);
   const [algorithm, setAlgorithm] = useState("Dijkstra's algorithm");
-  const [wallsDensity, setWallsDensity] = useState(0.6);
+  const [wallsDensity, setWallsDensity] = useState(0.3);
   const [mudDensity, setMudDensity] = useState(0.3);
   const [isVisualized, setIsVisualized] = useState(0);
+
+  // States of the start and end node
+  const [startNode, setStartNode] = useState(firstStartNode);
+  const [endNodeList, setEndNodeList] = useState([firstEndNode]);
 
   // States managing the dropdown menu
   const [algoActiveMenu, setAlgoActiveMenu] = useState("main");
   const [height, setHeight] = useState(undefined);
-  // const [mouseIsPressed, setMouseIsPressed] = useState(false);
 
-  // States of the start and end node
-  const [startNode, setStartNode] = useState(firstStartNode);
-  const [endNode, setEndNode] = useState(firstEndNode);
+  // State of the mouse
+  const [mouseIsPressed, setMouseIsPressed] = useState(false);
 
   // This function is there to visualize the algorithm chosen in the drop down menu
   const visualizeAlgorithm: (visited: node[], path: node[]) => void = (
@@ -66,8 +68,8 @@ const Visualizer: React.FC = () => {
     const n = visited.length;
     for (let i: number = 0; i < n; i++) {
       setTimeout(() => {
-        const newGrid = grid.slice();
-        const node = visited[i];
+        const newGrid: node[][] = grid.slice();
+        const node: node = visited[i];
         // define the x and y of the current node
         const x: number = node.x;
         const y: number = node.y;
@@ -83,20 +85,35 @@ const Visualizer: React.FC = () => {
     const m = path.length;
     for (let i: number = 0; i < m; i++) {
       setTimeout(() => {
-        const newGrid = grid.slice();
-        const node = path[i];
+        const newGrid: node[][] = grid.slice();
+        let successor: node = i < m - 1 ? path[i + 1] : path[i];
+        const node: node = path[i];
         // define the x and y of the current node
         const x: number = node.x;
         const y: number = node.y;
+
         const newNode: node = {
           ...node,
           isVisited: false,
           isShortestPath: true,
+          successorPosition: getSuccessorPosition(node, successor),
         };
         newGrid[x][y] = newNode;
         setGrid(newGrid);
       }, VISITED_ANIMATION_TIMEOUT * n + PATH_ANIMATION_TIMEOUT * i);
     }
+  };
+
+  // This function returns the position of the successor of a node in the shortest path
+  const getSuccessorPosition: (node: node, successor: node) => string = (
+    node,
+    successor
+  ) => {
+    if (node.x + 1 === successor.x) return "D";
+    if (node.y + 1 === successor.y) return "R";
+    if (node.x - 1 === successor.x) return "U";
+    if (node.y - 1 === successor.y) return "L";
+    return "";
   };
 
   // This function is passed to the drop down menu to handle the change of algorithm
@@ -133,7 +150,7 @@ const Visualizer: React.FC = () => {
         pairGrid,
         maze,
         startNode,
-        endNode
+        endNodeList[0]
       );
       const n: number = visited.length,
         m: number = path.length;
@@ -164,35 +181,15 @@ const Visualizer: React.FC = () => {
   // Reinitialize the the board
   const reinitializeGrid: () => void = () => {
     if (isVisualized === 2) {
-      // const [newGrid, newStartNode, newEndNode] = constructGrid(
-      //   NUMBER_OF_COLUMNS,
-      //   NUMBER_OF_ROWS,
-      //   [startNode.x, startNode.y],
-      //   [endNode.x, endNode.y]
-      // );
-      // const [newPairGrid, newMaze] = generateMazeGraph(
-      //   NUMBER_OF_COLUMNS,
-      //   NUMBER_OF_ROWS,
-      //   newGrid,
-      //   0.3,
-      //   0.1
-      // );
-      // setGrid(newGrid);
-      // setPairGrid(newPairGrid);
-      // setMaze(newMaze);
-      // setStartNode(newStartNode);
-      // setEndNode(newEndNode);
-      // setWallsDensity(0.3);
-      // setIsVisualized(0);
       const [newGrid, newStartNode, newEndNode] = constructGrid(
         NUMBER_OF_COLUMNS,
         NUMBER_OF_ROWS,
         [startNode.x, startNode.y],
-        [endNode.x, endNode.y]
+        [endNodeList[0].x, endNodeList[0].y]
       );
       setGrid(newGrid);
       setStartNode(newStartNode);
-      setEndNode(newEndNode);
+      setEndNodeList([newEndNode]);
       setIsVisualized(0);
     }
   };
@@ -220,27 +217,43 @@ const Visualizer: React.FC = () => {
   //   setGrid(newGrid);
   // };
 
-  // // handles the case when the mouse button is down
-  // const handleMouseDown: (x: number, y: number) => void = (x, y) => {
-  //   toggleWall(x, y);
-  //   setMouseIsPressed(false);
-  // };
+  const toggleStartNode: (x: number, y: number) => void = (x, y) => {
+    const [newGrid, newStartNode, newEndNode] = constructGrid(
+      NUMBER_OF_COLUMNS,
+      NUMBER_OF_ROWS,
+      [x, y],
+      [endNodeList[0].x, endNodeList[0].y]
+    );
+    setStartNode(newStartNode);
+    setEndNodeList([newEndNode]);
+    setGrid(newGrid);
+  };
 
-  // // handles the case whan the mouse button is down and you enter a node
-  // const handleMouseEnter: (x: number, y: number) => void = (x, y) => {
-  //   if (mouseIsPressed) {
-  //     toggleWall(x, y);
-  //   }
-  // };
+  // handles the case when the mouse button is down
+  const handleMouseDown: (x: number, y: number) => void = (x, y) => {
+    if (grid[x][y] === startNode) {
+      console.log("mouse is pressed");
+      setMouseIsPressed(true);
+    }
+  };
 
-  // // handles the case when you mouse up
-  // const handleMouseUp: () => void = () => {
-  //   setMouseIsPressed(false);
-  // };
+  // handles the case whan the mouse button is down and you enter a node
+  const handleMouseEnter: (x: number, y: number) => void = (x, y) => {
+    if (mouseIsPressed) {
+      console.log("entered");
+      toggleStartNode(x, y);
+    }
+  };
+
+  // handles the case when you mouse up
+  const handleMouseUp: () => void = () => {
+    console.log("mouse is up!");
+    setMouseIsPressed(false);
+  };
 
   // Render the app
   return (
-    <div className="App">
+    <div className="App" onMouseUp={() => handleMouseUp()}>
       <NavBar>
         <NavButton
           text="Reinitialize"
@@ -270,6 +283,7 @@ const Visualizer: React.FC = () => {
               text="Density of walls"
               minValue={0}
               maxValue={1}
+              step={0.01}
               defaultValue={wallsDensity}
               handleChange={setWallsDensity}
             ></DropDownSlider>
@@ -277,6 +291,7 @@ const Visualizer: React.FC = () => {
               text="Density of mud"
               minValue={0}
               maxValue={1}
+              step={0.01}
               defaultValue={mudDensity}
               handleChange={setMudDensity}
             ></DropDownSlider>
@@ -325,7 +340,7 @@ const Visualizer: React.FC = () => {
               <DropDownItem
                 handleClick={handleAlgorithmChange("Depth First Search")}
               >
-                <p>Depth First Search</p>
+                <p>Random Depth First Search</p>
                 {algorithm === "Depth First Search" ? <p>✓</p> : ""}
               </DropDownItem>
               <DropDownItem
@@ -359,25 +374,15 @@ const Visualizer: React.FC = () => {
           </DropDownMenu>
         </NavItem>
       </NavBar>
-      {/* <SecondaryHeader>
-        <button
-          className="visualize-button"
-          onClick={(e) => {
-            visualizeAlgorithm(
-              ...chooseAlgorithm(algorithm)(
-                grid,
-                pairGrid,
-                mazeGraph,
-                startNode,
-                endNode
-              )
-            );
-          }}
-        >
-          Visualize the path!
-        </button>
-      </SecondaryHeader> */}
-      <Grid grid={grid} pairGrid={pairGrid} maze={maze} />
+
+      <Grid
+        grid={grid}
+        pairGrid={pairGrid}
+        maze={maze}
+        mouseState={mouseIsPressed}
+        handleMouseDown={handleMouseDown}
+        handleMouseEnter={handleMouseEnter}
+      />
     </div>
   );
 };

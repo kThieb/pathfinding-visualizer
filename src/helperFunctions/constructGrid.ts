@@ -21,17 +21,17 @@ export const constructGrid: (
         x: i,
         y: j,
         isStart: false,
-        isEnd: false,
+        hasCheese: false,
         isVisited: false,
         isShortestPath: false,
-        hasCheese: false,
+        successorPosition: "",
       };
       currentRow.push(currentNode);
     }
     result.push(currentRow);
   }
   result[startNode[0]][startNode[1]].isStart = true;
-  result[endNode[0]][endNode[1]].isEnd = true;
+  result[endNode[0]][endNode[1]].hasCheese = true;
   // result = piecesOfCheese(result, numberOfColumn, numberOfRow, 21);
   return [
     result,

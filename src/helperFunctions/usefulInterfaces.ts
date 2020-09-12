@@ -3,10 +3,10 @@ export interface node {
   x: number;
   y: number;
   isStart: boolean;
-  isEnd: boolean;
+  hasCheese: boolean;
   isVisited: boolean;
   isShortestPath: boolean;
-  hasCheese: boolean;
+  successorPosition: string;
 }
 
 export interface simplifiedNode {

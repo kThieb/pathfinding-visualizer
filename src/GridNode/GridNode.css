@@ -27,6 +27,48 @@
   opacity: 0;
 }
 
+/* Style the Chevron of the shortest path */
+.grid-node svg {
+  width: 50%;
+  opacity: 0.08;
+  animation: chevronAnim 500ms ease;
+}
+
+.svg-chevron {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.U {
+  transform: rotate(-90deg);
+}
+
+.L {
+  transform: rotate(180deg);
+}
+
+.D {
+  transform: rotate(90deg);
+}
+
+@keyframes chevronAnim {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+
+  80% {
+    opacity: 0.3;
+    transform: scale(1.2);
+  }
+
+  100% {
+    opacity: 0.08;
+    transform: scale(1);
+  }
+}
+
 /* Style the emojis */
 .content {
   position: absolute;
@@ -34,6 +76,25 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  animation: squareChangeAnim 500ms ease;
+}
+
+@keyframes squareChangeAnim {
+  0% {
+    transform: scale(0.5);
+  }
+
+  75% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* handle the walls */
