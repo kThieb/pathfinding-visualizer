@@ -5,12 +5,14 @@ export const constructGrid: (
   numberOfRows: number,
   numberOfColumn: number,
   startNode: [number, number],
-  endNode: [number, number]
-) => [node[][], node, node] = (
+  endNode: [number, number],
+  numberOfTargets: number
+) => [node[][], node, node[]] = (
   numberOfRow,
   numberOfColumn,
   startNode,
-  endNode
+  endNode,
+  numberOfTargets
 ) => {
   let result: node[][] = [];
   for (let i: number = 0; i < numberOfColumn; i++) {
@@ -32,44 +34,145 @@ export const constructGrid: (
   }
   result[startNode[0]][startNode[1]].isStart = true;
   result[endNode[0]][endNode[1]].hasCheese = true;
-  // result = piecesOfCheese(result, numberOfColumn, numberOfRow, 21);
-  return [
-    result,
-    result[startNode[0]][startNode[1]],
-    result[endNode[0]][endNode[1]],
-  ];
+  let targetList: node[] = [result[endNode[0]][endNode[1]]];
+  if (numberOfTargets >= 1)
+    [result, targetList] = piecesOfCheese(
+      result,
+      startNode,
+      endNode,
+      numberOfTargets
+    );
+  return [result, result[startNode[0]][startNode[1]], targetList];
+};
+
+export const reconstructGrid: (
+  numberOfRows: number,
+  numberOfColumn: number,
+  startNode: [number, number],
+  targetList: node[]
+) => [node[][], node, node[]] = (
+  numberOfRow,
+  numberOfColumn,
+  startNode,
+  targetList
+) => {
+  let result: node[][] = [];
+  for (let i: number = 0; i < numberOfColumn; i++) {
+    let currentRow: node[] = [];
+    for (let j: number = 0; j < numberOfRow; j++) {
+      let currentNode: node = {
+        id: i + j * numberOfColumn,
+        x: i,
+        y: j,
+        isStart: false,
+        hasCheese: targetList.find(
+          (targetNode) => targetNode.x === i && targetNode.y === j
+        )
+          ? true
+          : false,
+        isVisited: false,
+        isShortestPath: false,
+        successorPosition: "",
+      };
+      currentRow.push(currentNode);
+    }
+    result.push(currentRow);
+  }
+  result[startNode[0]][startNode[1]].isStart = true;
+  let newTargetList: node[] = targetList.map(
+    (targetNode) => result[targetNode.x][targetNode.y]
+  );
+  return [result, result[startNode[0]][startNode[1]], newTargetList];
 };
 
 const piecesOfCheese: (
   grid: node[][],
-  m: number,
-  n: number,
+  startNode: [number, number],
+  endNode: [number, number],
   cheeseNum: number
-) => node[][] = (grid, m, n, cheeseNum) => {
+) => [node[][], node[]] = (grid, startNode, endNode, cheeseNum) => {
+  const n: number = grid.length,
+    m: number = grid[0].length;
+  const targetList: node[] = [grid[endNode[0]][endNode[1]]];
   let visited: boolean[][] = new Array(n);
   for (let i: number = 0; i < n; ++i) {
-    visited[i] = new Array(n);
+    visited[i] = new Array(m);
   }
   for (let i: number = 0; i < n; ++i) {
-    for (let j: number = 0; j < n; ++j) {
+    for (let j: number = 0; j < m; ++j) {
       visited[i][j] = false;
     }
   }
 
-  visited[0][0] = true;
-  visited[n - 1][n - 1] = true;
-  for (let k: number = 0; k < cheeseNum / 2; k++) {
+  visited[startNode[0]][startNode[1]] = true;
+  visited[endNode[0]][endNode[1]] = true;
+  for (let k: number = 0; k < cheeseNum; k++) {
     let i = -1,
       j = -1;
     do {
       i = Math.floor(Math.random() * n);
-      j = Math.floor(Math.random() * n);
+      j = Math.floor(Math.random() * m);
     } while (visited[i][j]);
     visited[i][j] = true;
-    visited[n - 1 - i][n - 1 - j] = true;
     grid[i][j].hasCheese = true;
-    grid[n - 1 - i][n - 1 - j].hasCheese = true;
+    targetList.push(grid[i][j]);
   }
-  grid[Math.floor(n / 2)][Math.floor(n / 2)].hasCheese = true;
-  return grid;
+  return [grid, targetList];
+};
+
+export const addPiecesOfCheese: (
+  numberOfRows: number,
+  numberOfColumn: number,
+  startNode: node,
+  oldTargetList: node[],
+  cheeseToAdd: number
+) => [node[][], node, node[]] = (
+  numberOfRows,
+  numberOfColumn,
+  startNode,
+  oldTargetList,
+  cheeseToAdd
+) => {
+  // let targetList: node[] = [];
+  while (cheeseToAdd < 0) {
+    let randIndex: number = Math.floor(Math.random() * oldTargetList.length);
+    oldTargetList = oldTargetList.filter(
+      (targetNode, index) => index !== randIndex
+    );
+    cheeseToAdd++;
+  }
+
+  const [newGrid, newStartNode, targetList] = reconstructGrid(
+    numberOfRows,
+    numberOfColumn,
+    [startNode.x, startNode.y],
+    oldTargetList
+  );
+
+  let visited: boolean[][] = new Array(numberOfColumn);
+  for (let i: number = 0; i < numberOfColumn; ++i) {
+    visited[i] = new Array(numberOfRows);
+  }
+  for (let i: number = 0; i < numberOfColumn; ++i) {
+    for (let j: number = 0; j < numberOfRows; ++j) {
+      visited[i][j] = false;
+    }
+  }
+
+  visited[startNode.x][startNode.y] = true;
+  targetList.forEach((targetNode) => {
+    visited[targetNode.x][targetNode.y] = true;
+  });
+  for (let k: number = 0; k < cheeseToAdd; k++) {
+    let i = -1,
+      j = -1;
+    do {
+      i = Math.floor(Math.random() * numberOfColumn);
+      j = Math.floor(Math.random() * numberOfRows);
+    } while (visited[i][j]);
+    visited[i][j] = true;
+    newGrid[i][j].hasCheese = true;
+    targetList.push(newGrid[i][j]);
+  }
+  return [newGrid, newStartNode, targetList];
 };

@@ -85,11 +85,15 @@ export const NavItem: React.FC<NavItemProps> = (props) => {
 
 interface DropDownMenu {
   height?: number;
+  left?: boolean;
 }
 
 export const DropDownMenu: React.FC<DropDownMenu> = (props) => {
   return (
-    <div className="dropdown" style={{ height: props.height }}>
+    <div
+      className={"dropdown" + (props.left ? " left" : "")}
+      style={{ height: props.height }}
+    >
       {props.children}
     </div>
   );
@@ -145,6 +149,30 @@ export const DropDownSlider: React.FC<DropDownSliderProps> = (props) => {
         step={props.step}
         onChange={(e) => props.handleChange(e.target.value)}
       ></input>
+    </div>
+  );
+};
+
+interface DropDownToggleSwitchProps {
+  text: string;
+  shouldShowWeights: boolean;
+  handleChange: () => void;
+}
+
+export const DropDownToggleSwich: React.FC<DropDownToggleSwitchProps> = (
+  props
+) => {
+  return (
+    <div className="menu-item switch-item">
+      <span className="switch-text">{props.text}</span>
+      <label className="switch">
+        <input
+          type="checkbox"
+          defaultValue={props.shouldShowWeights ? 0 : 1}
+          onChange={props.handleChange}
+        />
+        <span className="switch-slider round"></span>
+      </label>
     </div>
   );
 };

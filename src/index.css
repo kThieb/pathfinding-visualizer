@@ -6,6 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: clamp(5px, calc(0.65vw + 0.65vh), 32px);
+  text-align: center;
 }
 
 code {

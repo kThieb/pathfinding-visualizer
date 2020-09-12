@@ -7,6 +7,7 @@
   flex: 1 0;
   height: auto;
   font-size: clamp(6px, 1vw, 32px);
+  position: relative;
 
   border: 1px solid black;
 
@@ -114,6 +115,7 @@
   border-bottom-color: rgb(96, 122, 133, 0.05);
 }
 
+/* handle the mud */
 .mud-left {
   border-left-color: rgb(195, 142, 112, 0.4);
 }
@@ -133,8 +135,7 @@
 /* visited nodes styles */
 .visited-node {
   background-color: #0077b6;
-  /* transition: background-color 1250ms ease-out; */
-  animation: visitedAnim 1000ms ease-in;
+  animation: visitedAnim 1000ms linear;
 }
 
 @keyframes visitedAnim {
@@ -155,4 +156,42 @@
 .shortest-path-node {
   background-color: #48cae4;
   transition: background-color 500ms ease-in;
+}
+
+.shortest-path-node-being-visited {
+  background-color: #48cae4;
+  animation: shortestPathVisitedAnim 1500ms linear;
+}
+
+@keyframes shortestPathVisitedAnim {
+  0% {
+    background-color: #48cae4;
+  }
+
+  20% {
+    background-color: #0096c7;
+  }
+
+  66% {
+    background-color: #0077b6;
+  }
+
+  100% {
+    background-color: #48cae4;
+  }
+}
+
+/* style the number */
+.number-bottom {
+  position: absolute;
+  bottom: -1.3vh;
+  z-index: 2;
+  color: rgb(195, 142, 112, 0.8);
+}
+
+.number-right {
+  position: absolute;
+  right: -0.85vh;
+  z-index: 2;
+  color: rgb(195, 142, 112, 0.8);
 }

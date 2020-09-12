@@ -1,5 +1,4 @@
 /* NavBar */
-
 .navbar {
   height: 7.5vh;
   background-color: var(--bg);
@@ -34,25 +33,12 @@
   margin: 1%;
 }
 
-/* .icon-button {
-  --button-size: calc(var(--nav-size) * 0.5);
-  height: 3vh;
-  background-color: #484a4d;
-  border-radius: 5px;
-  padding: 5px;
-  margin: 2px 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
-
 /* DropDown Menu */
-
 .dropdown {
   position: absolute;
   top: 7.2vh;
   width: 20vw;
-  transform: translateX(-45%);
+  transform: translateX(-35%);
   background-color: var(--bg);
   border: var(--border);
   border-radius: var(--border-radius);
@@ -60,6 +46,14 @@
   overflow: hidden;
   z-index: 10;
   transition: height 500ms ease;
+}
+
+.left {
+  transform: translateX(35%);
+}
+
+.menu {
+  width: 100%;
 }
 
 .menu-item {
@@ -70,6 +64,11 @@
   border-radius: var(--border-radius);
   transition: background var(--speed);
   padding: 0.5rem;
+  cursor: default;
+}
+
+.menu-item:hover {
+  background: #525357;
 }
 
 /* Slider items */
@@ -104,32 +103,51 @@
   left: 150%;
 }
 
-.menu-item:hover {
-  background: #525357;
-}
+/* Style the visualize button */
 
 .visualize-button {
   position: absolute;
   left: 42.5%;
   width: 15%;
   background-color: #0096c7;
+  transition: all 400ms ease-out;
 }
 
+/* Style the algorithms button */
 #algorithms {
   margin-left: auto;
 }
 
+/* Greyed out the button */
 .greyed-out {
   opacity: 0.3;
-  transition: opacity 400ms ease-out;
+  transition: all 400ms ease-out;
   cursor: default;
 }
 
+/* Highlights the buttons */
 .highlight {
   background-color: #f48c06;
-  transition: background-color 400ms ease-out;
+  transition: all 400ms ease-out;
 }
 
+/* Enable multiple targets */
+.enable-multiple-targets {
+  background-color: #6c757d;
+  transition: all 400ms ease-out;
+}
+
+.disable-multiple-targets {
+  background-color: #484a4d;
+  transition: all 400ms ease-out;
+}
+
+.should-generate {
+  background-color: #6c757d;
+  transition: all 400ms ease-out;
+}
+
+/* Icon button */
 .icon-button {
   display: flex;
   justify-content: center;
@@ -138,9 +156,7 @@
   width: 100%;
 }
 
-.menu {
-  width: 100%;
-}
+/* Animates the dropdown menu */
 
 .menu-primary-enter {
   position: absolute;
@@ -197,4 +213,74 @@
 .menu-weighted-exit-active {
   transform: translateX(250%);
   transition: all 500ms ease-out;
+}
+
+/* The switch */
+.switch-item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: clamp(16px, 5vh, 64px);
+  height: clamp(8px, 2.5vh, 32px);
+  z-index: 2;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: clamp(8px, 2.5vh, 32px);
+  width: clamp(8px, 2.5vh, 32px);
+  left: 0px;
+  bottom: 0px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .switch-slider {
+  background-color: #2196f3;
+}
+
+input:focus + .switch-slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .switch-slider:before {
+  -webkit-transform: translateX(2.7vh);
+  -ms-transform: translateX(2.7vh);
+  transform: translateX(2.7vh);
+}
+
+/* Rounded switch-sliders */
+.switch-slider.round {
+  border-radius: clamp(8px, 2.5vh, 32px);
+}
+
+.switch-slider.round:before {
+  border-radius: clamp(8px, 2.5vh, 32px);
 }

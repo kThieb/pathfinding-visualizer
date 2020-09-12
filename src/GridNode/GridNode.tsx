@@ -2,6 +2,7 @@ import React from "react";
 import "./GridNode.css";
 import { node } from "../helperFunctions/usefulInterfaces";
 import { ReactComponent as ChevronRightIcon } from "../icon/right-thin-chevron-svgrepo-com.svg";
+import { ensure } from "../helperFunctions/ensureNotUndefined";
 
 interface Props {
   numberOfElementsPerRow: number;
@@ -10,6 +11,7 @@ interface Props {
   mouseState: boolean;
   handleMouseDown: (x: number, y: number) => void;
   handleMouseEnter: (x: number, y: number) => void;
+  showNumbers: boolean;
 }
 
 const getAddedClassName: (
@@ -32,8 +34,12 @@ const getAddedClassName: (
       addedClassName += distance === 1 ? " no-wall-left" : " mud-left";
   }
   if (node.hasCheese) addedClassName += " cheese";
-  if (node.isShortestPath) addedClassName += " shortest-path-node";
-  if (node.isVisited) addedClassName += " visited-node";
+  if (node.isShortestPath && node.isVisited)
+    addedClassName += " shortest-path-node-being-visited";
+  else {
+    if (node.isShortestPath) addedClassName += " shortest-path-node";
+    if (node.isVisited) addedClassName += " visited-node";
+  }
   return addedClassName;
 };
 
@@ -45,6 +51,7 @@ export const _GridNode: React.FC<Props> = ({
   mouseState,
   handleMouseDown,
   handleMouseEnter,
+  showNumbers,
 }) => {
   return (
     <div
@@ -54,7 +61,7 @@ export const _GridNode: React.FC<Props> = ({
     >
       <span
         role="img"
-        className={node.isStart || node.hasCheese ? "content" : ""}
+        className={node.isStart || node.hasCheese ? "content" : "no-content"}
       >
         {(node.isStart ? "🐀" : "") + (node.hasCheese ? "🧀" : "")}
       </span>
@@ -65,6 +72,30 @@ export const _GridNode: React.FC<Props> = ({
           <span></span>
         )}
       </div>
+      {showNumbers &&
+        neighbors.find((neighbor) => neighbor[0][0] === node.x + 1) &&
+        ensure(neighbors.find((neighbor) => neighbor[0][0] === node.x + 1))[1] >
+          1 && (
+          <span className={"number-bottom"}>
+            {
+              ensure(
+                neighbors.find((neighbor) => neighbor[0][0] === node.x + 1)
+              )[1]
+            }
+          </span>
+        )}
+      {showNumbers &&
+        neighbors.find((neighbor) => neighbor[0][1] === node.y + 1) &&
+        ensure(neighbors.find((neighbor) => neighbor[0][1] === node.y + 1))[1] >
+          1 && (
+          <span className="number-right">
+            {
+              ensure(
+                neighbors.find((neighbor) => neighbor[0][1] === node.y + 1)
+              )[1]
+            }
+          </span>
+        )}
     </div>
   );
 };
@@ -74,12 +105,11 @@ const areEqual: (prevProps: Props, nextProps: Props) => boolean = (
   nextProps
 ) => {
   return (
-    prevProps.node.isVisited === nextProps.node.isVisited &&
-    prevProps.node.isShortestPath === nextProps.node.isShortestPath &&
     getAddedClassName(prevProps.neighbors, prevProps.node) ===
       getAddedClassName(nextProps.neighbors, nextProps.node) &&
     prevProps.node === nextProps.node &&
-    prevProps.mouseState === nextProps.mouseState
+    prevProps.mouseState === nextProps.mouseState &&
+    prevProps.showNumbers === nextProps.showNumbers
   );
 };
 

@@ -1,20 +1,33 @@
 import { node } from "../usefulInterfaces";
-import { dfs } from "./dfs";
-import { bfs } from "./bfs";
-import { dijkstraWithWalls } from "./dijkstra";
-import { aStar } from "./aStar";
+import { dfs } from "./singleTarget/dfs";
+import { bfs } from "./singleTarget/bfs";
+import { dijkstra } from "./singleTarget/dijkstra";
+import { aStar } from "./singleTarget/aStar";
+import { greedy } from "./multipleTarget/greedy";
 
-export const algorithms: {
+export const singleTargetAlgorithms: {
   [key: string]: (
     grid: node[][],
     pairGrid: [number, number][][],
     mazeGraph: Map<[number, number], [[number, number], number][]>,
     startNode: node,
-    targetNode: node
+    targetList: node[]
   ) => [node[], node[]];
 } = {
   "Depth First Search": dfs,
   "Breadth First Search": bfs,
-  "Dijkstra's algorithm": dijkstraWithWalls,
+  "Dijkstra's algorithm": dijkstra,
   "A* algorithm": aStar,
+};
+
+export const multipleTargetsAlgorithms: {
+  [key: string]: (
+    grid: node[][],
+    pairGrid: [number, number][][],
+    mazeGraph: Map<[number, number], [[number, number], number][]>,
+    startNode: node,
+    targetList: node[]
+  ) => [node[], node[]][];
+} = {
+  "Nearest Neighbors (Greedy)": greedy,
 };

@@ -11,6 +11,7 @@ interface Props {
   mouseState: boolean;
   handleMouseDown: (x: number, y: number) => void;
   handleMouseEnter: (x: number, y: number) => void;
+  showNumbers: boolean;
 }
 
 export const Grid: React.FC<Props> = ({
@@ -20,6 +21,7 @@ export const Grid: React.FC<Props> = ({
   mouseState,
   handleMouseDown,
   handleMouseEnter,
+  showNumbers,
 }) => {
   // Renders the grid in the DOM thanks to the grid state in the App component
   return (
@@ -37,6 +39,7 @@ export const Grid: React.FC<Props> = ({
                 mouseState={mouseState}
                 handleMouseDown={handleMouseDown}
                 handleMouseEnter={handleMouseEnter}
+                showNumbers={showNumbers}
               ></GridNode>
             ))}
           </div>
