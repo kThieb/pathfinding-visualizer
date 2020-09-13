@@ -5,6 +5,7 @@ import { dijkstra } from "./singleTarget/dijkstra";
 import { aStar } from "./singleTarget/aStar";
 import { greedy } from "./multipleTarget/greedy";
 import { bruteForceTSP } from "./multipleTarget/bruteForce";
+import { twoEndedBfs } from "./singleTarget/twoEndedBfs";
 
 export const singleTargetAlgorithms: {
   [key: string]: (
@@ -19,6 +20,7 @@ export const singleTargetAlgorithms: {
   "Breadth First Search": bfs,
   "Dijkstra's algorithm": dijkstra,
   "A* algorithm": aStar,
+  "Meet in the Middle BFS": twoEndedBfs,
 };
 
 export const multipleTargetsAlgorithms: {

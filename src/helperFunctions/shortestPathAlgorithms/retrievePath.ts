@@ -14,3 +14,24 @@ export const retrievePath: (
 
   return shortestPath;
 };
+
+export const retrieveTwoEndedPath: (
+  predecessor: node[],
+  successor: node[],
+  middleNode: node,
+  startNode: node,
+  endNode: node
+) => node[] = (predecessor, successor, middleNode, startNode, endNode) => {
+  let shortestPath = [middleNode];
+  let current: node = middleNode;
+  while (current.x !== startNode.x || current.y !== startNode.y) {
+    current = predecessor[current.id];
+    shortestPath.unshift(current);
+  }
+  current = middleNode;
+  while (current.x !== endNode.x || current.y !== endNode.y) {
+    current = successor[current.id];
+    shortestPath.push(current);
+  }
+  return shortestPath;
+};

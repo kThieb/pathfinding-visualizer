@@ -30,6 +30,9 @@ const VISITED_ANIMATION_TIMEOUT: number = 35;
 const PATH_ANIMATION_TIMEOUT: number = 125;
 const FIRST_START_NODE: [number, number] = [6, 3];
 const FIRST_END_NODE: [number, number] = [6, 24];
+const FIRST_WALLS_DENSITY: number = 0.4;
+const FIRST_MUD_DENSITY: number = 0.4;
+const FIRST_MUD_WEIGHT: number = 4;
 // We define these constants out of the functional component
 // that the App uses to avoid re-running the functions to create
 // these each time there is a re-render
@@ -46,9 +49,9 @@ const [firstpairGrid, mazeGraph] = generateMazeGraph(
   NUMBER_OF_COLUMNS,
   NUMBER_OF_ROWS,
   firstGrid,
-  0.3,
-  0.3,
-  2
+  FIRST_WALLS_DENSITY,
+  FIRST_MUD_DENSITY,
+  FIRST_MUD_WEIGHT
 );
 
 // Component rendering everything in the webpage.
@@ -61,9 +64,9 @@ const Visualizer: React.FC = () => {
 
   // States managing the maze
   const [maze, setMaze] = useState(mazeGraph);
-  const [wallsDensity, setWallsDensity] = useState(0.3);
-  const [mudDensity, setMudDensity] = useState(0.3);
-  const [mudWeight, setMudWeight] = useState(2);
+  const [wallsDensity, setWallsDensity] = useState(FIRST_WALLS_DENSITY);
+  const [mudDensity, setMudDensity] = useState(FIRST_MUD_DENSITY);
+  const [mudWeight, setMudWeight] = useState(FIRST_MUD_WEIGHT);
   const [numberOfTargets, setNumberOfTargets] = useState(1);
   const [shouldGenerateMaze, setShouldGenerateMaze] = useState(false);
   const didMount = useRef(false);
@@ -201,7 +204,13 @@ const Visualizer: React.FC = () => {
       if (numberOfTargets === 1) {
         const [visited, path]: [node[], node[]] = singleTargetAlgorithms[
           singleTargetAlgorithm
-        ](grid, pairGrid, maze, startNode, targetList);
+        ](
+          grid,
+          pairGrid,
+          maze,
+          startNode,
+          targetList.map((targetNode) => grid[targetNode.x][targetNode.y])
+        );
         const n: number = visited.length,
           m: number = path.length;
         visualizeSingleTargetAlgorithm(visited, path, 0);
@@ -436,7 +445,7 @@ const Visualizer: React.FC = () => {
             <DropDownSlider
               text="Mud Weight:"
               minValue={1.1}
-              maxValue={5}
+              maxValue={10}
               step={0.1}
               defaultValue={mudWeight}
               handleChange={setMudWeight}
@@ -536,6 +545,16 @@ const Visualizer: React.FC = () => {
               >
                 <p>Breadth First Search</p>
                 {singleTargetAlgorithm === "Breadth First Search" ? (
+                  <p className="tickmark">✓</p>
+                ) : (
+                  ""
+                )}
+              </DropDownItem>
+              <DropDownItem
+                handleClick={handleAlgorithmChange("Meet in the Middle BFS")}
+              >
+                <p>Meet in the Middle BFS</p>
+                {singleTargetAlgorithm === "Meet in the Middle BFS" ? (
                   <p className="tickmark">✓</p>
                 ) : (
                   ""
