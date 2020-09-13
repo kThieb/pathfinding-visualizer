@@ -157,9 +157,7 @@ export const DropDownItem: React.FC<DropDownAlgoProps> = (props) => {
         props.handleClick();
       }}
     >
-      <span>{props.leftIcon ? props.leftIcon : ""}</span>
       {props.children}
-      <span>{props.rightIcon ? props.rightIcon : ""}</span>
     </div>
   );
 };

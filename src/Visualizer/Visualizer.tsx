@@ -23,7 +23,6 @@ import {
   reconstructGrid,
 } from "../helperFunctions/constructGrid";
 import { WrapperCSSTransition } from "../Wrapper/Wrapper";
-import { ReactComponent as TickMark } from "../icon/White_check.svg";
 
 const NUMBER_OF_COLUMNS: number = 28;
 const NUMBER_OF_ROWS: number = 13;
@@ -520,7 +519,7 @@ const Visualizer: React.FC = () => {
               <DropDownItem
                 handleClick={handleMenuChange("main-single-target")}
               >
-                {"<"}
+                <p className="arrow-left">{"<"}</p>
               </DropDownItem>
               <DropDownItem
                 handleClick={handleAlgorithmChange("Depth First Search")}
@@ -582,22 +581,22 @@ const Visualizer: React.FC = () => {
               handleEnter={setHeight}
             >
               <DropDownItem
-                handleClick={handleAlgorithmChange(
-                  "Nearest Neighbors Heuristic"
-                )}
+                handleClick={handleAlgorithmChange("Brute Force Algorithm")}
               >
-                <p>Nearest Neighbors Heuristic</p>
-                {multipleTargetsAlgorithm === "Nearest Neighbors Heuristic" ? (
+                <p>Brute Force Algorithm</p>
+                {multipleTargetsAlgorithm === "Brute Force Algorithm" ? (
                   <p className="tickmark">✓</p>
                 ) : (
                   ""
                 )}
               </DropDownItem>
               <DropDownItem
-                handleClick={handleAlgorithmChange("Brute Force Algorithm")}
+                handleClick={handleAlgorithmChange(
+                  "Nearest Neighbors Heuristic"
+                )}
               >
-                <p>Brute Force Algorithm</p>
-                {multipleTargetsAlgorithm === "Brute Force Algorithm" ? (
+                <p>Nearest Neighbors Heuristic</p>
+                {multipleTargetsAlgorithm === "Nearest Neighbors Heuristic" ? (
                   <p className="tickmark">✓</p>
                 ) : (
                   ""

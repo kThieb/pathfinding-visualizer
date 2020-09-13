@@ -31,7 +31,7 @@
 /* Style the Chevron of the shortest path */
 .grid-node svg {
   width: 50%;
-  opacity: 0.08;
+  opacity: 0.05;
   animation: chevronAnim 500ms ease;
 }
 
@@ -56,17 +56,14 @@
 @keyframes chevronAnim {
   0% {
     opacity: 0;
-    transform: scale(0.2);
   }
 
   80% {
-    opacity: 0.3;
-    transform: scale(1.2);
+    opacity: 0.15;
   }
 
   100% {
     opacity: 0.08;
-    transform: scale(1);
   }
 }
 
@@ -179,7 +176,7 @@
 /* shortest path nodes */
 .shortest-path-node {
   background-color: #48cae4;
-  transition: background-color 500ms ease-in;
+  transition: background-color 500ms linear;
 }
 
 .shortest-path-node-being-visited {

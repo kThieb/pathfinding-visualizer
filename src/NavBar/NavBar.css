@@ -32,6 +32,12 @@
   align-items: center;
 
   margin: 1%;
+
+  transition: background-color 200ms ease;
+}
+
+.nav-item:hover {
+  background-color: #adb5bd;
 }
 
 /* DropDown Menu */
@@ -60,8 +66,9 @@
 .menu-item {
   height: 5vh;
   display: flex;
-  color: white;
   align-items: center;
+  justify-content: space-between;
+  color: white;
   border-radius: var(--border-radius);
   transition: background var(--speed);
   padding: 0.5rem;
@@ -75,12 +82,7 @@
 .tickmark,
 .arrow-right,
 .arrow-left {
-  margin-left: auto;
   font-size: clamp(7.5px, calc(1.05vw + 1.05vh), 48px);
-}
-
-.tickmark {
-  margin-left: auto;
 }
 
 /* Nav Slider */
@@ -93,7 +95,7 @@
   color: white;
   margin-left: auto;
   flex-basis: 10%;
-  transition: opacity 500ms ease-out;
+  transition: opacity 500ms ease-out, background-color 200ms ease-in;
 }
 
 .nav-slider-item-text {
@@ -145,7 +147,12 @@
   left: 42.5%;
   width: 15%;
   background-color: #0096c7;
-  transition: all 400ms ease-out;
+  transition: background-color 400ms ease-out, filter 200ms ease-in;
+}
+
+.visualize-button:hover {
+  filter: brightness(110%);
+  background-color: #0096c7;
 }
 
 /* Greyed out the button */
@@ -166,18 +173,23 @@
 /* Highlights the buttons */
 .highlight {
   background-color: #f48c06;
-  transition: all 400ms ease-out;
+  transition: all 200ms ease-out;
+}
+
+.highlight:hover {
+  background-color: #f48c06;
+  filter: brightness(125%);
 }
 
 /* Enable multiple targets */
 .enable-multiple-targets {
   background-color: #6c757d;
-  transition: all 400ms ease-out;
+  transition: opacity 400ms ease-out, background-color 200ms ease-in;
 }
 
 .disable-multiple-targets {
   background-color: #484a4d;
-  transition: all 400ms ease-out;
+  transition: opacity 400ms ease-out;
 }
 
 .should-generate {
