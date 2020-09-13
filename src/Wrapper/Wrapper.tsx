@@ -7,11 +7,13 @@ interface WrapperProps {
   classNames: string;
   in: boolean;
   unmountOnExit: boolean;
+  divClassName: string;
   appear?: boolean;
 }
 
 export const WrapperCSSTransition: React.FC<WrapperProps> = ({
   handleEnter,
+  divClassName,
   ...props
 }) => {
   const nodeRef = useRef<HTMLDivElement>(null);
@@ -25,7 +27,7 @@ export const WrapperCSSTransition: React.FC<WrapperProps> = ({
 
   return (
     <CSSTransition nodeRef={nodeRef} {...props} onEnter={calcHeight}>
-      <div className="menu" ref={nodeRef}>
+      <div className={divClassName} ref={nodeRef}>
         {props.children}
       </div>
     </CSSTransition>

@@ -23,6 +23,7 @@ import {
   reconstructGrid,
 } from "../helperFunctions/constructGrid";
 import { WrapperCSSTransition } from "../Wrapper/Wrapper";
+import { Tutorial } from "../Tutorial/Tutorial";
 
 const NUMBER_OF_COLUMNS: number = 28;
 const NUMBER_OF_ROWS: number = 13;
@@ -56,6 +57,9 @@ const [firstpairGrid, mazeGraph] = generateMazeGraph(
 
 // Component rendering everything in the webpage.
 const Visualizer: React.FC = () => {
+  // State managing the tutorial of the project
+  const [showTutorial, setShowTutorial] = useState(true);
+
   const gridRef = useRef(firstGrid);
   // States managing the grid
   const [grid, setGrid] = useState(firstGrid);
@@ -70,7 +74,7 @@ const Visualizer: React.FC = () => {
   const [numberOfTargets, setNumberOfTargets] = useState(1);
   const [shouldGenerateMaze, setShouldGenerateMaze] = useState(false);
   const didMount = useRef(false);
-  const [showNumbers, setShowNumbers] = useState(false);
+  const [showNumbers, setShowNumbers] = useState(true);
 
   // States of the start and end nodes
   const [startNode, setStartNode] = useState(firstStartNode);
@@ -506,6 +510,7 @@ const Visualizer: React.FC = () => {
               unmountOnExit
               timeout={500}
               classNames="menu-primary"
+              divClassName="menu"
               handleEnter={setHeight}
               appear
             >
@@ -523,6 +528,7 @@ const Visualizer: React.FC = () => {
               unmountOnExit
               timeout={500}
               classNames="menu-unweighted"
+              divClassName="menu"
               handleEnter={setHeight}
             >
               <DropDownItem
@@ -566,6 +572,7 @@ const Visualizer: React.FC = () => {
               unmountOnExit
               timeout={500}
               classNames="menu-weighted"
+              divClassName="menu"
               handleEnter={setHeight}
             >
               <DropDownItem
@@ -597,6 +604,7 @@ const Visualizer: React.FC = () => {
               unmountOnExit
               timeout={500}
               classNames="menu-unweighted"
+              divClassName="menu"
               handleEnter={setHeight}
             >
               <DropDownItem
@@ -625,7 +633,9 @@ const Visualizer: React.FC = () => {
           </DropDownMenu>
         </NavItem>
       </NavBar>
-
+      {showTutorial && (
+        <Tutorial handleDismiss={() => setShowTutorial(!showTutorial)} />
+      )}
       <Grid
         grid={grid}
         pairGrid={pairGrid}

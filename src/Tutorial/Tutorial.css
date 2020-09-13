@@ -1,0 +1,94 @@
+/* Style the list elements */
+ul {
+  list-style-type: disc;
+  margin-left: 2vw;
+}
+
+/* Style the panel of the tutorial */
+.tutorial-panel {
+  position: absolute;
+  left: 25%;
+
+  display: flex;
+  align-items: flex-end;
+  width: 46%;
+  height: 78%;
+
+  background-color: #edf2fb;
+  z-index: 100;
+
+  border-radius: 5%;
+  border: 2px solid #e0e1dd;
+
+  padding: 2% 2%;
+
+  font-size: 0.9em;
+}
+
+/* Style the pages of the tutorial */
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 90%;
+  width: 100%;
+  text-align: left;
+  padding: 5% 5%;
+}
+
+/* Style the title */
+.big-title {
+  position: absolute;
+  top: 3vh;
+  text-align: center;
+}
+
+/* Style the emojis */
+.emoji-container {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.tutorial-emoji {
+  font-size: clamp(32px, calc(5vh + 5vw), 128px);
+}
+
+/* Style the button */
+.button {
+  border: 0px solid white;
+  border-radius: 1em;
+  background-color: #484a4d;
+  color: white;
+
+  height: 2em;
+  width: 6em;
+  font-size: 1.2em;
+
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #adb5bd;
+  transition: background-color 200ms ease-in;
+}
+
+.button-next {
+  position: absolute;
+  bottom: 2vh;
+  right: 2vh;
+}
+
+.button-prev {
+  position: absolute;
+  bottom: 2vh;
+  left: 2vh;
+}
+
+/* Style the dismiss button */
+.dismiss-button {
+  position: absolute;
+  bottom: 2vh;
+  opacity: 0.5;
+}
