@@ -168,7 +168,7 @@ export const DropDownToggleSwich: React.FC<DropDownToggleSwitchProps> = (
       <label className="switch">
         <input
           type="checkbox"
-          defaultValue={props.shouldShowWeights ? 0 : 1}
+          checked={props.shouldShowWeights}
           onChange={props.handleChange}
         />
         <span className="switch-slider round"></span>

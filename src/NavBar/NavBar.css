@@ -57,7 +57,7 @@
 }
 
 .menu-item {
-  height: 50px;
+  height: 5vh;
   display: flex;
   color: white;
   align-items: center;
@@ -71,9 +71,13 @@
   background: #525357;
 }
 
+.arrow-right {
+  margin-left: auto;
+}
+
 /* Slider items */
 .slider-item {
-  height: 75px;
+  height: 7.5vh;
   display: flex;
   flex-direction: column;
   color: white;

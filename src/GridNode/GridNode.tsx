@@ -9,8 +9,8 @@ interface Props {
   node: node;
   neighbors: [[number, number], number][];
   mouseState: boolean;
-  handleMouseDown: (x: number, y: number) => void;
-  handleMouseEnter: (x: number, y: number) => void;
+  handleMouseDown: (currentNode: node) => void;
+  handleMouseEnter: (currentNode: node) => void;
   showNumbers: boolean;
 }
 
@@ -56,8 +56,8 @@ export const _GridNode: React.FC<Props> = ({
   return (
     <div
       className={"grid-node" + getAddedClassName(neighbors, node)}
-      onMouseDown={(e) => handleMouseDown(node.x, node.y)}
-      onMouseEnter={(e) => handleMouseEnter(node.x, node.y)}
+      onMouseDown={(e) => handleMouseDown(node)}
+      onMouseEnter={(e) => handleMouseEnter(node)}
     >
       <span
         role="img"
@@ -76,7 +76,7 @@ export const _GridNode: React.FC<Props> = ({
         neighbors.find((neighbor) => neighbor[0][0] === node.x + 1) &&
         ensure(neighbors.find((neighbor) => neighbor[0][0] === node.x + 1))[1] >
           1 && (
-          <span className={"number-bottom"}>
+          <span className="number-bottom">
             {
               ensure(
                 neighbors.find((neighbor) => neighbor[0][0] === node.x + 1)

@@ -82,6 +82,7 @@ const Visualizer: React.FC = () => {
 
   // State of the mouse
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
+  const draggedNode = useRef(startNode);
 
   // This function is there to visualize the algorithm chosen in the drop down menu
   const visualizeSingleTargetAlgorithm: (
@@ -308,11 +309,11 @@ const Visualizer: React.FC = () => {
   };
 
   // toggle the start node in the grid
-  const toggleStartNode: (x: number, y: number) => void = (x, y) => {
+  const toggleStartNode: (currentNode: node) => void = (currentNode) => {
     const [newGrid, newStartNode, newTargetList] = reconstructGrid(
       NUMBER_OF_COLUMNS,
       NUMBER_OF_ROWS,
-      [x, y],
+      [currentNode.x, currentNode.y],
       targetList
     );
     for (let x: number = 0; x < newGrid.length; x++) {
@@ -325,17 +326,58 @@ const Visualizer: React.FC = () => {
     setGrid(newGrid);
   };
 
+  const toggleNode: (currentNode: node) => void = (currentNode) => {
+    let oldStartNode: node = startNode,
+      oldTargetList: node[] = targetList.slice();
+    if (draggedNode.current === startNode) {
+      oldStartNode = currentNode;
+    } else {
+      const isTargetNode: boolean = targetList.find(
+        (targetNode) => targetNode === currentNode
+      )
+        ? true
+        : false;
+      if (!isTargetNode) {
+        oldTargetList = oldTargetList.filter(
+          (targetNode) => targetNode !== draggedNode.current
+        );
+        oldTargetList.push(currentNode);
+      }
+    }
+    const [newGrid, newStartNode, newTargetList] = reconstructGrid(
+      NUMBER_OF_COLUMNS,
+      NUMBER_OF_ROWS,
+      [oldStartNode.x, oldStartNode.y],
+      oldTargetList
+    );
+    for (let x: number = 0; x < newGrid.length; x++) {
+      for (let y: number = 0; y < newGrid[0].length; y++) {
+        gridRef.current[x][y] = newGrid[x][y];
+      }
+    }
+    draggedNode.current = newGrid[currentNode.x][currentNode.y];
+    setStartNode(newStartNode);
+    setTargetList(newTargetList);
+    setGrid(newGrid);
+  };
+
   // handles the case when the mouse button is down
-  const handleMouseDown: (x: number, y: number) => void = (x, y) => {
-    if (grid[x][y] === startNode) {
+  const handleMouseDown: (currentNode: node) => void = (currentNode) => {
+    const isTargetNode: boolean = targetList.find(
+      (targetNode) => targetNode === currentNode
+    )
+      ? true
+      : false;
+    if (currentNode === startNode || isTargetNode) {
       setMouseIsPressed(true);
+      draggedNode.current = currentNode;
     }
   };
 
   // handles the case whan the mouse button is down and you enter a node
-  const handleMouseEnter: (x: number, y: number) => void = (x, y) => {
+  const handleMouseEnter: (currentNode: node) => void = (currentNode) => {
     if (mouseIsPressed) {
-      toggleStartNode(x, y);
+      toggleNode(currentNode);
     }
   };
 
@@ -403,7 +445,7 @@ const Visualizer: React.FC = () => {
             <DropDownSlider
               text="Mud Weight"
               minValue={1.1}
-              maxValue={3}
+              maxValue={5}
               step={0.1}
               defaultValue={mudWeight}
               handleChange={setMudWeight}
@@ -463,10 +505,12 @@ const Visualizer: React.FC = () => {
               appear
             >
               <DropDownItem handleClick={handleMenuChange("unweighted")}>
-                Algorithms for unweighted graphs
+                <p>Algorithms for unweighted graphs</p>
+                <p className="arrow-right">{">>>"}</p>
               </DropDownItem>
               <DropDownItem handleClick={handleMenuChange("weighted")}>
-                Algorithms for weighted graphs
+                <p>Algorithms for weighted graphs</p>
+                <p className="arrow-right">{">>>"}</p>
               </DropDownItem>
             </WrapperCSSTransition>
             <WrapperCSSTransition

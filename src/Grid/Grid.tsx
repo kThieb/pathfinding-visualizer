@@ -9,8 +9,8 @@ interface Props {
   maze: Map<[number, number], [[number, number], number][]>;
   pairGrid: [number, number][][];
   mouseState: boolean;
-  handleMouseDown: (x: number, y: number) => void;
-  handleMouseEnter: (x: number, y: number) => void;
+  handleMouseDown: (currentNode: node) => void;
+  handleMouseEnter: (currentNode: node) => void;
   showNumbers: boolean;
 }
 

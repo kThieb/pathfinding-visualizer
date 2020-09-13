@@ -184,14 +184,25 @@
 /* style the number */
 .number-bottom {
   position: absolute;
-  bottom: -1.3vh;
+  bottom: -0.7vw;
   z-index: 2;
   color: rgb(195, 142, 112, 0.8);
+  animation: fadeInNumbers 500ms ease-out;
 }
 
 .number-right {
   position: absolute;
-  right: -0.85vh;
+  right: -0.45vw;
   z-index: 2;
   color: rgb(195, 142, 112, 0.8);
+  animation: fadeInNumbers 1000ms ease-out;
+}
+
+@keyframes fadeInNumbers {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
