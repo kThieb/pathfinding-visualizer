@@ -4,6 +4,7 @@ import { bfs } from "./singleTarget/bfs";
 import { dijkstra } from "./singleTarget/dijkstra";
 import { aStar } from "./singleTarget/aStar";
 import { greedy } from "./multipleTarget/greedy";
+import { bruteForceTSP } from "./multipleTarget/bruteForce";
 
 export const singleTargetAlgorithms: {
   [key: string]: (
@@ -27,7 +28,8 @@ export const multipleTargetsAlgorithms: {
     mazeGraph: Map<[number, number], [[number, number], number][]>,
     startNode: node,
     targetList: node[]
-  ) => [node[], node[]][];
+  ) => [[node[], node[]][], number];
 } = {
-  "Nearest Neighbors (Greedy)": greedy,
+  "Nearest Neighbors Heuristic": greedy,
+  "Brute Force Algorithm": bruteForceTSP,
 };

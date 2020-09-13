@@ -82,11 +82,12 @@
   -ms-user-select: none;
   user-select: none;
   animation: squareChangeAnim 500ms ease;
+  z-index: 1;
 }
 
 @keyframes squareChangeAnim {
   0% {
-    transform: scale(0.5);
+    transform: scale(0);
   }
 
   75% {
@@ -95,6 +96,29 @@
 
   100% {
     transform: scale(1);
+  }
+}
+
+.no-content {
+  position: absolute;
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  opacity: 0;
+  transition: opacity 500ms ease-out;
+}
+
+@keyframes squareDisapearAnim {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0);
   }
 }
 

@@ -1,6 +1,6 @@
 /* NavBar */
 .navbar {
-  height: 7.5vh;
+  height: 10vh;
   background-color: var(--bg);
   border-bottom: var(--border);
 }
@@ -21,9 +21,10 @@
   color: white;
 
   flex-basis: 7.5%;
-  height: 5vh;
+  height: 7vh;
 
   background-color: #484a4d;
+  padding: 0 0.5vw;
   border-radius: 10px;
 
   display: flex;
@@ -71,8 +72,38 @@
   background: #525357;
 }
 
-.arrow-right {
+.tickmark,
+.arrow-right,
+.arrow-left {
   margin-left: auto;
+  font-size: clamp(7.5px, calc(1.05vw + 1.05vh), 48px);
+}
+
+.tickmark {
+  margin-left: auto;
+}
+
+/* Nav Slider */
+
+.nav-slider {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  color: white;
+  margin-left: auto;
+  flex-basis: 10%;
+  transition: opacity 500ms ease-out;
+}
+
+.nav-slider-item-text {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.show-nav-slider {
+  opacity: 1;
 }
 
 /* Slider items */
@@ -80,9 +111,9 @@
   height: 7.5vh;
   display: flex;
   flex-direction: column;
-  color: white;
   justify-content: space-around;
   align-items: center;
+  color: white;
   border-radius: var(--border-radius);
   transition: background var(--speed);
   padding: 0.5rem;
@@ -117,16 +148,19 @@
   transition: all 400ms ease-out;
 }
 
-/* Style the algorithms button */
-#algorithms {
-  margin-left: auto;
-}
-
 /* Greyed out the button */
 .greyed-out {
   opacity: 0.3;
   transition: all 400ms ease-out;
   cursor: default;
+  pointer-events: none;
+}
+
+/* to hide the nav slider */
+.hide-nav-slider {
+  cursor: default;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Highlights the buttons */

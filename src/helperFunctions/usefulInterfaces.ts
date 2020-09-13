@@ -4,6 +4,7 @@ export interface node {
   y: number;
   isStart: boolean;
   hasCheese: boolean;
+  hasRat: boolean;
   isVisited: boolean;
   isShortestPath: boolean;
   successorPosition: string;

@@ -25,7 +25,9 @@ export const WrapperCSSTransition: React.FC<WrapperProps> = ({
 
   return (
     <CSSTransition nodeRef={nodeRef} {...props} onEnter={calcHeight}>
-      <div ref={nodeRef}>{props.children}</div>
+      <div className="menu" ref={nodeRef}>
+        {props.children}
+      </div>
     </CSSTransition>
   );
 };

@@ -9,16 +9,16 @@ export const dijkstraHelper: (
   mazeGraph: Map<[number, number], [[number, number], number][]>,
   startNode: node,
   targetList: node[]
-) => [node[], node[], node] = (
+) => [node[], node[], node, number] = (
   grid,
   pairGrid,
   mazeGraph,
   startNode,
-  targetList
+  oldTargetList
 ) => {
   const m = grid.length,
     n = grid[0].length;
-
+  const targetList: node[] = oldTargetList.slice();
   // Initialize the distances array
   const distances: number[][] = [];
   for (let i: number = 0; i < m; i++) {
@@ -61,7 +61,12 @@ export const dijkstraHelper: (
     if (targetList.find((targetNode) => targetNode === currentNode)) {
       // Retrieve the shortest path
       const shortestPath = retrievePath(predecessor, startNode, currentNode);
-      return [visited, shortestPath, currentNode];
+      return [
+        visited,
+        shortestPath,
+        currentNode,
+        distances[currentNode.x][currentNode.y],
+      ];
     }
 
     // Get the coordinates of the nodes
@@ -101,7 +106,32 @@ export const dijkstraHelper: (
       }
     }
   }
-  return [visited, [], startNode];
+  return [visited, [], startNode, 0];
+};
+
+export const getDistanceMatrix: (
+  grid: node[][],
+  pairGrid: [number, number][][],
+  mazeGraph: Map<[number, number], [[number, number], number][]>,
+  targetList: node[]
+) => number[][] = (grid, pairGrid, mazeGraph, targetList) => {
+  const result: number[][] = [];
+  for (let i: number = 0; i < targetList.length; i++) {
+    result.push([]);
+    for (let j: number = 0; j < targetList.length; j++) {
+      const distance = dijkstraHelper(
+        grid,
+        pairGrid,
+        mazeGraph,
+        targetList[i],
+        targetList.filter((targetNode: node) => targetNode === targetList[j])
+      )[3];
+      if (i !== j) result[i].push(distance);
+      else result[i].push(0);
+    }
+  }
+
+  return result;
 };
 
 export const dijkstra: (

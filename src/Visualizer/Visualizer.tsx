@@ -9,6 +9,7 @@ import {
   DropDownSlider,
   NavButton,
   DropDownToggleSwich,
+  NavSlider,
 } from "../NavBar/NavBar";
 import { node } from "../helperFunctions/usefulInterfaces";
 import {
@@ -22,20 +23,23 @@ import {
   reconstructGrid,
 } from "../helperFunctions/constructGrid";
 import { WrapperCSSTransition } from "../Wrapper/Wrapper";
+import { ReactComponent as TickMark } from "../icon/White_check.svg";
 
 const NUMBER_OF_COLUMNS: number = 28;
 const NUMBER_OF_ROWS: number = 13;
 const VISITED_ANIMATION_TIMEOUT: number = 35;
 const PATH_ANIMATION_TIMEOUT: number = 125;
-
+const FIRST_START_NODE: [number, number] = [6, 3];
+const FIRST_END_NODE: [number, number] = [6, 24];
 // We define these constants out of the functional component
 // that the App uses to avoid re-running the functions to create
 // these each time there is a re-render
+
 const [firstGrid, firstStartNode, firstTargetList] = constructGrid(
   NUMBER_OF_COLUMNS,
   NUMBER_OF_ROWS,
-  [6, 3],
-  [6, 24],
+  FIRST_START_NODE,
+  FIRST_END_NODE,
   0
 );
 
@@ -76,7 +80,7 @@ const Visualizer: React.FC = () => {
     "Dijkstra's algorithm"
   );
   const [multipleTargetsAlgorithm, setMultipleTargetsAlgorithm] = useState(
-    "Nearest Neighbors (Greedy)"
+    "Nearest Neighbors Heuristic"
   );
   const [height, setHeight] = useState(undefined);
 
@@ -102,6 +106,7 @@ const Visualizer: React.FC = () => {
           ...gridRef.current[x][y],
           isVisited: true,
         };
+        gridRef.current = newGrid;
         setGrid(newGrid);
       }, timeout + VISITED_ANIMATION_TIMEOUT * i);
     }
@@ -110,7 +115,7 @@ const Visualizer: React.FC = () => {
     for (let i: number = 0; i < m; i++) {
       setTimeout(() => {
         const newGrid: node[][] = gridRef.current.slice();
-        let successor: node = i < m - 1 ? path[i + 1] : path[i];
+        const successor: node = i < m - 1 ? path[i + 1] : path[i];
         const node: node = path[i];
         // define the x and y of the current node
         const x: number = node.x;
@@ -122,6 +127,7 @@ const Visualizer: React.FC = () => {
           isVisited: false,
           successorPosition: getSuccessorPosition(node, successor),
         };
+        gridRef.current = newGrid;
         setGrid(newGrid);
       }, timeout + VISITED_ANIMATION_TIMEOUT * n + PATH_ANIMATION_TIMEOUT * i + 500);
     }
@@ -154,7 +160,7 @@ const Visualizer: React.FC = () => {
         currentTimeout
       );
 
-      currentTimeout += 1250;
+      currentTimeout += visited.length > 0 ? 1250 : 0;
       setTimeout(() => {
         const newGrid: node[][] = gridRef.current.slice();
         for (let x: number = 0; x < newGrid.length; x++) {
@@ -165,6 +171,7 @@ const Visualizer: React.FC = () => {
             };
           }
         }
+        gridRef.current = newGrid;
         setGrid(newGrid);
       }, currentTimeout);
       currentTimeout += 1000;
@@ -206,7 +213,7 @@ const Visualizer: React.FC = () => {
       }
       const allVisitedAndPaths: [node[], node[]][] = multipleTargetsAlgorithms[
         multipleTargetsAlgorithm
-      ](grid, pairGrid, maze, startNode, targetList.slice());
+      ](grid, pairGrid, maze, startNode, targetList.slice())[0];
       const timeout: number = visualizeMultipleTargetsAlgorithm(
         allVisitedAndPaths
       );
@@ -250,6 +257,7 @@ const Visualizer: React.FC = () => {
           gridRef.current[i][j] = newGrid[i][j];
         }
       }
+      gridRef.current = newGrid;
       setGrid(newGrid);
       setStartNode(newStartNode);
       setTargetList(newTargetList);
@@ -279,10 +287,11 @@ const Visualizer: React.FC = () => {
           NUMBER_OF_COLUMNS,
           NUMBER_OF_ROWS,
           [startNode.x, startNode.y],
-          [6, 24],
+          FIRST_END_NODE,
           0
         );
       }
+      gridRef.current = newGrid;
       setGrid(newGrid);
       setStartNode(newStartNode);
       setTargetList(newTargetList);
@@ -306,24 +315,6 @@ const Visualizer: React.FC = () => {
       );
       setNumberOfTargets(numberOfTargets > 1 ? 1 : 5);
     }
-  };
-
-  // toggle the start node in the grid
-  const toggleStartNode: (currentNode: node) => void = (currentNode) => {
-    const [newGrid, newStartNode, newTargetList] = reconstructGrid(
-      NUMBER_OF_COLUMNS,
-      NUMBER_OF_ROWS,
-      [currentNode.x, currentNode.y],
-      targetList
-    );
-    for (let x: number = 0; x < newGrid.length; x++) {
-      for (let y: number = 0; y < newGrid[0].length; y++) {
-        gridRef.current[x][y] = newGrid[x][y];
-      }
-    }
-    setStartNode(newStartNode);
-    setTargetList(newTargetList);
-    setGrid(newGrid);
   };
 
   const toggleNode: (currentNode: node) => void = (currentNode) => {
@@ -358,6 +349,7 @@ const Visualizer: React.FC = () => {
     draggedNode.current = newGrid[currentNode.x][currentNode.y];
     setStartNode(newStartNode);
     setTargetList(newTargetList);
+    gridRef.current = newGrid;
     setGrid(newGrid);
   };
 
@@ -368,7 +360,7 @@ const Visualizer: React.FC = () => {
     )
       ? true
       : false;
-    if (currentNode === startNode || isTargetNode) {
+    if (isVisualized === 0 && (currentNode === startNode || isTargetNode)) {
       setMouseIsPressed(true);
       draggedNode.current = currentNode;
     }
@@ -427,7 +419,7 @@ const Visualizer: React.FC = () => {
         >
           <DropDownMenu left={true}>
             <DropDownSlider
-              text="Density of walls"
+              text="Density of walls:"
               minValue={0}
               maxValue={1}
               step={0.01}
@@ -435,7 +427,7 @@ const Visualizer: React.FC = () => {
               handleChange={setWallsDensity}
             ></DropDownSlider>
             <DropDownSlider
-              text="Density of mud"
+              text="Density of mud:"
               minValue={0}
               maxValue={1}
               step={0.01}
@@ -443,7 +435,7 @@ const Visualizer: React.FC = () => {
               handleChange={setMudDensity}
             ></DropDownSlider>
             <DropDownSlider
-              text="Mud Weight"
+              text="Mud Weight:"
               minValue={1.1}
               maxValue={5}
               step={0.1}
@@ -455,26 +447,23 @@ const Visualizer: React.FC = () => {
               shouldShowWeights={showNumbers}
               handleChange={() => setShowNumbers(!showNumbers)}
             />
-            {numberOfTargets > 1 && (
-              <DropDownSlider
-                text="Number of Targets"
-                minValue={2}
-                maxValue={10}
-                step={1}
-                defaultValue={numberOfTargets}
-                handleChange={handleChangeNumberOfTargets}
-              ></DropDownSlider>
-            )}
           </DropDownMenu>
         </NavItem>
-        <NavButton
-          text={getVisualizeText()}
+        <NavSlider
+          className={
+            numberOfTargets > 1 ? "show-nav-slider" : "hide-nav-slider"
+          }
+          text="Number of Targets:"
+          minValue={2}
+          maxValue={10}
+          step={1}
+          defaultValue={numberOfTargets}
+          handleChange={handleChangeNumberOfTargets}
           isVisualized={isVisualized}
-          className="visualize-button"
-          visualizingClassName="greyed-out highlight"
-          visualizedClassName="highlight"
-          handleClick={handleVisualization}
+          visualizingClassName="greyed-out"
+          visualizedClassName="greyed-out"
         />
+
         <NavButton
           text={
             (numberOfTargets > 1 ? "Disable" : "Enable") + " Multiple Targets"
@@ -488,6 +477,14 @@ const Visualizer: React.FC = () => {
           visualizingClassName="greyed-out"
           visualizedClassName="greyed-out"
           handleClick={handleMultipleTargets}
+        />
+        <NavButton
+          text={getVisualizeText()}
+          isVisualized={isVisualized}
+          className="visualize-button"
+          visualizingClassName="greyed-out highlight"
+          visualizedClassName="highlight"
+          handleClick={handleVisualization}
         />
         <NavItem
           text="Algorithms"
@@ -506,11 +503,11 @@ const Visualizer: React.FC = () => {
             >
               <DropDownItem handleClick={handleMenuChange("unweighted")}>
                 <p>Algorithms for unweighted graphs</p>
-                <p className="arrow-right">{">>>"}</p>
+                <p className="arrow-right">{">"}</p>
               </DropDownItem>
               <DropDownItem handleClick={handleMenuChange("weighted")}>
                 <p>Algorithms for weighted graphs</p>
-                <p className="arrow-right">{">>>"}</p>
+                <p className="arrow-right">{">"}</p>
               </DropDownItem>
             </WrapperCSSTransition>
             <WrapperCSSTransition
@@ -523,20 +520,24 @@ const Visualizer: React.FC = () => {
               <DropDownItem
                 handleClick={handleMenuChange("main-single-target")}
               >
-                {"<<<"}
+                {"<"}
               </DropDownItem>
               <DropDownItem
                 handleClick={handleAlgorithmChange("Depth First Search")}
               >
                 <p>Random Depth First Search</p>
-                {singleTargetAlgorithm === "Depth First Search" ? <p>✓</p> : ""}
+                {singleTargetAlgorithm === "Depth First Search" ? (
+                  <p className="tickmark">✓</p>
+                ) : (
+                  ""
+                )}
               </DropDownItem>
               <DropDownItem
                 handleClick={handleAlgorithmChange("Breadth First Search")}
               >
                 <p>Breadth First Search</p>
                 {singleTargetAlgorithm === "Breadth First Search" ? (
-                  <p>✓</p>
+                  <p className="tickmark">✓</p>
                 ) : (
                   ""
                 )}
@@ -552,21 +553,25 @@ const Visualizer: React.FC = () => {
               <DropDownItem
                 handleClick={handleMenuChange("main-single-target")}
               >
-                {"<<<"}
+                <p className="arrow-left">{"<"}</p>
               </DropDownItem>
               <DropDownItem
                 handleClick={handleAlgorithmChange("Dijkstra's algorithm")}
               >
                 <p>Dijkstra's Algorithm</p>
                 {singleTargetAlgorithm === "Dijkstra's algorithm" ? (
-                  <p>✓</p>
+                  <p className="tickmark">✓</p>
                 ) : (
                   ""
                 )}
               </DropDownItem>
               <DropDownItem handleClick={handleAlgorithmChange("A* algorithm")}>
                 <p>A* Algorithm</p>
-                {singleTargetAlgorithm === "A* algorithm" ? <p>✓</p> : ""}
+                {singleTargetAlgorithm === "A* algorithm" ? (
+                  <p className="tickmark">✓</p>
+                ) : (
+                  ""
+                )}
               </DropDownItem>
             </WrapperCSSTransition>
             <WrapperCSSTransition
@@ -578,12 +583,22 @@ const Visualizer: React.FC = () => {
             >
               <DropDownItem
                 handleClick={handleAlgorithmChange(
-                  "Nearest Neighbors (Greedy)"
+                  "Nearest Neighbors Heuristic"
                 )}
               >
-                <p>Nearest Neighbors (Greedy)</p>
-                {multipleTargetsAlgorithm === "Nearest Neighbors (Greedy)" ? (
-                  <p>✓</p>
+                <p>Nearest Neighbors Heuristic</p>
+                {multipleTargetsAlgorithm === "Nearest Neighbors Heuristic" ? (
+                  <p className="tickmark">✓</p>
+                ) : (
+                  ""
+                )}
+              </DropDownItem>
+              <DropDownItem
+                handleClick={handleAlgorithmChange("Brute Force Algorithm")}
+              >
+                <p>Brute Force Algorithm</p>
+                {multipleTargetsAlgorithm === "Brute Force Algorithm" ? (
+                  <p className="tickmark">✓</p>
                 ) : (
                   ""
                 )}

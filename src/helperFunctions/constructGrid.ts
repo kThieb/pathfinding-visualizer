@@ -24,6 +24,7 @@ export const constructGrid: (
         y: j,
         isStart: false,
         hasCheese: false,
+        hasRat: false,
         isVisited: false,
         isShortestPath: false,
         successorPosition: "",
@@ -33,6 +34,7 @@ export const constructGrid: (
     result.push(currentRow);
   }
   result[startNode[0]][startNode[1]].isStart = true;
+  result[startNode[0]][startNode[1]].hasRat = true;
   result[endNode[0]][endNode[1]].hasCheese = true;
   let targetList: node[] = [result[endNode[0]][endNode[1]]];
   if (numberOfTargets >= 1)
@@ -70,6 +72,7 @@ export const reconstructGrid: (
         )
           ? true
           : false,
+        hasRat: false,
         isVisited: false,
         isShortestPath: false,
         successorPosition: "",
@@ -79,6 +82,7 @@ export const reconstructGrid: (
     result.push(currentRow);
   }
   result[startNode[0]][startNode[1]].isStart = true;
+  result[startNode[0]][startNode[1]].hasRat = true;
   let newTargetList: node[] = targetList.map(
     (targetNode) => result[targetNode.x][targetNode.y]
   );

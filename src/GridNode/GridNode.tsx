@@ -61,9 +61,17 @@ export const _GridNode: React.FC<Props> = ({
     >
       <span
         role="img"
-        className={node.isStart || node.hasCheese ? "content" : "no-content"}
+        aria-label="rat"
+        className={node.hasRat ? "content" : "no-content"}
       >
-        {(node.isStart ? "🐀" : "") + (node.hasCheese ? "🧀" : "")}
+        🐀
+      </span>
+      <span
+        role="img"
+        aria-label="rat"
+        className={node.hasCheese ? "content" : "no-content"}
+      >
+        🧀
       </span>
       <div className={"svg-chevron " + node.successorPosition}>
         {node.isShortestPath && !(node.isStart || node.hasCheese) ? (
