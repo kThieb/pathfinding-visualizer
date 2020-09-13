@@ -13,7 +13,7 @@ export const Tutorial: React.FC<TutorialProps> = (props) => {
       <WrapperCSSTransition
         in={activePage === "first-page"}
         unmountOnExit
-        timeout={500}
+        timeout={0}
         classNames="page-container"
         divClassName={"first-page page"}
         handleEnter={() => {}}
@@ -48,7 +48,7 @@ export const Tutorial: React.FC<TutorialProps> = (props) => {
       <WrapperCSSTransition
         in={activePage === "second-page"}
         unmountOnExit
-        timeout={500}
+        timeout={0}
         classNames="page-container"
         divClassName={"second-page page"}
         handleEnter={() => {}}
@@ -74,7 +74,7 @@ export const Tutorial: React.FC<TutorialProps> = (props) => {
             The first obstacles are the walls, the rat cannot go through those
             thin black walls.
           </h3>
-          <img alt="black-walls"></img>
+          <img alt="The walls of the maze"></img>
           <h3>
             The second obstacles are the mud. The mud is different from the
             walls: the rat can go through the mud but it will cost more energy
@@ -82,13 +82,13 @@ export const Tutorial: React.FC<TutorialProps> = (props) => {
             move through the mud costs 4 energy points. This is what I call the
             "mud weight".
           </h3>
-          <img alt="light-brown-mud"></img>
+          <img alt="The light brown mud in the maze"></img>
         </Page>
       </WrapperCSSTransition>
       <WrapperCSSTransition
         in={activePage === "third-page"}
         unmountOnExit
-        timeout={500}
+        timeout={0}
         classNames="page-container"
         divClassName={"third-page page"}
         handleEnter={() => {}}
@@ -150,7 +150,7 @@ export const Tutorial: React.FC<TutorialProps> = (props) => {
       <WrapperCSSTransition
         in={activePage === "fourth-page"}
         unmountOnExit
-        timeout={500}
+        timeout={0}
         classNames="page-container"
         divClassName={"fourth-page page"}
         handleEnter={() => {}}
@@ -169,18 +169,22 @@ export const Tutorial: React.FC<TutorialProps> = (props) => {
             button on the top-right corner. You can choose which algorithm you
             want to run on the dropdown menu labeled "Algorithms".
           </h3>
-          <img alt="dropdown-algorithms"></img>
+          <img
+            src=""
+            alt="The dropdown menu of the algorithms"
+            className="gid"
+          ></img>
           <h3>
             Then you can run the visualization with the light blue "Visualize"
             button!
           </h3>
-          <img alt="visualize-button"></img>
+          <img alt="The visualize button being clicked"></img>
         </Page>
       </WrapperCSSTransition>
       <WrapperCSSTransition
         in={activePage === "fifth-page"}
         unmountOnExit
-        timeout={500}
+        timeout={0}
         classNames="page-container"
         divClassName={"fifth-page page"}
         handleEnter={() => {}}
@@ -198,18 +202,22 @@ export const Tutorial: React.FC<TutorialProps> = (props) => {
             You can choose different options regarding the maze in the dropdown
             menu labeled "Maze Options".
           </h3>
-          <img alt="dropdown-generate-maze"></img>
+          <img
+            src={require("../icon/maze-options.gif")}
+            alt="The dropdown menu of maze options"
+            className="gif"
+          ></img>
           <h3>
             Then you can generate a new maze with the changed values with the
             "Generate Maze button"
           </h3>
-          <img alt="generate-maze-button"></img>
+          <img alt="Generate maze button"></img>
         </Page>
       </WrapperCSSTransition>
       <WrapperCSSTransition
         in={activePage === "sixth-page"}
         unmountOnExit
-        timeout={500}
+        timeout={0}
         classNames="page-container"
         divClassName={"sixth-page page"}
         handleEnter={() => {}}
@@ -230,13 +238,13 @@ export const Tutorial: React.FC<TutorialProps> = (props) => {
             button on the square you want the rat on (this is essentially like
             drag and drop). The same thing works on the cheeses too!
           </h3>
-          <img alt="gif-of-drag-and-drop"></img>
+          <img alt="Demonstration of the drag and drop"></img>
         </Page>
       </WrapperCSSTransition>
       <WrapperCSSTransition
         in={activePage === "seventh-page"}
         unmountOnExit
-        timeout={500}
+        timeout={0}
         classNames="page-container"
         divClassName={"seventh-page page"}
         handleEnter={() => {}}
@@ -248,7 +256,7 @@ export const Tutorial: React.FC<TutorialProps> = (props) => {
           handleDismiss={props.handleDismiss}
         >
           <h1 className="big-title">Have fun using this tool!</h1>
-          <img alt="gif-of-drag-and-drop"></img>
+          <img alt="Have fun!"></img>
         </Page>
       </WrapperCSSTransition>
     </div>

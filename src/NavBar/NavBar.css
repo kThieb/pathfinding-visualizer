@@ -40,6 +40,15 @@
   background-color: #adb5bd;
 }
 
+/* Informations button */
+.show-tutorial {
+  padding: 0;
+  height: 5vh;
+  flex-basis: 5vh;
+  border-radius: 50%;
+  font-size: 1em;
+}
+
 /* DropDown Menu */
 .dropdown {
   position: absolute;

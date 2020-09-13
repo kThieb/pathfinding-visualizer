@@ -632,9 +632,17 @@ const Visualizer: React.FC = () => {
             </WrapperCSSTransition>
           </DropDownMenu>
         </NavItem>
+        <NavButton
+          text="Info"
+          isVisualized={isVisualized}
+          visualizedClassName=""
+          visualizingClassName=""
+          className="show-tutorial"
+          handleClick={() => setShowTutorial(!showTutorial)}
+        />
       </NavBar>
       {showTutorial && (
-        <Tutorial handleDismiss={() => setShowTutorial(!showTutorial)} />
+        <Tutorial handleDismiss={() => setShowTutorial(false)} />
       )}
       <Grid
         grid={grid}

@@ -92,3 +92,9 @@ ul {
   bottom: 2vh;
   opacity: 0.5;
 }
+
+/* Style the gif */
+.gif {
+  height: 25vh;
+  width: auto;
+}
