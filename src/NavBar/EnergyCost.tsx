@@ -13,7 +13,7 @@ export const EnergyCost: React.FC<EnergyCostProps> = (props) => {
         "distance " + (props.showDistance ? "show-distance" : "hide-distance")
       }
     >
-      <span>The path's energy cost is {props.distance}</span>
+      <span>The path's energy cost is {props.distance.toFixed(2)}</span>
     </div>
   );
 };

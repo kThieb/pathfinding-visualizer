@@ -88,7 +88,6 @@ export const dijkstraHelper: (
       let nextNode: node = grid[neighborX][neighborY];
 
       // Calculate the distance between the current node and the next node
-      // To Do: take into account the weight of the path
       let currentDistance: number = distances[currentX][currentY] + neighbor[1];
 
       // If the distance is less than the distance in the array distances,

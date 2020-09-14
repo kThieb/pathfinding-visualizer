@@ -332,8 +332,8 @@ const Visualizer: React.FC = () => {
   useEffect(toggleMultipleTargetGrid, [numberOfTargets]);
 
   // handle the change of the number of targets
-  const handleChangeNumberOfTargets: (val: number) => void = (val) => {
-    setNumberOfTargets(Math.floor(val));
+  const handleChangeNumberOfTargets: (val: any) => void = (val) => {
+    setNumberOfTargets(parseInt(val));
   };
 
   // handle the click on the multiple targets button
@@ -344,6 +344,10 @@ const Visualizer: React.FC = () => {
       );
       setNumberOfTargets(numberOfTargets > 1 ? 1 : 5);
     }
+  };
+
+  const handleMudChange: (input: any) => void = (input) => {
+    setMudWeight(parseFloat(input));
   };
 
   // Toggle the cheese or rat on the node
@@ -470,7 +474,7 @@ const Visualizer: React.FC = () => {
               maxValue={10}
               step={0.1}
               defaultValue={mudWeight}
-              handleChange={setMudWeight}
+              handleChange={handleMudChange}
             ></DropDownSlider>
             <DropDownToggleSwich
               text="Show Mud Weights ?"
