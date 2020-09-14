@@ -1,17 +1,18 @@
 {
   "files": {
-    "main.css": "/pathfinding-visualizer/static/css/main.8010418c.chunk.css",
-    "main.js": "/pathfinding-visualizer/static/js/main.04817ecb.chunk.js",
-    "main.js.map": "/pathfinding-visualizer/static/js/main.04817ecb.chunk.js.map",
+    "main.css": "/pathfinding-visualizer/static/css/main.b05808b2.chunk.css",
+    "main.js": "/pathfinding-visualizer/static/js/main.23fe3187.chunk.js",
+    "main.js.map": "/pathfinding-visualizer/static/js/main.23fe3187.chunk.js.map",
     "runtime-main.js": "/pathfinding-visualizer/static/js/runtime-main.b6ae0412.js",
     "runtime-main.js.map": "/pathfinding-visualizer/static/js/runtime-main.b6ae0412.js.map",
-    "static/js/2.a7ce6d36.chunk.js": "/pathfinding-visualizer/static/js/2.a7ce6d36.chunk.js",
-    "static/js/2.a7ce6d36.chunk.js.map": "/pathfinding-visualizer/static/js/2.a7ce6d36.chunk.js.map",
+    "static/js/2.17d42a98.chunk.js": "/pathfinding-visualizer/static/js/2.17d42a98.chunk.js",
+    "static/js/2.17d42a98.chunk.js.map": "/pathfinding-visualizer/static/js/2.17d42a98.chunk.js.map",
     "index.html": "/pathfinding-visualizer/index.html",
-    "precache-manifest.bce52069ef7c424abfb3bbf74d998e0c.js": "/pathfinding-visualizer/precache-manifest.bce52069ef7c424abfb3bbf74d998e0c.js",
+    "precache-manifest.dfa9d628098e50b0f91586cdf85b76ef.js": "/pathfinding-visualizer/precache-manifest.dfa9d628098e50b0f91586cdf85b76ef.js",
     "service-worker.js": "/pathfinding-visualizer/service-worker.js",
-    "static/css/main.8010418c.chunk.css.map": "/pathfinding-visualizer/static/css/main.8010418c.chunk.css.map",
-    "static/js/2.a7ce6d36.chunk.js.LICENSE.txt": "/pathfinding-visualizer/static/js/2.a7ce6d36.chunk.js.LICENSE.txt",
+    "static/css/main.b05808b2.chunk.css.map": "/pathfinding-visualizer/static/css/main.b05808b2.chunk.css.map",
+    "static/js/2.17d42a98.chunk.js.LICENSE.txt": "/pathfinding-visualizer/static/js/2.17d42a98.chunk.js.LICENSE.txt",
+    "static/media/Octocat.png": "/pathfinding-visualizer/static/media/Octocat.ef468e27.png",
     "static/media/chooseAlgorithm.gif": "/pathfinding-visualizer/static/media/chooseAlgorithm.4a57bca2.gif",
     "static/media/dragAndDrop.gif": "/pathfinding-visualizer/static/media/dragAndDrop.edd15b62.gif",
     "static/media/enableMultipleTargets.gif": "/pathfinding-visualizer/static/media/enableMultipleTargets.df35fb6a.gif",
@@ -21,8 +22,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.b6ae0412.js",
-    "static/js/2.a7ce6d36.chunk.js",
-    "static/css/main.8010418c.chunk.css",
-    "static/js/main.04817ecb.chunk.js"
+    "static/js/2.17d42a98.chunk.js",
+    "static/css/main.b05808b2.chunk.css",
+    "static/js/main.23fe3187.chunk.js"
   ]
 }
