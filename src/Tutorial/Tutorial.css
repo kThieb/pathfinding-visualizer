@@ -35,20 +35,39 @@
 
 /* Style the pages of the tutorial */
 .page {
+  position: absolute;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+  height: 95%;
+  width: 92%;
+}
+
+.page-interieur {
+  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 90%;
+  height: 100%;
   width: 100%;
-  text-align: justify;
-  padding: 5% 5%;
+}
+
+.page-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 80%;
+  width: 100%;
+  font-size: 0.9em;
 }
 
 /* Style the title */
 .big-title {
   position: absolute;
-  top: 3vh;
+  top: 0;
   text-align: center;
 }
 
@@ -150,28 +169,20 @@
 }
 
 /* Style the transition between the pages */
-.page {
-  width: 100%;
-}
 
 .page-container-enter {
-  position: absolute;
+  opacity: 0;
 }
-
 .page-container-enter-active {
-  visibility: none;
-  opacity: 0;
-}
-
-.page-container-enter-done {
   opacity: 1;
-  transition: all 250ms ease-in;
+  transition: all 200ms 300ms ease;
 }
-
 .page-container-exit {
-  visibility: hidden;
+  opacity: 1;
+}
+.page-container-exit-active {
   opacity: 0;
-  transition: all 250ms 250ms ease-in;
+  transition: all 200ms ease;
 }
 
 /* .page-container-exit-active {

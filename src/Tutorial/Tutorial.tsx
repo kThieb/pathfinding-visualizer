@@ -14,6 +14,7 @@ export const Tutorial: React.FC<TutorialProps> = (props) => {
       <WrapperCSSTransition
         in={activePage === "first-page"}
         unmountOnExit
+        appear
         timeout={500}
         classNames="page-container"
         divClassName={"first-page page"}
@@ -317,8 +318,8 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = (props) => {
   return (
-    <div className="page">
-      {props.children}
+    <div className="page-interieur">
+      <div className="page-content">{props.children}</div>
       {props.leftButton && (
         <button className="button button-prev" onClick={props.leftOnClick}>
           {"<"} Previous
