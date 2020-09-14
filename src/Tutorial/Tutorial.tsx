@@ -41,8 +41,11 @@ export const Tutorial: React.FC<TutorialProps> = (props) => {
           <h3 className="text">
             This is a tool I built to learn more about graph algorithm, and
             particularly Pathfinding Algorithms. There are some cool features
-            implemented.
+            implemented. Link to the source code:
           </h3>
+          <a href="https://github.com/kThieb/pathfinding-visualizer">
+            Source Code
+          </a>
           <span className="how-to-dismiss">
             <h3>
               You can skip this tutorial by clicking on "Dismiss". You can

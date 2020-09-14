@@ -14,3 +14,64 @@
   margin-top: 1vh;
   z-index: -1;
 }
+
+.link-to-github img {
+  width: 1.5em;
+  height: 1.5em;
+  transition: filter 200ms ease;
+}
+
+.link-to-github {
+  font-size: 1.1em;
+  width: 1.5em;
+  height: 1.5em;
+
+  background-color: #edf2fb;
+  border: 1px solid #e0e1dd;
+  border-radius: 50%;
+
+  position: absolute;
+  top: 10.5vh;
+  left: 1vw;
+
+  z-index: 2;
+  color: black;
+}
+
+.link-to-github:hover {
+  filter: brightness(105%);
+}
+
+.github-tooltip {
+  visibility: hidden;
+  position: absolute;
+  left: 1.5vw;
+  top: 12.5vh;
+
+  border: 0.1em solid #e0e1dd;
+  border-radius: 0.1em;
+
+  opacity: 0;
+  transition: opacity 200ms ease-in;
+
+  background-color: #edf2fb;
+
+  width: 5vw;
+  z-index: 10;
+}
+
+.github:hover .github-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.github-tooltip::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%; /* At the top of the tooltip */
+  right: 86%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #e0e1dd transparent;
+}

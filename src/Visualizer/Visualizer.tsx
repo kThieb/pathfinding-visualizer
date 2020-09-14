@@ -656,7 +656,6 @@ const Visualizer: React.FC = () => {
           </DropDownMenu>
         </NavItem>
       </NavBar>
-
       <Tutorial
         handleDismiss={() => setShowTutorial(false)}
         showTutorial={showTutorial}
@@ -675,6 +674,15 @@ const Visualizer: React.FC = () => {
           showTutorial={showTutorial}
           handleClick={() => setShowTutorial(!showTutorial)}
         />
+        <div className="github">
+          <a
+            href="https://github.com/kThieb/pathfinding-visualizer"
+            className="link-to-github"
+          >
+            <img alt="octocat" src={require("../icon/Octocat.png")}></img>
+          </a>
+          <p className="github-tooltip">Link to Source Code</p>
+        </div>
       </Grid>
     </div>
   );

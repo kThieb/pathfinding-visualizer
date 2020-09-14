@@ -9,7 +9,7 @@
 .info-button {
   width: 1.5em;
   height: 1.5em;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   border: 1px solid #e0e1dd;
   border-radius: 1em;
   background-color: #edf2fb;
@@ -17,11 +17,12 @@
   font-size: 1.2em;
 
   cursor: pointer;
+  padding: 0;
 }
 
 .info-button:hover {
   transition: filter 200ms ease-in;
-  filter: brightness(115%);
+  filter: brightness(105%);
 }
 
 .info-button:active,
@@ -62,9 +63,4 @@
 .info:hover .info-tooltip {
   visibility: visible;
   opacity: 1;
-}
-
-.triangle {
-  position: absolute;
-  transform: rotate(45deg);
 }
