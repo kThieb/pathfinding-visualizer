@@ -18,11 +18,19 @@ ul {
   z-index: 100;
 
   border-radius: 5%;
-  border: 2px solid #e0e1dd;
+  border: 0.2em solid #e0e1dd;
 
   padding: 2% 2%;
 
   font-size: 0.9em;
+  overflow: hidden;
+  transition: opacity 200ms ease-in;
+}
+
+/* Style the hide state */
+.hide {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Style the pages of the tutorial */
@@ -33,7 +41,7 @@ ul {
   align-items: center;
   height: 90%;
   width: 100%;
-  text-align: left;
+  text-align: justify;
   padding: 5% 5%;
 }
 
@@ -55,6 +63,13 @@ ul {
   font-size: clamp(32px, calc(5vh + 5vw), 128px);
 }
 
+/* Style the how to dismiss span */
+.how-to-dismiss {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /* Style the button */
 .button {
   border: 0px solid white;
@@ -72,6 +87,11 @@ ul {
 .button:hover {
   background-color: #adb5bd;
   transition: background-color 200ms ease-in;
+}
+
+.button:active,
+.button:focus {
+  outline: none;
 }
 
 .button-next {
@@ -93,8 +113,69 @@ ul {
   opacity: 0.5;
 }
 
-/* Style the gif */
-.gif {
-  height: 25vh;
+/* Style the images of wall and mud */
+.img {
+  border-radius: 0.2em;
+  border: 0.1em solid #e0e1dd;
+  height: 10vh;
   width: auto;
+  align-self: center;
 }
+
+/* Style the gif */
+
+.gif {
+  border-radius: 0.2em;
+  border: 0.1em solid #e0e1dd;
+}
+
+.gif-multiple-targets {
+  height: 7vh;
+}
+
+.gif-choose-algorithm {
+  height: 25vh;
+}
+
+.gif-maze-options {
+  height: 40vh;
+}
+
+.gif-drag-and-drop {
+  max-width: 100%;
+}
+
+.gif-have-fun {
+  max-width: 100%;
+}
+
+/* Style the transition between the pages */
+.page {
+  width: 100%;
+}
+
+.page-container-enter {
+  position: absolute;
+}
+
+.page-container-enter-active {
+  visibility: none;
+  opacity: 0;
+}
+
+.page-container-enter-done {
+  opacity: 1;
+  transition: all 250ms ease-in;
+}
+
+.page-container-exit {
+  visibility: hidden;
+  opacity: 0;
+  transition: all 250ms 250ms ease-in;
+}
+
+/* .page-container-exit-active {
+  visibility: hidden;
+  opacity: 0;
+  transition: all 250ms 250ms ease-in;
+} */

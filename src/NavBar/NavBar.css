@@ -52,7 +52,7 @@
 /* DropDown Menu */
 .dropdown {
   position: absolute;
-  top: 7.2vh;
+  top: 9.5vh;
   width: 20vw;
   transform: translateX(-35%);
   background-color: var(--bg);
@@ -153,14 +153,16 @@
 
 .visualize-button {
   position: absolute;
-  left: 42.5%;
+  left: 50%;
+  transform: translateX(calc(-50% - 0.25vw));
+  -webkit-transform: translateX(calc(-50% - 0.25vw));
   width: 15%;
   background-color: #0096c7;
   transition: background-color 400ms ease-out, filter 200ms ease-in;
 }
 
 .visualize-button:hover {
-  filter: brightness(110%);
+  filter: brightness(115%);
   background-color: #0096c7;
 }
 

@@ -22,6 +22,7 @@ export const Grid: React.FC<Props> = ({
   handleMouseDown,
   handleMouseEnter,
   showNumbers,
+  children,
 }) => {
   // Renders the grid in the DOM thanks to the grid state in the App component
   return (
@@ -45,6 +46,7 @@ export const Grid: React.FC<Props> = ({
           </div>
         );
       })}
+      {children}
     </div>
   );
 };

@@ -1,16 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Visualizer.css";
 import { Grid } from "../Grid/Grid";
-import {
-  NavBar,
-  NavItem,
-  DropDownMenu,
-  DropDownItem,
-  DropDownSlider,
-  NavButton,
-  DropDownToggleSwich,
-  NavSlider,
-} from "../NavBar/NavBar";
+import { NavBar } from "../NavBar/NavBar";
+
 import { node } from "../helperFunctions/usefulInterfaces";
 import {
   singleTargetAlgorithms,
@@ -24,6 +16,14 @@ import {
 } from "../helperFunctions/constructGrid";
 import { WrapperCSSTransition } from "../Wrapper/Wrapper";
 import { Tutorial } from "../Tutorial/Tutorial";
+import { NavButton } from "../NavBar/NavButton";
+import { DropDownItem } from "../NavBar/DropDownAlgo";
+import { DropDownMenu } from "../NavBar/DropDownMenu";
+import { DropDownSlider } from "../NavBar/DropDownSlider";
+import { DropDownToggleSwich } from "../NavBar/DropDownToggleSwitch";
+import { NavItem } from "../NavBar/NavItem";
+import { NavSlider } from "../NavBar/NavSlider";
+import { InfoButton } from "../Tutorial/InfoButton";
 
 const NUMBER_OF_COLUMNS: number = 28;
 const NUMBER_OF_ROWS: number = 13;
@@ -632,18 +632,11 @@ const Visualizer: React.FC = () => {
             </WrapperCSSTransition>
           </DropDownMenu>
         </NavItem>
-        <NavButton
-          text="Info"
-          isVisualized={isVisualized}
-          visualizedClassName=""
-          visualizingClassName=""
-          className="show-tutorial"
-          handleClick={() => setShowTutorial(!showTutorial)}
-        />
       </NavBar>
-      {showTutorial && (
-        <Tutorial handleDismiss={() => setShowTutorial(false)} />
-      )}
+
+      
+      <Tutorial handleDismiss={() => setShowTutorial(false)} showTutorial={showTutorial}/>
+    
       <Grid
         grid={grid}
         pairGrid={pairGrid}
@@ -652,7 +645,12 @@ const Visualizer: React.FC = () => {
         handleMouseDown={handleMouseDown}
         handleMouseEnter={handleMouseEnter}
         showNumbers={showNumbers}
-      />
+      >
+        <InfoButton
+          showTutorial={showTutorial}
+          handleClick={() => setShowTutorial(!showTutorial)}
+        />
+      </Grid>
     </div>
   );
 };
