@@ -9,7 +9,13 @@ export const aStar: (
   mazeGraph: Map<[number, number], [[number, number], number][]>,
   startNode: node,
   targetList: node[]
-) => [node[], node[]] = (grid, pairGrid, mazeGraph, startNode, targetList) => {
+) => [[node[], node[]], number] = (
+  grid,
+  pairGrid,
+  mazeGraph,
+  startNode,
+  targetList
+) => {
   const m = grid.length,
     n = grid[0].length;
   const endNode: node = targetList[0];
@@ -59,7 +65,7 @@ export const aStar: (
     if (currentNode === endNode) {
       // Retrieve the shortest path
       const shortestPath = retrievePath(predecessor, startNode, endNode);
-      return [visited, shortestPath];
+      return [[visited, shortestPath], distances[endNode.x][endNode.y]];
     }
 
     // Get the coordinates of the nodes
@@ -98,7 +104,7 @@ export const aStar: (
       }
     }
   }
-  return [visited, []];
+  return [[visited, []], 0];
 };
 
 const manhattanDistance: (a: node, b: node) => number = (a, b) => {

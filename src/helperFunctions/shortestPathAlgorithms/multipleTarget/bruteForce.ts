@@ -87,7 +87,7 @@ const getTrueOptimalPath: (
   for (let i: number = 0; i < optimalPath.length - 1; i++) {
     let path = dijkstra(grid, pairGrid, mazeGraph, optimalPath[i], [
       optimalPath[i + 1],
-    ])[1];
+    ])[0][1];
     actualPath.push([[], path.slice()]);
   }
   return actualPath;

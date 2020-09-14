@@ -16,7 +16,7 @@ interface NavSliderProps {
 
 export const NavSlider: React.FC<NavSliderProps> = (props) => {
   return (
-    <div
+    <li
       className={
         "nav-slider nav-item " +
         props.className +
@@ -41,6 +41,6 @@ export const NavSlider: React.FC<NavSliderProps> = (props) => {
         step={props.step}
         onChange={(e) => props.handleChange(e.target.value)}
       ></input>
-    </div>
+    </li>
   );
 };

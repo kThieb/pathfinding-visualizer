@@ -1,5 +1,5 @@
 import { node } from "../../usefulInterfaces";
-import { retrieveTwoEndedPath } from "../retrievePath";
+import { retrieveDistance, retrieveTwoEndedPath } from "../retrievePath";
 import { ensure } from "../../ensureNotUndefined";
 
 export const twoEndedBfs: (
@@ -8,7 +8,13 @@ export const twoEndedBfs: (
   mazeGraph: Map<[number, number], [[number, number], number][]>,
   startNode: node,
   targetList: node[]
-) => [node[], node[]] = (grid, pairGrid, mazeGraph, startNode, targetList) => {
+) => [[node[], node[]], number] = (
+  grid,
+  pairGrid,
+  mazeGraph,
+  startNode,
+  targetList
+) => {
   const m = grid.length,
     n = grid[0].length;
 
@@ -83,7 +89,10 @@ export const twoEndedBfs: (
           startNode,
           targetList[0]
         );
-        return [visited, shortestPath];
+        return [
+          [visited, shortestPath],
+          retrieveDistance(shortestPath, pairGrid, mazeGraph),
+        ];
       }
 
       if (
@@ -110,5 +119,5 @@ export const twoEndedBfs: (
     }
   }
 
-  return [visited, []];
+  return [[visited, []], 0];
 };

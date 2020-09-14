@@ -1,5 +1,5 @@
 import { node } from "../../usefulInterfaces";
-import { retrievePath } from "../retrievePath";
+import { retrieveDistance, retrievePath } from "../retrievePath";
 import { ensure } from "../../ensureNotUndefined";
 
 export const dfs: (
@@ -8,13 +8,21 @@ export const dfs: (
   mazeGraph: Map<[number, number], [[number, number], number][]>,
   startNode: node,
   targetList: node[]
-) => [node[], node[]] = (grid, pairGrid, mazeGraph, startNode, targetList) => {
+) => [[node[], node[]], number] = (
+  grid,
+  pairGrid,
+  mazeGraph,
+  startNode,
+  targetList
+) => {
   const m = grid.length,
     n = grid[0].length;
 
   // Initialize the predecessor array
   const predecessor: node[] = [];
-  predecessor.fill(startNode, 0, m * n);
+  for (let i: number = 0; i < m * n; i++) {
+    predecessor.push(startNode);
+  }
   predecessor[startNode.id] = startNode;
 
   // Initialize the visited nodes array
@@ -37,10 +45,13 @@ export const dfs: (
     visited.push(currentNode);
 
     // If we found the end node, return the path to it
-    if (targetList.find((targetNode) => currentNode)) {
+    if (targetList.find((targetNode) => currentNode === targetNode)) {
       // Retrieve the shortest path
       const shortestPath = retrievePath(predecessor, startNode, currentNode);
-      return [visited, shortestPath];
+      return [
+        [visited, shortestPath],
+        retrieveDistance(shortestPath, pairGrid, mazeGraph),
+      ];
     }
 
     // iterate through the neighbors of the currentNode node
@@ -77,5 +88,5 @@ export const dfs: (
     }
   }
 
-  return [visited, []];
+  return [[visited, []], 0];
 };

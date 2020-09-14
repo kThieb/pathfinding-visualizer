@@ -1,5 +1,5 @@
 /* Style the list elements */
-ul {
+.tutorial-panel ul {
   list-style-type: disc;
   margin-left: 2vw;
 }

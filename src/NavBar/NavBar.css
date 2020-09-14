@@ -345,3 +345,32 @@ input:checked + .switch-slider:before {
 .switch-slider.round:before {
   border-radius: clamp(8px, 2.5vh, 32px);
 }
+
+/* Style the distance  */
+.distance {
+  position: absolute;
+  left: 33%;
+
+  width: 7vw;
+  height: 7vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+  border: solid 0.1em #484a4d;
+  border-radius: 10px;
+  padding: 0 0.5vw;
+
+  pointer-events: none;
+  transition: opacity 400ms ease-out;
+}
+
+.show-distance {
+  opacity: 1;
+}
+
+.hide-distance {
+  opacity: 0;
+}

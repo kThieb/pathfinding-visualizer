@@ -14,7 +14,7 @@ export const singleTargetAlgorithms: {
     mazeGraph: Map<[number, number], [[number, number], number][]>,
     startNode: node,
     targetList: node[]
-  ) => [node[], node[]];
+  ) => [[node[], node[]], number];
 } = {
   "Depth First Search": dfs,
   "Breadth First Search": bfs,

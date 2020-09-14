@@ -24,6 +24,7 @@ import { DropDownToggleSwich } from "../NavBar/DropDownToggleSwitch";
 import { NavItem } from "../NavBar/NavItem";
 import { NavSlider } from "../NavBar/NavSlider";
 import { InfoButton } from "../Tutorial/InfoButton";
+import { EnergyCost } from "../NavBar/EnergyCost";
 
 const NUMBER_OF_COLUMNS: number = 28;
 const NUMBER_OF_ROWS: number = 13;
@@ -88,6 +89,9 @@ const Visualizer: React.FC = () => {
   const [multipleTargetsAlgorithm, setMultipleTargetsAlgorithm] = useState(
     "Nearest Neighbors Heuristic"
   );
+  const [showDistance, setShowDistance] = useState(false);
+  const [distance, setDistance] = useState(-1);
+
   const [height, setHeight] = useState(undefined);
 
   // State of the mouse
@@ -182,7 +186,7 @@ const Visualizer: React.FC = () => {
       }, currentTimeout);
       currentTimeout += 1000;
     }
-    return currentTimeout;
+    return currentTimeout - 1000;
   };
 
   // This function is passed to the drop down menu to handle the change of algorithm
@@ -206,9 +210,10 @@ const Visualizer: React.FC = () => {
     if (isVisualized === 0) {
       setIsVisualized(1);
       if (numberOfTargets === 1) {
-        const [visited, path]: [node[], node[]] = singleTargetAlgorithms[
-          singleTargetAlgorithm
-        ](
+        const [[visited, path], newDistance]: [
+          [node[], node[]],
+          number
+        ] = singleTargetAlgorithms[singleTargetAlgorithm](
           grid,
           pairGrid,
           maze,
@@ -220,21 +225,33 @@ const Visualizer: React.FC = () => {
         visualizeSingleTargetAlgorithm(visited, path, 0);
         setTimeout(() => {
           setIsVisualized(2);
-        }, VISITED_ANIMATION_TIMEOUT * n + PATH_ANIMATION_TIMEOUT * m + 1250);
+          setDistance(newDistance);
+          setShowDistance(true);
+        }, VISITED_ANIMATION_TIMEOUT * n + PATH_ANIMATION_TIMEOUT * m + 500);
         return;
       }
-      const allVisitedAndPaths: [node[], node[]][] = multipleTargetsAlgorithms[
-        multipleTargetsAlgorithm
-      ](grid, pairGrid, maze, startNode, targetList.slice())[0];
+      const [allVisitedAndPaths, newDistance]: [
+        [node[], node[]][],
+        number
+      ] = multipleTargetsAlgorithms[multipleTargetsAlgorithm](
+        grid,
+        pairGrid,
+        maze,
+        startNode,
+        targetList.slice()
+      );
       const timeout: number = visualizeMultipleTargetsAlgorithm(
         allVisitedAndPaths
       );
       setTimeout(() => {
         setIsVisualized(2);
+        setDistance(newDistance);
+        setShowDistance(true);
       }, timeout);
     }
     if (isVisualized === 2) {
       reinitializeGrid();
+      setShowDistance(false);
     }
   };
 
@@ -329,6 +346,7 @@ const Visualizer: React.FC = () => {
     }
   };
 
+  // Toggle the cheese or rat on the node
   const toggleNode: (currentNode: node) => void = (currentNode) => {
     let oldStartNode: node = startNode,
       oldTargetList: node[] = targetList.slice();
@@ -490,6 +508,7 @@ const Visualizer: React.FC = () => {
           visualizedClassName="greyed-out"
           handleClick={handleMultipleTargets}
         />
+        <EnergyCost distance={distance} showDistance={showDistance} />
         <NavButton
           text={getVisualizeText()}
           isVisualized={isVisualized}
@@ -634,9 +653,11 @@ const Visualizer: React.FC = () => {
         </NavItem>
       </NavBar>
 
-      
-      <Tutorial handleDismiss={() => setShowTutorial(false)} showTutorial={showTutorial}/>
-    
+      <Tutorial
+        handleDismiss={() => setShowTutorial(false)}
+        showTutorial={showTutorial}
+      />
+
       <Grid
         grid={grid}
         pairGrid={pairGrid}

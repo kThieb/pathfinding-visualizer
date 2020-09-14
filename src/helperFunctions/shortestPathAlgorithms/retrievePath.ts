@@ -1,3 +1,4 @@
+import { ensure } from "../ensureNotUndefined";
 import { node } from "../usefulInterfaces";
 
 export const retrievePath: (
@@ -34,4 +35,26 @@ export const retrieveTwoEndedPath: (
     shortestPath.push(current);
   }
   return shortestPath;
+};
+
+export const retrieveDistance: (
+  path: node[],
+  pairGrid: [number, number][][],
+  mazeGraph: Map<[number, number], [[number, number], number][]>
+) => number = (path, pairGrid, mazeGraph) => {
+  let distance: number = 0;
+  for (let i: number = 1; i < path.length; i++) {
+    let predNode: node = path[i - 1],
+      currNode: node = path[i];
+    let pred: [number, number] = pairGrid[predNode.x][predNode.y],
+      curr: [number, number] = pairGrid[currNode.x][currNode.y];
+    let neighbor: [[number, number], number] = ensure(
+      ensure(mazeGraph.get(pred)).find(
+        (neighborEdge) =>
+          neighborEdge[0][0] === curr[0] && neighborEdge[0][1] === curr[1]
+      )
+    );
+    distance += neighbor[1];
+  }
+  return distance;
 };

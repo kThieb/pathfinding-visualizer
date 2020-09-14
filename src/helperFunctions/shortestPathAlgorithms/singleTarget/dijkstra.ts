@@ -140,13 +140,19 @@ export const dijkstra: (
   mazeGraph: Map<[number, number], [[number, number], number][]>,
   startNode: node,
   targetList: node[]
-) => [node[], node[]] = (grid, pairGrid, mazeGraph, startNode, targetList) => {
-  const [visited, path] = dijkstraHelper(
+) => [[node[], node[]], number] = (
+  grid,
+  pairGrid,
+  mazeGraph,
+  startNode,
+  targetList
+) => {
+  const [visited, path, , distance] = dijkstraHelper(
     grid,
     pairGrid,
     mazeGraph,
     startNode,
     targetList
   );
-  return [visited, path];
+  return [[visited, path], distance];
 };

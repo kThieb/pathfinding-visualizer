@@ -228,7 +228,8 @@ export const Tutorial: React.FC<TutorialProps> = (props) => {
 
           <h3 className="text">
             You can choose different options regarding the maze in the dropdown
-            menu labeled "Maze Options". <br />
+            menu labeled "Maze Options". You can also choose to hide the "mud
+            weight" if you want. <br />
             Then you can generate a new maze with the changed values with the
             "Generate Maze button".
           </h3>
@@ -259,9 +260,10 @@ export const Tutorial: React.FC<TutorialProps> = (props) => {
           <h3 className="text">
             The last thing you need to know is that you can move the rat and the
             cheese around before visualizing an algorithm! You have to click on
-            the rat and hold the button while moving, and releasing the mouse
-            button on the square you want the rat on (this is essentially like
-            drag and drop). The same thing works on the cheeses too!
+            the rat and hold down the mouse button while moving, and releasing
+            the mouse button on the square you want the rat to be on (this is
+            essentially like a drag and drop action). The same thing works on
+            the cheeses too!
           </h3>
           <img
             src={require("./imagesAndGifs/dragAndDrop.gif")}
