@@ -1,30 +1,30 @@
-import React, { useEffect, useRef, useState } from "react";
-import "./Visualizer.css";
-import { Grid } from "../Grid/Grid";
-import { NavBar } from "../NavBar/NavBar";
+import React, { useEffect, useRef, useState } from 'react';
+import './Visualizer.css';
+import { Grid } from '../Grid/Grid';
+import { NavBar } from '../NavBar/NavBar';
 
-import { node } from "../helperFunctions/usefulInterfaces";
+import { node } from '../helperFunctions/usefulInterfaces';
 import {
   singleTargetAlgorithms,
   multipleTargetsAlgorithms,
-} from "../helperFunctions/shortestPathAlgorithms/allAlgorithms";
-import { generateMazeGraph } from "../helperFunctions/mazeGenerators/mazeGraph";
+} from '../helperFunctions/shortestPathAlgorithms/allAlgorithms';
+import { generateMazeGraph } from '../helperFunctions/mazeGenerators/mazeGraph';
 import {
   addPiecesOfCheese,
   constructGrid,
   reconstructGrid,
-} from "../helperFunctions/constructGrid";
-import { WrapperCSSTransition } from "../Wrapper/Wrapper";
-import { Tutorial } from "../Tutorial/Tutorial";
-import { NavButton } from "../NavBar/NavButton";
-import { DropDownItem } from "../NavBar/DropDownAlgo";
-import { DropDownMenu } from "../NavBar/DropDownMenu";
-import { DropDownSlider } from "../NavBar/DropDownSlider";
-import { DropDownToggleSwich } from "../NavBar/DropDownToggleSwitch";
-import { NavItem } from "../NavBar/NavItem";
-import { NavSlider } from "../NavBar/NavSlider";
-import { InfoButton } from "../Tutorial/InfoButton";
-import { EnergyCost } from "../NavBar/EnergyCost";
+} from '../helperFunctions/constructGrid';
+import { WrapperCSSTransition } from '../Wrapper/Wrapper';
+import { Tutorial } from '../Tutorial/Tutorial';
+import { NavButton } from '../NavBar/NavButton';
+import { DropDownItem } from '../NavBar/DropDownAlgo';
+import { DropDownMenu } from '../NavBar/DropDownMenu';
+import { DropDownSlider } from '../NavBar/DropDownSlider';
+import { DropDownToggleSwich } from '../NavBar/DropDownToggleSwitch';
+import { NavItem } from '../NavBar/NavItem';
+import { NavSlider } from '../NavBar/NavSlider';
+import { InfoButton } from '../Tutorial/InfoButton';
+import { EnergyCost } from '../NavBar/EnergyCost';
 
 const NUMBER_OF_COLUMNS: number = 28;
 const NUMBER_OF_ROWS: number = 13;
@@ -74,7 +74,6 @@ const Visualizer: React.FC = () => {
   const [mudWeight, setMudWeight] = useState(FIRST_MUD_WEIGHT);
   const [numberOfTargets, setNumberOfTargets] = useState(1);
   const [shouldGenerateMaze, setShouldGenerateMaze] = useState(false);
-  const didMount = useRef(false);
   const [showNumbers, setShowNumbers] = useState(true);
 
   // States of the start and end nodes
@@ -82,12 +81,10 @@ const Visualizer: React.FC = () => {
   const [targetList, setTargetList] = useState(firstTargetList);
 
   // States managing the dropdown menu
-  const [algoActiveMenu, setAlgoActiveMenu] = useState("main-single-target");
-  const [singleTargetAlgorithm, setSingleTargetAlgorithm] = useState(
-    "Dijkstra's algorithm"
-  );
+  const [algoActiveMenu, setAlgoActiveMenu] = useState('main-single-target');
+  const [singleTargetAlgorithm, setSingleTargetAlgorithm] = useState("Dijkstra's algorithm");
   const [multipleTargetsAlgorithm, setMultipleTargetsAlgorithm] = useState(
-    "Nearest Neighbors Heuristic"
+    'Nearest Neighbors Heuristic'
   );
   const [showDistance, setShowDistance] = useState(false);
   const [distance, setDistance] = useState(-1);
@@ -145,15 +142,12 @@ const Visualizer: React.FC = () => {
   };
 
   // This function returns the position of the successor of a node in the shortest path
-  const getSuccessorPosition: (node: node, successor: node) => string = (
-    node,
-    successor
-  ) => {
-    if (node.x + 1 === successor.x) return "D";
-    if (node.y + 1 === successor.y) return "R";
-    if (node.x - 1 === successor.x) return "U";
-    if (node.y - 1 === successor.y) return "L";
-    return "";
+  const getSuccessorPosition: (node: node, successor: node) => string = (node, successor) => {
+    if (node.x + 1 === successor.x) return 'D';
+    if (node.y + 1 === successor.y) return 'R';
+    if (node.x - 1 === successor.x) return 'U';
+    if (node.y - 1 === successor.y) return 'L';
+    return '';
   };
 
   // This function is there to visualize multipleTargetsAlgorithms
@@ -164,11 +158,7 @@ const Visualizer: React.FC = () => {
     let currentTimeout: number = 0;
     for (let i: number = 0; i < n; i++) {
       const [visited, path] = allVisitedAndPathsArray[i];
-      currentTimeout = visualizeSingleTargetAlgorithm(
-        visited,
-        path,
-        currentTimeout
-      );
+      currentTimeout = visualizeSingleTargetAlgorithm(visited, path, currentTimeout);
 
       currentTimeout += visited.length > 0 ? 1250 : 0;
       setTimeout(() => {
@@ -190,9 +180,7 @@ const Visualizer: React.FC = () => {
   };
 
   // This function is passed to the drop down menu to handle the change of algorithm
-  const handleAlgorithmChange: (algorithmName: string) => () => void = (
-    algorithmName
-  ) => {
+  const handleAlgorithmChange: (algorithmName: string) => () => void = (algorithmName) => {
     return () => {
       numberOfTargets > 1
         ? setMultipleTargetsAlgorithm(algorithmName)
@@ -210,10 +198,9 @@ const Visualizer: React.FC = () => {
     if (isVisualized === 0) {
       setIsVisualized(1);
       if (numberOfTargets === 1) {
-        const [[visited, path], newDistance]: [
-          [node[], node[]],
-          number
-        ] = singleTargetAlgorithms[singleTargetAlgorithm](
+        const [[visited, path], newDistance]: [[node[], node[]], number] = singleTargetAlgorithms[
+          singleTargetAlgorithm
+        ](
           grid,
           pairGrid,
           maze,
@@ -240,9 +227,7 @@ const Visualizer: React.FC = () => {
         startNode,
         targetList.slice()
       );
-      const timeout: number = visualizeMultipleTargetsAlgorithm(
-        allVisitedAndPaths
-      );
+      const timeout: number = visualizeMultipleTargetsAlgorithm(allVisitedAndPaths);
       setTimeout(() => {
         setIsVisualized(2);
         setDistance(newDistance);
@@ -339,9 +324,7 @@ const Visualizer: React.FC = () => {
   // handle the click on the multiple targets button
   const handleMultipleTargets: () => void = () => {
     if (isVisualized === 0) {
-      setAlgoActiveMenu(
-        numberOfTargets > 1 ? "main-single-target" : "main-multiple-target"
-      );
+      setAlgoActiveMenu(numberOfTargets > 1 ? 'main-single-target' : 'main-multiple-target');
       setNumberOfTargets(numberOfTargets > 1 ? 1 : 5);
     }
   };
@@ -357,15 +340,11 @@ const Visualizer: React.FC = () => {
     if (draggedNode.current === startNode) {
       oldStartNode = currentNode;
     } else {
-      const isTargetNode: boolean = targetList.find(
-        (targetNode) => targetNode === currentNode
-      )
+      const isTargetNode: boolean = targetList.find((targetNode) => targetNode === currentNode)
         ? true
         : false;
       if (!isTargetNode) {
-        oldTargetList = oldTargetList.filter(
-          (targetNode) => targetNode !== draggedNode.current
-        );
+        oldTargetList = oldTargetList.filter((targetNode) => targetNode !== draggedNode.current);
         oldTargetList.push(currentNode);
       }
     }
@@ -389,9 +368,7 @@ const Visualizer: React.FC = () => {
 
   // handles the case when the mouse button is down
   const handleMouseDown: (currentNode: node) => void = (currentNode) => {
-    const isTargetNode: boolean = targetList.find(
-      (targetNode) => targetNode === currentNode
-    )
+    const isTargetNode: boolean = targetList.find((targetNode) => targetNode === currentNode)
       ? true
       : false;
     if (isVisualized === 0 && (currentNode === startNode || isTargetNode)) {
@@ -416,20 +393,17 @@ const Visualizer: React.FC = () => {
   const getVisualizeText: () => string = () => {
     if (isVisualized <= 0)
       return (
-        "Visualize " +
-        (numberOfTargets > 1
-          ? multipleTargetsAlgorithm
-          : singleTargetAlgorithm) +
-        "!"
+        'Visualize ' +
+        (numberOfTargets > 1 ? multipleTargetsAlgorithm : singleTargetAlgorithm) +
+        '!'
       );
-    return "Reinitialize Visualization";
+    return 'Reinitialize Visualization';
   };
 
   // updates the maze in real time
   useEffect(() => {
-    if (didMount.current) setShouldGenerateMaze(true);
-    else didMount.current = true;
-  }, [wallsDensity, mudDensity, mudWeight]);
+    setShouldGenerateMaze(true);
+  }, []);
 
   // Render the app
   return (
@@ -438,9 +412,7 @@ const Visualizer: React.FC = () => {
         <NavButton
           text="Generate New Maze"
           isVisualized={isVisualized}
-          className={
-            "generate-maze " + (shouldGenerateMaze ? "should-generate" : "")
-          }
+          className={'generate-maze ' + (shouldGenerateMaze ? 'should-generate' : '')}
           visualizingClassName="greyed-out"
           visualizedClassName="greyed-out"
           handleClick={generateMaze}
@@ -484,9 +456,7 @@ const Visualizer: React.FC = () => {
           </DropDownMenu>
         </NavItem>
         <NavSlider
-          className={
-            numberOfTargets > 1 ? "show-nav-slider" : "hide-nav-slider"
-          }
+          className={numberOfTargets > 1 ? 'show-nav-slider' : 'hide-nav-slider'}
           text="Number of Targets:"
           minValue={2}
           maxValue={10}
@@ -499,15 +469,9 @@ const Visualizer: React.FC = () => {
         />
 
         <NavButton
-          text={
-            (numberOfTargets > 1 ? "Disable" : "Enable") + " Multiple Targets"
-          }
+          text={(numberOfTargets > 1 ? 'Disable' : 'Enable') + ' Multiple Targets'}
           isVisualized={isVisualized}
-          className={
-            numberOfTargets > 1
-              ? "disable-multiple-targets"
-              : "enable-multiple-targets"
-          }
+          className={numberOfTargets > 1 ? 'disable-multiple-targets' : 'enable-multiple-targets'}
           visualizingClassName="greyed-out"
           visualizedClassName="greyed-out"
           handleClick={handleMultipleTargets}
@@ -529,7 +493,7 @@ const Visualizer: React.FC = () => {
         >
           <DropDownMenu height={height}>
             <WrapperCSSTransition
-              in={algoActiveMenu === "main-single-target"}
+              in={algoActiveMenu === 'main-single-target'}
               unmountOnExit
               timeout={500}
               classNames="menu-primary"
@@ -537,129 +501,104 @@ const Visualizer: React.FC = () => {
               handleEnter={setHeight}
               appear
             >
-              <DropDownItem handleClick={handleMenuChange("unweighted")}>
+              <DropDownItem handleClick={handleMenuChange('unweighted')}>
                 <p>Algorithms for unweighted graphs</p>
-                <p className="arrow-right">{">"}</p>
+                <p className="arrow-right">{'>'}</p>
               </DropDownItem>
-              <DropDownItem handleClick={handleMenuChange("weighted")}>
+              <DropDownItem handleClick={handleMenuChange('weighted')}>
                 <p>Algorithms for weighted graphs</p>
-                <p className="arrow-right">{">"}</p>
+                <p className="arrow-right">{'>'}</p>
               </DropDownItem>
             </WrapperCSSTransition>
             <WrapperCSSTransition
-              in={algoActiveMenu === "unweighted"}
+              in={algoActiveMenu === 'unweighted'}
               unmountOnExit
               timeout={500}
               classNames="menu-unweighted"
               divClassName="menu"
               handleEnter={setHeight}
             >
-              <DropDownItem
-                handleClick={handleMenuChange("main-single-target")}
-              >
-                <p className="arrow-left">{"<"}</p>
+              <DropDownItem handleClick={handleMenuChange('main-single-target')}>
+                <p className="arrow-left">{'<'}</p>
               </DropDownItem>
-              <DropDownItem
-                handleClick={handleAlgorithmChange("Depth First Search")}
-              >
+              <DropDownItem handleClick={handleAlgorithmChange('Depth First Search')}>
                 <p>Random Depth First Search</p>
-                {singleTargetAlgorithm === "Depth First Search" ? (
+                {singleTargetAlgorithm === 'Depth First Search' ? (
                   <p className="tickmark">✓</p>
                 ) : (
-                  ""
+                  ''
                 )}
               </DropDownItem>
-              <DropDownItem
-                handleClick={handleAlgorithmChange("Breadth First Search")}
-              >
+              <DropDownItem handleClick={handleAlgorithmChange('Breadth First Search')}>
                 <p>Breadth First Search</p>
-                {singleTargetAlgorithm === "Breadth First Search" ? (
+                {singleTargetAlgorithm === 'Breadth First Search' ? (
                   <p className="tickmark">✓</p>
                 ) : (
-                  ""
+                  ''
                 )}
               </DropDownItem>
-              <DropDownItem
-                handleClick={handleAlgorithmChange("Meet in the Middle BFS")}
-              >
+              <DropDownItem handleClick={handleAlgorithmChange('Meet in the Middle BFS')}>
                 <p>Meet in the Middle BFS</p>
-                {singleTargetAlgorithm === "Meet in the Middle BFS" ? (
+                {singleTargetAlgorithm === 'Meet in the Middle BFS' ? (
                   <p className="tickmark">✓</p>
                 ) : (
-                  ""
+                  ''
                 )}
               </DropDownItem>
             </WrapperCSSTransition>
             <WrapperCSSTransition
-              in={algoActiveMenu === "weighted"}
+              in={algoActiveMenu === 'weighted'}
               unmountOnExit
               timeout={500}
               classNames="menu-weighted"
               divClassName="menu"
               handleEnter={setHeight}
             >
-              <DropDownItem
-                handleClick={handleMenuChange("main-single-target")}
-              >
-                <p className="arrow-left">{"<"}</p>
+              <DropDownItem handleClick={handleMenuChange('main-single-target')}>
+                <p className="arrow-left">{'<'}</p>
               </DropDownItem>
-              <DropDownItem
-                handleClick={handleAlgorithmChange("Dijkstra's algorithm")}
-              >
+              <DropDownItem handleClick={handleAlgorithmChange("Dijkstra's algorithm")}>
                 <p>Dijkstra's Algorithm</p>
                 {singleTargetAlgorithm === "Dijkstra's algorithm" ? (
                   <p className="tickmark">✓</p>
                 ) : (
-                  ""
+                  ''
                 )}
               </DropDownItem>
-              <DropDownItem handleClick={handleAlgorithmChange("A* algorithm")}>
+              <DropDownItem handleClick={handleAlgorithmChange('A* algorithm')}>
                 <p>A* Algorithm</p>
-                {singleTargetAlgorithm === "A* algorithm" ? (
-                  <p className="tickmark">✓</p>
-                ) : (
-                  ""
-                )}
+                {singleTargetAlgorithm === 'A* algorithm' ? <p className="tickmark">✓</p> : ''}
               </DropDownItem>
             </WrapperCSSTransition>
             <WrapperCSSTransition
-              in={algoActiveMenu === "main-multiple-target"}
+              in={algoActiveMenu === 'main-multiple-target'}
               unmountOnExit
               timeout={500}
               classNames="menu-unweighted"
               divClassName="menu"
               handleEnter={setHeight}
             >
-              <DropDownItem
-                handleClick={handleAlgorithmChange("Brute Force Algorithm")}
-              >
+              <DropDownItem handleClick={handleAlgorithmChange('Brute Force Algorithm')}>
                 <p>Brute Force Algorithm</p>
-                {multipleTargetsAlgorithm === "Brute Force Algorithm" ? (
+                {multipleTargetsAlgorithm === 'Brute Force Algorithm' ? (
                   <p className="tickmark">✓</p>
                 ) : (
-                  ""
+                  ''
                 )}
               </DropDownItem>
-              <DropDownItem
-                handleClick={handleAlgorithmChange(
-                  "Nearest Neighbors Heuristic"
-                )}
-              >
+              <DropDownItem handleClick={handleAlgorithmChange('Nearest Neighbors Heuristic')}>
                 <p>Nearest Neighbors Heuristic</p>
-                {multipleTargetsAlgorithm === "Nearest Neighbors Heuristic" ? (
+                {multipleTargetsAlgorithm === 'Nearest Neighbors Heuristic' ? (
                   <p className="tickmark">✓</p>
                 ) : (
-                  ""
+                  ''
                 )}
               </DropDownItem>
             </WrapperCSSTransition>
           </DropDownMenu>
         </NavItem>
       </NavBar>
-      <Tutorial
-        handleDismiss={() => setShowTutorial(false)}
-        showTutorial={showTutorial}
-      />
+      <Tutorial handleDismiss={() => setShowTutorial(false)} showTutorial={showTutorial} />
 
       <Grid
         grid={grid}
@@ -675,11 +614,8 @@ const Visualizer: React.FC = () => {
           handleClick={() => setShowTutorial(!showTutorial)}
         />
         <div className="github">
-          <a
-            href="https://github.com/kThieb/pathfinding-visualizer"
-            className="link-to-github"
-          >
-            <img alt="octocat" src={require("../icon/Octocat.png")}></img>
+          <a href="https://github.com/kThieb/pathfinding-visualizer" className="link-to-github">
+            <img alt="octocat" src={require('../icon/Octocat.png')}></img>
           </a>
           <p className="github-tooltip">Link to Source Code</p>
         </div>
